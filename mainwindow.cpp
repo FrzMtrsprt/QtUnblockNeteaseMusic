@@ -43,7 +43,13 @@ void MainWindow::on_readoutput()
 
 void MainWindow::on_readerror()
 {
-    QMessageBox::critical(this, "Server error", server->readAllStandardError().data());
+    QMessageBox error;
+    error.setWindowTitle("Server error");
+    error.setText("The UnblockNeteaseMusic server ran into an error.\n"
+                  "Please change the arguments and try again.");
+    error.setDetailedText(server->readAllStandardError().data());
+    error.setStandardButtons(QMessageBox::Ok);
+    error.exec();
 }
 
 void MainWindow::on_restartBtn_clicked()
