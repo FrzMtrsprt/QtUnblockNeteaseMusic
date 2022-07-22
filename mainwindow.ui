@@ -106,7 +106,7 @@
             <string>Specify server port</string>
            </property>
            <property name="text">
-            <string>11111</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -122,7 +122,7 @@
             <string>Specify server host</string>
            </property>
            <property name="text">
-            <string>127.0.0.1</string>
+            <string/>
            </property>
           </widget>
          </item>

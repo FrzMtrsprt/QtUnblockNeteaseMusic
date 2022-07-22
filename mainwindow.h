@@ -1,6 +1,8 @@
 ﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "config.h"
+
 #include <QCloseEvent>
 #include <QMainWindow>
 #include <QProcess>
@@ -22,7 +24,10 @@ public:
     QProcess *server = new QProcess();
     QString serverFile;
     QStringList serverArgs;
-    void closeEvent(QCloseEvent *);
+    Config *config = new Config();
+    void closeEvent(QCloseEvent *); //reload closeEvent to add my own actions
+    void loadSettings();
+    void updateSettings();
     void getPath();
     void getArgs();
     void startServer();

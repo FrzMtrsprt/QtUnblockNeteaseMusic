@@ -1,3 +1,4 @@
+#include "config.h"
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
@@ -13,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     connect(server, SIGNAL(readyReadStandardOutput()), this, SLOT(on_readoutput()));
     connect(server, SIGNAL(readyReadStandardError()), this, SLOT(on_readerror()));
-    QObject::connect(server, &QProcess::finished, [this]()
-                     { outLog(tr(server->readAllStandardOutput())); });
+    config->readSettings();
+    loadSettings();
     startServer();
 }
 
@@ -65,11 +66,34 @@ void MainWindow::on_exitBtn_clicked()
     qApp->exit();
 }
 
+void MainWindow::loadSettings()
+{
+    //load settings from variables into ui
+    ui->portEdit->setText(config->port);
+    ui->addressEdit->setText(config->address);
+    ui->urlEdit->setText(config->url);
+    ui->hostEdit->setText(config->host);
+    ui->sourceEdit->append(config->source);
+    ui->strictCheck->setChecked(config->strict);
+}
+
+void MainWindow::updateSettings()
+{
+    //update settings from ui into variables
+    config->port = ui->portEdit->text();
+    config->address = ui->addressEdit->text();
+    config->url = ui->urlEdit->text();
+    config->host = ui->hostEdit->text();
+    config->source = ui->sourceEdit->toPlainText();
+    config->strict = ui->strictCheck->isChecked();
+}
+
 void MainWindow::getPath()
 {
     QDir serverDir(QCoreApplication::applicationDirPath());
     QStringList filters;
-    filters << "unblock*" <<"server*";
+    filters << "unblock*"
+            << "server*";
     serverDir.setNameFilters(filters);
     if (serverDir.count())
     {
@@ -158,6 +182,8 @@ void MainWindow::outLog(const QString &log)
 void MainWindow::stopServer()
 {
     server->close();
+    updateSettings();
+    config->writeSettings();
 }
 
 void MainWindow::closeEvent(QCloseEvent *e)
