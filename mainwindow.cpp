@@ -11,21 +11,11 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(server , SIGNAL(readyReadStandardOutput()) , this , SLOT(on_readoutput()));
-    connect(server , SIGNAL(readyReadStandardError()) , this , SLOT(on_readerror()));
+    connect(server, SIGNAL(readyReadStandardOutput()), this, SLOT(on_readoutput()));
+    connect(server, SIGNAL(readyReadStandardError()), this, SLOT(on_readerror()));
     QObject::connect(server, &QProcess::finished, [this]()
-                     {outLog(tr(server->readAllStandardOutput()));});
+                     { outLog(tr(server->readAllStandardOutput())); });
     startServer();
-}
-
-void MainWindow::on_readoutput()
-{
-    ui->outText->append(server->readAllStandardOutput().data());
-}
-
-void MainWindow::on_readerror()
-{
-    QMessageBox::information(0, "Error", server->readAllStandardError().data());
 }
 
 MainWindow::~MainWindow()
@@ -44,6 +34,16 @@ void MainWindow::on_actionAbout_triggered()
     QString dlgTitle = "About";
     QString strInfo = "This is an about dialog.";
     QMessageBox::about(this, dlgTitle, strInfo);
+}
+
+void MainWindow::on_readoutput()
+{
+    ui->outText->append(server->readAllStandardOutput().data());
+}
+
+void MainWindow::on_readerror()
+{
+    QMessageBox::information(0, "Error", server->readAllStandardError().data());
 }
 
 void MainWindow::on_restartBtn_clicked()
@@ -79,13 +79,18 @@ void MainWindow::getPath()
     }
     else
     {
-        serverFile = NULL;
+        serverFile = "";
+        serverArgs = {};
     }
     qDebug() << "Server File:" << serverFile.toUtf8().data();
 }
 
 void MainWindow::getArgs()
 {
+    if (serverFile == "")
+    {
+        return;
+    }
     if (ui->portEdit->text() != "")
     {
         serverArgs << "-p" << ui->portEdit->text();
@@ -120,15 +125,17 @@ void MainWindow::startServer()
 {
     getPath();
     getArgs();
-    server->start(serverFile, serverArgs);
-    if (server->waitForStarted())
+    if (serverFile != "")
     {
-        outLog(serverFile + " " + serverArgs.join(" ").toUtf8().data());
+        server->start(serverFile, serverArgs);
+        if (!server->waitForStarted())
+        {
+            outLog(server->errorString());
+        }
     }
     else
     {
-        outLog(server->errorString());
-        return;
+        outLog("Server not found.");
     }
 }
 
@@ -142,7 +149,6 @@ void MainWindow::outLog(const QString &log)
 
 void MainWindow::stopServer()
 {
-    server->closeReadChannel(QProcess::StandardOutput);
     server->close();
 }
 

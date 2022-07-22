@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>483</width>
-    <height>329</height>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string notr="true">QtUnblockNeteaseMusic</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
@@ -291,7 +291,7 @@
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About</string>
+    <string>&amp;About</string>
    </property>
   </action>
  </widget>
