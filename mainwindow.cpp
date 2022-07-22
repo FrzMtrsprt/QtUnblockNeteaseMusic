@@ -43,7 +43,7 @@ void MainWindow::on_readoutput()
 
 void MainWindow::on_readerror()
 {
-    QMessageBox::information(0, "Error", server->readAllStandardError().data());
+    QMessageBox::critical(this, "Server error", server->readAllStandardError().data());
 }
 
 void MainWindow::on_restartBtn_clicked()
@@ -62,7 +62,9 @@ void MainWindow::on_exitBtn_clicked()
 void MainWindow::getPath()
 {
     QDir serverDir(QCoreApplication::applicationDirPath());
-    serverDir.setNameFilters({"unblock*"});
+    QStringList filters;
+    filters << "unblock*" <<"server*";
+    serverDir.setNameFilters(filters);
     if (serverDir.count())
     {
         QFileInfo result(serverDir[0]);
@@ -76,13 +78,13 @@ void MainWindow::getPath()
             serverFile = "node";
             serverArgs = {"./" + serverDir[0] + "/app.js"};
         }
+        qDebug() << "Server File:" << serverFile.toUtf8().data();
     }
     else
     {
         serverFile = "";
         serverArgs = {};
     }
-    qDebug() << "Server File:" << serverFile.toUtf8().data();
 }
 
 void MainWindow::getArgs()
