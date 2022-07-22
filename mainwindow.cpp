@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QProcess>
+#include <QRegularExpression>
 #include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -142,9 +143,9 @@ void MainWindow::getArgs()
     if (ui->sourceEdit->toPlainText() != "")
     {
         QString source = ui->sourceEdit->toPlainText();
-        source.replace(",", " ");
-        source.replace("\n", " ");
-        serverArgs << "-o" << source;
+        QStringList sources = source.split(QRegularExpression("[,.'，。 \n]+"));
+        sources.removeAll("");
+        serverArgs << "-o" << sources;
     }
     if (ui->strictCheck->isChecked() == true)
     {
