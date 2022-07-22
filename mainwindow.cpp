@@ -20,12 +20,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::on_readoutput()
 {
-    ui->outText->append(server->readAllStandardOutput().data());   //将输出信息读取到编辑框
+    ui->outText->append(server->readAllStandardOutput().data());
 }
 
 void MainWindow::on_readerror()
 {
-    QMessageBox::information(0, "Error", server->readAllStandardError().data());    //弹出信息框提示错误信息
+    QMessageBox::information(0, "Error", server->readAllStandardError().data());
 }
 
 MainWindow::~MainWindow()
