@@ -4,6 +4,7 @@
 
 #include <QCloseEvent>
 #include <QDebug>
+#include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
 #include <QProcess>
@@ -33,9 +34,22 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QString dlgTitle = "About";
-    QString strInfo = "This is an about dialog.";
-    QMessageBox::about(this, dlgTitle, strInfo);
+    QMessageBox aboutDlg(this);
+    QString text = QString("QtUnblockNeteaseMusic\n"
+                           "Version %1\n\n"
+                           "A desktop client for UnblockNeteaseMusic,\n"
+                           "written in Qt.\n\n"
+                           "Copyright 2022 FrzMtrsprt")
+                       .arg(versionStr);
+    aboutDlg.setWindowTitle("About");
+    aboutDlg.setIconPixmap(QPixmap("./res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
+    aboutDlg.setText(text);
+    aboutDlg.setStandardButtons(QMessageBox::Ok | QMessageBox::Help);
+    aboutDlg.setModal(true);
+    if (aboutDlg.exec() == QMessageBox::Help)
+    {
+        QDesktopServices::openUrl(repoUrl);
+    }
 }
 
 void MainWindow::on_readoutput()
@@ -45,13 +59,13 @@ void MainWindow::on_readoutput()
 
 void MainWindow::on_readerror()
 {
-    QMessageBox error;
-    error.setWindowTitle("Server error");
-    error.setText("The UnblockNeteaseMusic server ran into an error.\n"
-                  "Please change the arguments and try again.");
-    error.setDetailedText(server->readAllStandardError().data());
-    error.setStandardButtons(QMessageBox::Ok);
-    error.exec();
+    QMessageBox errorDlg;
+    errorDlg.setWindowTitle("Server error");
+    errorDlg.setText("The UnblockNeteaseMusic server ran into an error.\n"
+                     "Please change the arguments and try again.");
+    errorDlg.setDetailedText(server->readAllStandardError().data());
+    errorDlg.setStandardButtons(QMessageBox::Ok);
+    errorDlg.exec();
 }
 
 void MainWindow::on_restartBtn_clicked()
@@ -69,7 +83,7 @@ void MainWindow::on_exitBtn_clicked()
 
 void MainWindow::loadSettings()
 {
-    //load settings from variables into ui
+    // load settings from variables into ui
     ui->portEdit->setText(config->port);
     ui->addressEdit->setText(config->address);
     ui->urlEdit->setText(config->url);
@@ -80,7 +94,7 @@ void MainWindow::loadSettings()
 
 void MainWindow::updateSettings()
 {
-    //update settings from ui into variables
+    // update settings from ui into variables
     config->port = ui->portEdit->text();
     config->address = ui->addressEdit->text();
     config->url = ui->urlEdit->text();
