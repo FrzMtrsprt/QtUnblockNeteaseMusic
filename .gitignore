@@ -1,1 +1,5 @@
-CMakeLists.txt.user
+# VS Code build folder
+build
+
+# CMake user config
+*.user
