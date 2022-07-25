@@ -21,18 +21,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    QProcess *server = new QProcess();
-    QString serverFile;
-    QStringList serverArgs;
-    Config *config = new Config();
-    void closeEvent(QCloseEvent *); //reload closeEvent to add my own actions
-    void loadSettings();
-    void updateSettings();
-    void getPath();
-    void getArgs();
-    void startServer();
-    void outLog(const QString &log);
-    void stopServer();
 
 private slots:
     void on_actionExit_triggered();
@@ -44,5 +32,17 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QProcess *server = new QProcess();
+    QString serverFile;
+    QStringList serverArgs;
+    Config *config = new Config();
+    void closeEvent(QCloseEvent *); // reload closeEvent to add my own actions
+    void loadSettings();
+    void updateSettings();
+    void getPath();
+    void getArgs();
+    void startServer();
+    void outLog(const QString &log);
+    void stopServer();
 };
 #endif // MAINWINDOW_H

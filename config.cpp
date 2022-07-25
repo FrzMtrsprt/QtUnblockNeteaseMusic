@@ -1,6 +1,6 @@
-#include <QSettings>
-
 #include "config.h"
+
+#include <QSettings>
 
 Config::Config(QObject *parent)
     : QObject{parent}

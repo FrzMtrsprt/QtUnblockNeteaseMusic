@@ -17,11 +17,9 @@ public:
     bool strict;
     void readSettings();
     void writeSettings();
+
 private:
-    QSettings *settings = new QSettings("./config.ini", QSettings::IniFormat);
-
-signals:
-
+    QSettings *settings = new QSettings();
 };
 
 #endif // CONFIG_H
