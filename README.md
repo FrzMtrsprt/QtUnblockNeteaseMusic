@@ -19,10 +19,10 @@ And the enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseM
 - Set up the Qt development environment (Qt 6.3.1)
 - Clone the repository
 - Open the project in VSCode / Qt Creator
-- Compile `CMakeLists` with CMake
+- Compile `CMakeLists.txt` with CMake
 - Compile the `qt_*.ts` localization files with Linguist
-- Create a 'locale' folder next to the compiled binaries
-- Place the compiled `qt_*.qm` files and the `qtbase_*.qm` files from Qt installation in the 'locale' folder
+- Create a `locale` folder next to the compiled binaries
+- Place the compiled `qt_*.qm` files and the `qtbase_*.qm` files from Qt installation in the `locale` folder
 - The final product should have the following directory structure:  
 ```
   ├─ res  
@@ -36,5 +36,6 @@ And the enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseM
 ```
 ## To be solved
 - ~~The log output from the enhanced server is messy ([#791](https://github.com/UnblockNeteaseMusic/server/issues/791))~~ Fixed in upstream ([#798](https://github.com/UnblockNeteaseMusic/server/pull/798))
+- Build everything with cmake
 - Untested/unsupported on macOS, Linux, and Windows 7 or lower
 - I'm a newbie
