@@ -35,18 +35,20 @@ void MainWindow::on_actionExit_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox aboutDlg(this);
-    QString text = QString("QtUnblockNeteaseMusic\n"
-                           "Version %1\n\n"
-                           "A desktop client for UnblockNeteaseMusic,\n"
-                           "written in Qt.\n\n"
-                           "Copyright 2022 FrzMtrsprt")
+    QString text = QString(tr("QtUnblockNeteaseMusic\n"
+                              "Version %1\n\n"
+                              "A desktop client for UnblockNeteaseMusic,\n"
+                              "written in Qt.\n\n"
+                              "Copyright 2022 FrzMtrsprt"))
                        .arg(versionStr);
     aboutDlg.setWindowTitle("About");
     aboutDlg.setIconPixmap(QPixmap("./res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
     aboutDlg.setText(text);
-    aboutDlg.setStandardButtons(QMessageBox::Ok | QMessageBox::Help);
+    QPushButton *webBtn = aboutDlg.addButton("GitHub", QMessageBox::HelpRole);
+    aboutDlg.setStandardButtons(QMessageBox::Ok);
     aboutDlg.setModal(true);
-    if (aboutDlg.exec() == QMessageBox::Help)
+    aboutDlg.exec();
+    if (aboutDlg.clickedButton() == (QAbstractButton *)webBtn)
     {
         QDesktopServices::openUrl(repoUrl);
     }
@@ -60,10 +62,11 @@ void MainWindow::on_readoutput()
 void MainWindow::on_readerror()
 {
     QMessageBox errorDlg;
-    errorDlg.setWindowTitle("Server error");
-    errorDlg.setText("The UnblockNeteaseMusic server ran into an error.\n"
-                     "Please change the arguments and try again.");
+    errorDlg.setWindowTitle(tr("Server error"));
+    errorDlg.setText(tr("The UnblockNeteaseMusic server ran into an error.\n"
+                        "Please change the arguments or check port usage and try again."));
     errorDlg.setDetailedText(server->readAllStandardError().data());
+    errorDlg.setIcon(QMessageBox::Warning);
     errorDlg.setStandardButtons(QMessageBox::Ok);
     errorDlg.exec();
 }
@@ -182,7 +185,7 @@ void MainWindow::startServer()
     }
     else
     {
-        outLog("Server not found.");
+        outLog(tr("Server not found."));
     }
 }
 
