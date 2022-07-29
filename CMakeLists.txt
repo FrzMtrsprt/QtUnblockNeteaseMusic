@@ -30,14 +30,22 @@ set(PROJECT_SOURCES
         mainwindow.ui
 )
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    set(APP_SOURCES
+        res/QtUnblockNeteaseMusic.rc
+    )
+endif()
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(QtUnblockNeteaseMusic
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        ${APP_SOURCES}
     )
 else()
     add_executable(QtUnblockNeteaseMusic
         ${PROJECT_SOURCES}
+        ${APP_SOURCES}
     )
 endif()
 
@@ -45,7 +53,7 @@ qt_add_resources(QtUnblockNeteaseMusic res
     # resource path = FILES - BASE + PREFIX
     PREFIX "/res"
     BASE "res"
-    FILES res/icon.png
+    FILES res/icon.ico res/icon.png
 )
 
 qt_add_translations(QtUnblockNeteaseMusic
