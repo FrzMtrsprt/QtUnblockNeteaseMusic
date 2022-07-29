@@ -17,6 +17,9 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 set(TS_FILES
         locale/qt_en.ts
         locale/qt_zh_CN.ts
+)
+
+set(TS_BASE_FILES
         locale/qtbase_en.ts
         locale/qtbase_zh_CN.ts
 )
@@ -36,18 +39,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     )
 endif()
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(QtUnblockNeteaseMusic
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-        ${APP_SOURCES}
-    )
-else()
-    add_executable(QtUnblockNeteaseMusic
-        ${PROJECT_SOURCES}
-        ${APP_SOURCES}
-    )
-endif()
+qt_add_executable(QtUnblockNeteaseMusic
+    MANUAL_FINALIZATION
+    ${PROJECT_SOURCES}
+    ${APP_SOURCES}
+)
 
 qt_add_resources(QtUnblockNeteaseMusic res
     # resource path = FILES - BASE + PREFIX
@@ -56,8 +52,19 @@ qt_add_resources(QtUnblockNeteaseMusic res
     FILES res/icon.ico res/icon.png
 )
 
-qt_add_translations(QtUnblockNeteaseMusic
+qt_add_lupdate(QtUnblockNeteaseMusic
     TS_FILES ${TS_FILES}
+)
+
+qt_add_lrelease(QtUnblockNeteaseMusic
+    TS_FILES ${TS_FILES} ${TS_BASE_FILES}
+    QM_FILES_OUTPUT_VARIABLE QM_FILES
+)
+
+qt_add_resources(QtUnblockNeteaseMusic "translations"
+    PREFIX "/i18n"
+    BASE "${CMAKE_CURRENT_BINARY_DIR}"
+    FILES "${QM_FILES}"
 )
 
 target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
@@ -70,6 +77,4 @@ set_target_properties(QtUnblockNeteaseMusic PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(QtUnblockNeteaseMusic)
-endif()
+qt_finalize_executable(QtUnblockNeteaseMusic)
