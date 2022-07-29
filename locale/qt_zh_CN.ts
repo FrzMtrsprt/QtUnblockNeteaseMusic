@@ -106,7 +106,17 @@
         <translation>关于(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="38"/>
+        <location filename="../mainwindow.cpp" line="30"/>
+        <source>Show</source>
+        <translation>显示</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="31"/>
+        <source>Exit</source>
+        <translation>退出</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="59"/>
         <source>QtUnblockNeteaseMusic
 Version %1
 
@@ -123,19 +133,19 @@ Copyright 2022 FrzMtrsprt</source>
 版权所有 2022 FrzMtrsprt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="63"/>
+        <location filename="../mainwindow.cpp" line="86"/>
         <source>Server error</source>
         <translation>服务器错误</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="64"/>
+        <location filename="../mainwindow.cpp" line="87"/>
         <source>The UnblockNeteaseMusic server ran into an error.
 Please change the arguments or check port usage and try again.</source>
         <translation>UnblockNeteaseMusic 服务器出现错误。
 请修改服务器参数或检查端口占用，然后重试。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="185"/>
+        <location filename="../mainwindow.cpp" line="209"/>
         <source>Server not found.</source>
         <translation>未找到服务器。</translation>
     </message>

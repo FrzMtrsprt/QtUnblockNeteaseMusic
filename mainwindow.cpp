@@ -19,6 +19,27 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     config->readSettings();
     loadSettings();
     startServer();
+
+    // setup system tray
+    tray = new QSystemTrayIcon(this);
+    tray->setIcon(QIcon(":/res/icon.ico"));
+    tray->setToolTip("QtUnblockNeteaseMusic");
+    trayMenu = new QMenu(this);
+    trayExit = new QAction(this);
+    trayShow = new QAction(this);
+    trayShow->setText(tr("Show"));
+    trayExit->setText(tr("Exit"));
+    trayMenu->addAction(trayShow);
+    trayMenu->addAction(trayExit);
+    tray->setContextMenu(trayMenu);
+    tray->show();
+    connect(trayShow, &QAction::triggered, this, &MainWindow::show);
+    connect(trayExit, &QAction::triggered, this, [this]()
+            {
+        tray->hide();
+        stopServer();
+        qApp->quit(); });
+    connect(tray, &QSystemTrayIcon::activated, this, &MainWindow::on_tray_activated);
 }
 
 MainWindow::~MainWindow()
@@ -204,7 +225,19 @@ void MainWindow::stopServer()
     config->writeSettings();
 }
 
+void MainWindow::on_tray_activated(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason)
+    {
+    case QSystemTrayIcon::Trigger:
+        this->show();
+        break;
+    default:;
+    }
+}
+
 void MainWindow::closeEvent(QCloseEvent *e)
 {
-    stopServer();
+    this->hide();
+    e->ignore();
 }

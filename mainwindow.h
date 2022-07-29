@@ -6,6 +6,7 @@
 #include <QCloseEvent>
 #include <QMainWindow>
 #include <QProcess>
+#include <QSystemTrayIcon>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -29,6 +30,7 @@ private slots:
     void on_actionAbout_triggered();
     void on_exitBtn_clicked();
     void on_restartBtn_clicked();
+    void on_tray_activated(QSystemTrayIcon::ActivationReason);
     void on_readoutput();
     void on_readerror();
 
@@ -38,6 +40,12 @@ private:
     QString serverFile;
     QStringList serverArgs;
     Config *config = new Config();
+
+    QSystemTrayIcon *tray;
+    QMenu *trayMenu;
+    QAction *trayExit;
+    QAction *trayShow;
+    
     void closeEvent(QCloseEvent *); // reload closeEvent to add my own actions
     void loadSettings();
     void updateSettings();
