@@ -42,7 +42,7 @@ void MainWindow::on_actionAbout_triggered()
                               "Copyright 2022 FrzMtrsprt"))
                        .arg(versionStr);
     aboutDlg.setWindowTitle("About");
-    aboutDlg.setIconPixmap(QPixmap("./res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
+    aboutDlg.setIconPixmap(QPixmap(":/res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
     aboutDlg.setText(text);
     QPushButton *webBtn = aboutDlg.addButton("GitHub", QMessageBox::HelpRole);
     aboutDlg.setStandardButtons(QMessageBox::Ok);

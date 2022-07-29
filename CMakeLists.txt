@@ -11,8 +11,15 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
+
+set(TS_FILES
+        locale/qt_en.ts
+        locale/qt_zh_CN.ts
+        locale/qtbase_en.ts
+        locale/qtbase_zh_CN.ts
+)
 
 set(PROJECT_SOURCES
         config.cpp
@@ -28,23 +35,22 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET QtUnblockNeteaseMusic APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 else()
-    if(ANDROID)
-        add_library(QtUnblockNeteaseMusic SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(QtUnblockNeteaseMusic
-            ${PROJECT_SOURCES}
-        )
-    endif()
+    add_executable(QtUnblockNeteaseMusic
+        ${PROJECT_SOURCES}
+    )
 endif()
+
+qt_add_resources(QtUnblockNeteaseMusic res
+    # resource path = FILES - BASE + PREFIX
+    PREFIX "/res"
+    BASE "res"
+    FILES res/icon.png
+)
+
+qt_add_translations(QtUnblockNeteaseMusic
+    TS_FILES ${TS_FILES}
+)
 
 target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 

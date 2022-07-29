@@ -9,16 +9,18 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("FrzMtrsprt");
     QCoreApplication::setApplicationName("QtUnblockNeteaseMusic");
 
-    //Load app translations
+    // Load app translations
     QTranslator appTranslator;
-    if (appTranslator.load(QLocale::system(), "qt", "_", "locale", ".qm"))
+    // look up e.g. :/i18n/qt_en.qm
+    if (appTranslator.load(QLocale::system(), "qt", "_", ":/i18n", ".qm"))
     {
         a.installTranslator(&appTranslator);
     }
 
-    //Load Qt base translations
+    // Load Qt base translations
     QTranslator baseTranslator;
-    if (baseTranslator.load(QLocale::system(), "qtbase", "_", "locale", ".qm"))
+    // look up e.g. :/i18n/qtbase_en.qm
+    if (baseTranslator.load(QLocale::system(), "qtbase", "_", ":/i18n", ".qm"))
     {
         a.installTranslator(&baseTranslator);
     }
