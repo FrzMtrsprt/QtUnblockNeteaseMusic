@@ -22,6 +22,6 @@ And the enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseM
 - Compile `CMakeLists.txt` & Run
 ## To be solved
 - ~~The log output from the enhanced server is messy ([#791](https://github.com/UnblockNeteaseMusic/server/issues/791))~~ Fixed in upstream ([#798](https://github.com/UnblockNeteaseMusic/server/pull/798))
-- ~~Build everything with cmake~~ Done.
+- Build everything with cmake ~~Done~~ There's a bug in Qt 6.3.1 preventing lupdate from working with CMake
 - Untested/unsupported on macOS, Linux, and Windows 7 or lower
 - I'm a newbie
