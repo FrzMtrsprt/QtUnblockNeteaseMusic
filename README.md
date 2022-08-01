@@ -22,6 +22,14 @@ And the enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseM
 - Compile `CMakeLists.txt` & Run
 - If you want to generate a complete package with libraries,  
   copy `QtUnblockNeteaseMusic.exe` to a new directory and run `windeployqt.exe .\QtUnblockNeteaseMusic.exe`
+
+## Thanks
+This little tool wouldn't have been made possible without these incredible projects:
+- [Qt](https://github.com/qt): Providing a powerful but easy-to-use development framework
+- [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic): The project that started everything
+- [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server): Maintaining and enhancing the UNM server
+- [barry-ran/QtScrcpy](https://github.com/barry-ran/QtScrcpy): I learnt how to use Qt by shamelessly copying his codes
+
 ## To be solved
 - ~~The log output from the enhanced server is messy ([#791](https://github.com/UnblockNeteaseMusic/server/issues/791))~~ Fixed in upstream ([#798](https://github.com/UnblockNeteaseMusic/server/pull/798))
 - Build everything with cmake ~~Done~~ There's a bug in Qt 6.3.1 preventing lupdate from working with CMake
