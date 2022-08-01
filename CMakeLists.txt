@@ -15,13 +15,8 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
 set(TS_FILES
-        locale/qt_en.ts
-        locale/qt_zh_CN.ts
-)
-
-set(TS_BASE_FILES
-        locale/qtbase_en.ts
-        locale/qtbase_zh_CN.ts
+        locale/QtUnblockNeteaseMusic_en.ts
+        locale/QtUnblockNeteaseMusic_zh_CN.ts
 )
 
 set(PROJECT_SOURCES
@@ -52,19 +47,8 @@ qt_add_resources(QtUnblockNeteaseMusic res
     FILES res/icon.ico res/icon.png
 )
 
-qt_add_lupdate(QtUnblockNeteaseMusic
+qt_add_translations(QtUnblockNeteaseMusic
     TS_FILES ${TS_FILES}
-)
-
-qt_add_lrelease(QtUnblockNeteaseMusic
-    TS_FILES ${TS_FILES} ${TS_BASE_FILES}
-    QM_FILES_OUTPUT_VARIABLE QM_FILES
-)
-
-qt_add_resources(QtUnblockNeteaseMusic "translations"
-    PREFIX "/i18n"
-    BASE "${CMAKE_CURRENT_BINARY_DIR}"
-    FILES "${QM_FILES}"
 )
 
 target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)

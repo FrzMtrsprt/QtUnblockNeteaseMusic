@@ -12,16 +12,16 @@ int main(int argc, char *argv[])
 
     // Load app translations
     QTranslator appTranslator;
-    // look up e.g. :/i18n/qt_en.qm
-    if (appTranslator.load(QLocale::system(), "qt", "_", ":/i18n", ".qm"))
+    // look up e.g. :/QtUnblockNeteaseMusic/qt_en.qm
+    if (appTranslator.load(QLocale::system(), "QtUnblockNeteaseMusic", "_", ":/i18n", ".qm"))
     {
         a.installTranslator(&appTranslator);
     }
 
     // Load Qt base translations
     QTranslator baseTranslator;
-    // look up e.g. :/i18n/qtbase_en.qm
-    if (baseTranslator.load(QLocale::system(), "qtbase", "_", ":/i18n", ".qm"))
+    // look up e.g. translations/qt_en.qm
+    if (baseTranslator.load(QLocale::system(), "qt", "_", "translations", ".qm"))
     {
         a.installTranslator(&baseTranslator);
     }
