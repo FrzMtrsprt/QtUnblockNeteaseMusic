@@ -4,6 +4,7 @@
 #include "config.h"
 
 #include <QCloseEvent>
+#include <QComboBox>
 #include <QMainWindow>
 #include <QProcess>
 #include <QSystemTrayIcon>
@@ -27,6 +28,7 @@ public:
 
 private slots:
     void on_actionExit_triggered();
+    void on_theme_changed(QString);
     void on_actionAbout_triggered();
     void on_exitBtn_clicked();
     void on_restartBtn_clicked();
@@ -45,7 +47,7 @@ private:
     QMenu *trayMenu;
     QAction *trayExit;
     QAction *trayShow;
-    
+
     void closeEvent(QCloseEvent *); // reload closeEvent to add my own actions
     void loadSettings();
     void updateSettings();

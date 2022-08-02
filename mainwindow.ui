@@ -10,6 +10,16 @@
     <item row="9" column="0" colspan="4">
      <layout class="QHBoxLayout" name="buttonBox">
       <item>
+       <widget class="QLabel" name="themeLabel">
+        <property name="text">
+         <string>Theme</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="themeComboBox"/>
+      </item>
+      <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

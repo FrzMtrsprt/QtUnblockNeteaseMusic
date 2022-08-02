@@ -3,12 +3,14 @@
 #include "./ui_mainwindow.h"
 
 #include <QCloseEvent>
+#include <QComboBox>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
 #include <QProcess>
 #include <QRegularExpression>
+#include <QStyleFactory>
 #include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -40,6 +42,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         stopServer();
         qApp->quit(); });
     connect(tray, &QSystemTrayIcon::activated, this, &MainWindow::on_tray_activated);
+
+    // setup theme combo box
+    ui->themeComboBox->addItems(QStyleFactory::keys());
+    connect(ui->themeComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(on_theme_changed(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -73,6 +79,12 @@ void MainWindow::on_actionAbout_triggered()
     {
         QDesktopServices::openUrl(repoUrl);
     }
+}
+
+void MainWindow::on_theme_changed(QString theme)
+{
+    QApplication::setStyle(QStyleFactory::create(theme));
+    QApplication::setPalette(QApplication::style()->standardPalette());
 }
 
 void MainWindow::on_readoutput()
