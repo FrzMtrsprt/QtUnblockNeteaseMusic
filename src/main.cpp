@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":/res/icon.ico"));
     a.setOrganizationName("FrzMtrsprt");
     a.setApplicationName("QtUnblockNeteaseMusic");
-    a.setApplicationVersion("1.0.0");
+    a.setApplicationVersion("1.1.0");
 
     // Load app translations
     QTranslator appTranslator;
