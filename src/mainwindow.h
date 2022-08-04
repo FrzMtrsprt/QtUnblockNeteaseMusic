@@ -28,6 +28,7 @@ public:
 private slots:
     void on_actionExit_triggered();
     void on_theme_changed(QString);
+    void on_startupCheckBox_stateChanged(int);
     void on_actionAbout_triggered();
     void on_exitBtn_clicked();
     void on_restartBtn_clicked();
@@ -55,5 +56,7 @@ private:
     void startServer();
     void outLog(const QString &log);
     void stopServer();
+    void setStartup();
+    void delStartup();
 };
 #endif // MAINWINDOW_H

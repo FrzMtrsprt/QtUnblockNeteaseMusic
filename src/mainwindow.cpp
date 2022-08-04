@@ -1,5 +1,7 @@
 #include "config.h"
 #include "mainwindow.h"
+#include "tchar.h"
+#include "windows.h"
 #include "./ui_mainwindow.h"
 
 #include <QCloseEvent>
@@ -87,6 +89,20 @@ void MainWindow::on_theme_changed(QString theme)
     QApplication::setPalette(QApplication::style()->standardPalette());
 }
 
+void MainWindow::on_startupCheckBox_stateChanged(int state)
+{
+    if (state)
+    {
+        setStartup();
+    }
+    else
+    {
+        delStartup();
+    }
+    updateSettings();
+    config->writeSettings();
+}
+
 void MainWindow::on_readoutput()
 {
     ui->outText->append(server->readAllStandardOutput().data());
@@ -125,7 +141,8 @@ void MainWindow::loadSettings()
     ui->urlEdit->setText(config->url);
     ui->hostEdit->setText(config->host);
     ui->sourceEdit->append(config->source);
-    ui->strictCheck->setChecked(config->strict);
+    ui->strictCheckBox->setChecked(config->strict);
+    ui->startupCheckBox->setChecked(config->startup);
 }
 
 void MainWindow::updateSettings()
@@ -136,7 +153,8 @@ void MainWindow::updateSettings()
     config->url = ui->urlEdit->text();
     config->host = ui->hostEdit->text();
     config->source = ui->sourceEdit->toPlainText();
-    config->strict = ui->strictCheck->isChecked();
+    config->strict = ui->strictCheckBox->isChecked();
+    config->startup = ui->startupCheckBox->isChecked();
 }
 
 void MainWindow::getPath()
@@ -197,7 +215,7 @@ void MainWindow::getArgs()
         sources.removeAll("");
         serverArgs << "-o" << sources;
     }
-    if (ui->strictCheck->isChecked() == true)
+    if (ui->strictCheckBox->isChecked() == true)
     {
         serverArgs << "-s";
     }
@@ -245,6 +263,34 @@ void MainWindow::on_tray_activated(QSystemTrayIcon::ActivationReason reason)
         this->show();
         break;
     default:;
+    }
+}
+
+void MainWindow::setStartup()
+{
+    char *pathName = qApp->applicationFilePath().toUtf8().data();
+
+    HKEY hKey;
+    if (ERROR_SUCCESS == RegOpenKeyExA(HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_ALL_ACCESS, &hKey))
+    {
+        if (ERROR_SUCCESS == RegSetValueExA(hKey, "QtUnblockNeteaseMusic", 0, REG_SZ, (BYTE *)pathName, strlen(pathName)))
+        {
+            qDebug() << "Startup set.";
+        }
+        RegCloseKey(hKey);
+    }
+}
+
+void MainWindow::delStartup()
+{
+    HKEY hKey;
+    if (ERROR_SUCCESS == RegOpenKeyExA(HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_ALL_ACCESS, &hKey))
+    {
+        if (ERROR_SUCCESS == RegDeleteValue(hKey, _T("QtUnblockNeteaseMusic")))
+        {
+            qDebug() << "Startup deleted.";
+        }
+        RegCloseKey(hKey);
     }
 }
 

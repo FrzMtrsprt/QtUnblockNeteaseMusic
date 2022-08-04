@@ -16,6 +16,7 @@ void Config::readSettings()
     host = settings->value("host").toString();
     source = settings->value("source").toString();
     strict = settings->value("strict").toBool();
+    startup = settings->value("startup").toBool();
 }
 
 void Config::writeSettings()
@@ -26,4 +27,5 @@ void Config::writeSettings()
     settings->setValue("host", host);
     settings->setValue("source", source);
     settings->setValue("strict", strict);
+    settings->setValue("startup", startup);
 }
