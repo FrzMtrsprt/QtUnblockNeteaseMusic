@@ -27,7 +27,6 @@ public:
 
 private slots:
     void on_actionExit_triggered();
-    void on_theme_changed(QString);
     void on_startupCheckBox_stateChanged(int);
     void on_actionAbout_triggered();
     void on_exitBtn_clicked();
@@ -42,6 +41,7 @@ private:
     QString serverFile;
     QStringList serverArgs;
     Config *config = new Config();
+    QStringList styleList;
 
     QSystemTrayIcon *tray;
     QMenu *trayMenu;

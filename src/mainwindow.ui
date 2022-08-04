@@ -10,14 +10,11 @@
     <item row="9" column="0" colspan="4">
      <layout class="QHBoxLayout" name="buttonBox">
       <item>
-       <widget class="QLabel" name="themeLabel">
+       <widget class="QCheckBox" name="startupCheckBox">
         <property name="text">
-         <string>Theme</string>
+         <string>Run on startup</string>
         </property>
        </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="themeComboBox"/>
       </item>
       <item>
        <spacer name="horizontalSpacer">
@@ -237,13 +234,6 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="0">
-     <widget class="QCheckBox" name="startupCheckBox">
-      <property name="text">
-       <string>Run on startup</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -259,7 +249,19 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <widget class="QMenu" name="menuTheme">
+     <property name="title">
+      <string>&amp;Theme</string>
+     </property>
+    </widget>
+    <addaction name="menuTheme"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>

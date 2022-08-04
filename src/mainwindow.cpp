@@ -45,9 +45,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         qApp->quit(); });
     connect(tray, &QSystemTrayIcon::activated, this, &MainWindow::on_tray_activated);
 
-    // setup theme combo box
-    ui->themeComboBox->addItems(QStyleFactory::keys());
-    connect(ui->themeComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(on_theme_changed(QString)));
+    // setup theme menu
+    styleList = QStyleFactory::keys();
+    for (int i = 0; i < styleList.count(); i++)
+    {
+        qDebug() << "Loading theme" << i << styleList[i];
+        connect(ui->menuTheme->addAction(styleList[i]), &QAction::triggered, this, [i, this]()
+                {
+                    qDebug() << "Setting theme" << i;
+                    QApplication::setStyle(QStyleFactory::create(styleList[i]));
+                    QApplication::setPalette(QApplication::style()->standardPalette()); });
+    }
 }
 
 MainWindow::~MainWindow()
@@ -81,12 +89,6 @@ void MainWindow::on_actionAbout_triggered()
     {
         QDesktopServices::openUrl(repoUrl);
     }
-}
-
-void MainWindow::on_theme_changed(QString theme)
-{
-    QApplication::setStyle(QStyleFactory::create(theme));
-    QApplication::setPalette(QApplication::style()->standardPalette());
 }
 
 void MainWindow::on_startupCheckBox_stateChanged(int state)
