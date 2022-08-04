@@ -20,12 +20,12 @@ set(TS_FILES
 )
 
 set(PROJECT_SOURCES
-        config.cpp
-        config.h
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+        src/config.cpp
+        src/config.h
+        src/main.cpp
+        src/mainwindow.cpp
+        src/mainwindow.h
+        src/mainwindow.ui
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
