@@ -23,7 +23,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    QString versionStr = "Dev";
     QUrl repoUrl = QUrl("https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic");
 
 private slots:

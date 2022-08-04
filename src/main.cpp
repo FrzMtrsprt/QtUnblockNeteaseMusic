@@ -7,8 +7,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/res/icon.ico"));
-    QCoreApplication::setOrganizationName("FrzMtrsprt");
-    QCoreApplication::setApplicationName("QtUnblockNeteaseMusic");
+    a.setOrganizationName("FrzMtrsprt");
+    a.setApplicationName("QtUnblockNeteaseMusic");
+    a.setApplicationVersion("1.0.0");
 
     // Load app translations
     QTranslator appTranslator;

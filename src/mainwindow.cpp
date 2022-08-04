@@ -67,7 +67,7 @@ void MainWindow::on_actionAbout_triggered()
                               "A desktop client for UnblockNeteaseMusic,\n"
                               "written in Qt.\n\n"
                               "Copyright 2022 FrzMtrsprt"))
-                       .arg(versionStr);
+                       .arg(qApp->applicationVersion());
     aboutDlg.setWindowTitle("About");
     aboutDlg.setIconPixmap(QPixmap(":/res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
     aboutDlg.setText(text);
@@ -141,7 +141,7 @@ void MainWindow::updateSettings()
 
 void MainWindow::getPath()
 {
-    QDir serverDir(QCoreApplication::applicationDirPath());
+    QDir serverDir(qApp->applicationDirPath());
     QStringList filters;
     filters << "unblock*"
             << "server*";
