@@ -15,6 +15,27 @@ And the enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseM
 ## Screenshot
 ![image](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/blob/main/screenshot.png)
 
+## Usage
+1. Download the latest version from [releases](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/releases) and unzip it
+2. Download the server from [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) or [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server),  
+and place it in the same directory with `QtUnblockNeteaseMusic.exe`
+```
+QtUnblockNeteaseMusic  
+├─ ...  
+├─ QtUnblockNeteaseMusic.exe  
+└─ server  
+   └─ app.js
+```
+or
+```
+QtUnblockNeteaseMusic  
+├─ ...  
+├─ QtUnblockNeteaseMusic.exe  
+└─ unblockneteasemusic.exe
+```
+3. Run `QtUnblockNeteaseMusic.exe` and set the necessary arguments
+4. Set the proxy in the Netease Cloud Music client accordingly (default to 127.0.0.1:11111) & enjoy!
+
 ## Build
 - Set up the Qt development environment (Qt 6.3.1)
 - Clone the repository
