@@ -40,10 +40,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(trayShow, &QAction::triggered, this, &MainWindow::show);
     connect(trayExit, &QAction::triggered, this, [this]()
             {
-        tray->hide();
-        stopServer();
-        qApp->quit(); });
-    connect(tray, &QSystemTrayIcon::activated, this, &MainWindow::on_tray_activated);
+                tray->hide();
+                stopServer();
+                qApp->quit(); });
+    // show MainWindow only when tray icon is left clicked
+    connect(tray, &QSystemTrayIcon::activated, this, [this](QSystemTrayIcon::ActivationReason reason)
+            {
+                if(reason == QSystemTrayIcon::Trigger)
+                {
+                    this->show();
+                } });
 
     // setup theme menu
     styleList = QStyleFactory::keys();
@@ -81,13 +87,13 @@ void MainWindow::on_actionAbout_triggered()
     aboutDlg.setWindowTitle("About");
     aboutDlg.setIconPixmap(QPixmap(":/res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
     aboutDlg.setText(text);
-    QPushButton *webBtn = aboutDlg.addButton("GitHub", QMessageBox::HelpRole);
-    aboutDlg.setStandardButtons(QMessageBox::Ok);
-    aboutDlg.setModal(true);
-    aboutDlg.exec();
-    if (aboutDlg.clickedButton() == (QAbstractButton *)webBtn)
+    // add an invisible cancel button so that the dialog can be closed with esc
+    aboutDlg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel | QMessageBox::Help);
+    aboutDlg.button(QMessageBox::Cancel)->hide();
+    aboutDlg.button(QMessageBox::Help)->setText("GitHub");
+    if (aboutDlg.exec() == QMessageBox::Help)
     {
-        QDesktopServices::openUrl(repoUrl);
+        QDesktopServices::openUrl(QUrl(qApp->organizationDomain()));
     }
 }
 
@@ -112,7 +118,7 @@ void MainWindow::on_readoutput()
 
 void MainWindow::on_readerror()
 {
-    QMessageBox errorDlg;
+    QMessageBox errorDlg(this);
     errorDlg.setWindowTitle(tr("Server error"));
     errorDlg.setText(tr("The UnblockNeteaseMusic server ran into an error.\n"
                         "Please change the arguments or check port usage and try again."));
@@ -159,32 +165,39 @@ void MainWindow::updateSettings()
     config->startup = ui->startupCheckBox->isChecked();
 }
 
-void MainWindow::getPath()
+int MainWindow::getServer()
 {
     QDir serverDir(qApp->applicationDirPath());
-    QStringList filters;
-    filters << "unblock*"
-            << "server*";
-    serverDir.setNameFilters(filters);
+    serverDir.setFilter(QDir::Dirs | QDir::Executable | QDir::NoSymLinks);
+    serverDir.setNameFilters({"unblock*", "server*"});
     if (serverDir.count())
     {
         QFileInfo result(serverDir[0]);
-        if (result.isFile())
+        if (result.isExecutable())
         {
-            serverFile = "./" + serverDir[0];
+            serverFile = result.absoluteFilePath();
             serverArgs = {};
         }
         if (result.isDir())
         {
-            serverFile = "node";
-            serverArgs = {"./" + serverDir[0] + "/app.js"};
+            if (QDir(serverDir[0]).exists("app.js"))
+            {
+                serverFile = "node";
+                serverArgs = {result.absoluteFilePath() + "/app.js"};
+            }
+            else
+            {
+                return -1;
+            }
         }
         qDebug() << "Server File:" << serverFile.toUtf8().data();
+        return 0;
     }
     else
     {
         serverFile = "";
         serverArgs = {};
+        return -1;
     }
 }
 
@@ -226,10 +239,9 @@ void MainWindow::getArgs()
 
 void MainWindow::startServer()
 {
-    getPath();
-    getArgs();
-    if (serverFile != "")
+    if (!getServer())
     {
+        getArgs();
         server->start(serverFile, serverArgs);
         if (!server->waitForStarted())
         {
@@ -255,17 +267,6 @@ void MainWindow::stopServer()
     server->close();
     updateSettings();
     config->writeSettings();
-}
-
-void MainWindow::on_tray_activated(QSystemTrayIcon::ActivationReason reason)
-{
-    switch (reason)
-    {
-    case QSystemTrayIcon::Trigger:
-        this->show();
-        break;
-    default:;
-    }
 }
 
 void MainWindow::setStartup()

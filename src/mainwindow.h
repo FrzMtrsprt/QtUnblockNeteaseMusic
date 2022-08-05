@@ -23,7 +23,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    QUrl repoUrl = QUrl("https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic");
 
 private slots:
     void on_actionExit_triggered();
@@ -31,7 +30,6 @@ private slots:
     void on_actionAbout_triggered();
     void on_exitBtn_clicked();
     void on_restartBtn_clicked();
-    void on_tray_activated(QSystemTrayIcon::ActivationReason);
     void on_readoutput();
     void on_readerror();
 
@@ -51,7 +49,7 @@ private:
     void closeEvent(QCloseEvent *); // reload closeEvent to add my own actions
     void loadSettings();
     void updateSettings();
-    void getPath();
+    int getServer();
     void getArgs();
     void startServer();
     void outLog(const QString &log);

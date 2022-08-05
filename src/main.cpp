@@ -7,13 +7,14 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/res/icon.ico"));
-    a.setOrganizationName("FrzMtrsprt");
     a.setApplicationName("QtUnblockNeteaseMusic");
     a.setApplicationVersion("1.1.0");
+    a.setOrganizationName("FrzMtrsprt");
+    a.setOrganizationDomain("https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic");
 
     // Load app translations
     QTranslator appTranslator;
-    // look up e.g. :/QtUnblockNeteaseMusic/qt_en.qm
+    // look up e.g. :/i18n/QtUnblockNeteaseMusic_en.qm
     if (appTranslator.load(QLocale::system(), "QtUnblockNeteaseMusic", "_", ":/i18n", ".qm"))
     {
         a.installTranslator(&appTranslator);
