@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     for (int i = 0; i < styleList.count(); i++)
     {
         qDebug() << "Loading theme" << i << styleList[i];
+        // reference: https://stackoverflow.com/a/45265455
         connect(ui->menuTheme->addAction(styleList[i]), &QAction::triggered, this, [i, this]()
                 {
                     qDebug() << "Setting theme" << i;
@@ -254,6 +255,7 @@ void MainWindow::startServer()
     }
 }
 
+// reference: https://github.com/barry-ran/QtScrcpy/blob/3929ebf62ee0eb594d566e570a79ccb8efe6bb60/QtScrcpy/ui/dialog.cpp#L359
 void MainWindow::outLog(const QString &log)
 {
     // avoid sub thread update ui
