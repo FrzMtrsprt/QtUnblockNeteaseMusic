@@ -114,7 +114,7 @@ void MainWindow::on_startupCheckBox_stateChanged(int state)
 
 void MainWindow::on_readoutput()
 {
-    ui->outText->append(server->readAllStandardOutput().data());
+    outLog(server->readAllStandardOutput().data());
 }
 
 void MainWindow::on_readerror()
