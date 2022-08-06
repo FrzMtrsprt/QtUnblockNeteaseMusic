@@ -1,6 +1,8 @@
+#define AUTO_RUN "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
+
 #include "config.h"
 
-#include <QSettings>
+#include <QApplication>
 
 Config::Config(QObject *parent)
     : QObject{parent}
@@ -28,4 +30,19 @@ void Config::writeSettings()
     settings->setValue("source", source);
     settings->setValue("strict", strict);
     settings->setValue("startup", startup);
+}
+
+void Config::setStartup(int state)
+{
+    QString appName = QApplication::applicationName();
+    QSettings *registry = new QSettings(AUTO_RUN, QSettings::NativeFormat);
+    if (state)
+    {
+        QString appPath = QApplication::applicationFilePath();
+        registry->setValue(appName, appPath.replace("/", "\\"));
+    }
+    else
+    {
+        registry->remove(appName);
+    }
 }

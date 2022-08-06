@@ -20,6 +20,7 @@ public:
 
     void readSettings();
     void writeSettings();
+    void setStartup(int);
 
 private:
     QSettings *settings;

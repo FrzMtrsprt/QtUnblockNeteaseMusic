@@ -4,7 +4,6 @@
 #include "config.h"
 
 #include <QCloseEvent>
-#include <QComboBox>
 #include <QMainWindow>
 #include <QProcess>
 #include <QSystemTrayIcon>
@@ -54,7 +53,5 @@ private:
     void startServer();
     void outLog(const QString &log);
     void stopServer();
-    void setStartup();
-    void delStartup();
 };
 #endif // MAINWINDOW_H
