@@ -169,7 +169,7 @@ void MainWindow::updateSettings()
 int MainWindow::getServer()
 {
     QDir serverDir(qApp->applicationDirPath());
-    serverDir.setFilter(QDir::Dirs | QDir::Executable | QDir::NoSymLinks);
+    serverDir.setFilter(QDir::Dirs | QDir::Files | QDir::NoSymLinks);
     serverDir.setNameFilters({"unblock*", "server*"});
     if (serverDir.count())
     {
