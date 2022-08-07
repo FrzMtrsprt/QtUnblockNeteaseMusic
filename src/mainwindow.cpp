@@ -1,17 +1,15 @@
 #include "config.h"
 #include "mainwindow.h"
-#include "tchar.h"
-#include "windows.h"
 #include "./ui_mainwindow.h"
 
 #include <QCloseEvent>
-#include <QComboBox>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
 #include <QProcess>
 #include <QRegularExpression>
+#include <QStyle>
 #include <QStyleFactory>
 #include <QTimer>
 
@@ -42,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
             {
                 tray->hide();
                 stopServer();
-                qApp->quit(); });
+                QApplication::quit(); });
     // show MainWindow only when tray icon is left clicked
     connect(tray, &QSystemTrayIcon::activated, this, [this](QSystemTrayIcon::ActivationReason reason)
             {
@@ -73,7 +71,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionExit_triggered()
 {
     stopServer();
-    qApp->exit();
+    QApplication::exit();
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -84,7 +82,7 @@ void MainWindow::on_actionAbout_triggered()
                               "A desktop client for UnblockNeteaseMusic,\n"
                               "written in Qt.\n\n"
                               "Copyright 2022 FrzMtrsprt"))
-                       .arg(qApp->applicationVersion());
+                       .arg(QApplication::applicationVersion());
     aboutDlg.setWindowTitle("About");
     aboutDlg.setIconPixmap(QPixmap(":/res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
     aboutDlg.setText(text);
@@ -94,20 +92,13 @@ void MainWindow::on_actionAbout_triggered()
     aboutDlg.button(QMessageBox::Help)->setText("GitHub");
     if (aboutDlg.exec() == QMessageBox::Help)
     {
-        QDesktopServices::openUrl(QUrl(qApp->organizationDomain()));
+        QDesktopServices::openUrl(QUrl(QApplication::organizationDomain()));
     }
 }
 
 void MainWindow::on_startupCheckBox_stateChanged(int state)
 {
-    if (state)
-    {
-        setStartup();
-    }
-    else
-    {
-        delStartup();
-    }
+    config->setStartup(state);
     updateSettings();
     config->writeSettings();
 }
@@ -139,7 +130,7 @@ void MainWindow::on_restartBtn_clicked()
 void MainWindow::on_exitBtn_clicked()
 {
     stopServer();
-    qApp->exit();
+    QApplication::exit();
 }
 
 void MainWindow::loadSettings()
@@ -269,34 +260,6 @@ void MainWindow::stopServer()
     server->close();
     updateSettings();
     config->writeSettings();
-}
-
-void MainWindow::setStartup()
-{
-    char *pathName = qApp->applicationFilePath().toUtf8().data();
-
-    HKEY hKey;
-    if (ERROR_SUCCESS == RegOpenKeyExA(HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_ALL_ACCESS, &hKey))
-    {
-        if (ERROR_SUCCESS == RegSetValueExA(hKey, "QtUnblockNeteaseMusic", 0, REG_SZ, (BYTE *)pathName, strlen(pathName)))
-        {
-            qDebug() << "Startup set.";
-        }
-        RegCloseKey(hKey);
-    }
-}
-
-void MainWindow::delStartup()
-{
-    HKEY hKey;
-    if (ERROR_SUCCESS == RegOpenKeyExA(HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_ALL_ACCESS, &hKey))
-    {
-        if (ERROR_SUCCESS == RegDeleteValue(hKey, _T("QtUnblockNeteaseMusic")))
-        {
-            qDebug() << "Startup deleted.";
-        }
-        RegCloseKey(hKey);
-    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *e)
