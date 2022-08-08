@@ -159,23 +159,24 @@ void MainWindow::updateSettings()
 
 int MainWindow::getServer()
 {
-    QDir serverDir(qApp->applicationDirPath());
-    serverDir.setFilter(QDir::Dirs | QDir::Files | QDir::NoSymLinks);
-    serverDir.setNameFilters({"unblock*", "server*"});
-    if (serverDir.count())
+    QDir appDir(QApplication::applicationDirPath());
+    appDir.setFilter(QDir::Dirs | QDir::Files | QDir::NoSymLinks);
+    appDir.setNameFilters({"unblock*", "server*"});
+    if (appDir.count())
     {
-        QFileInfo result(serverDir[0]);
-        if (result.isExecutable())
+        QFileInfo result(QApplication::applicationDirPath(), appDir[0]);
+        if (result.isFile())
         {
             serverFile = result.absoluteFilePath();
             serverArgs = {};
         }
         if (result.isDir())
         {
-            if (QDir(serverDir[0]).exists("app.js"))
+            QDir serverDir(result.absoluteFilePath());
+            if (serverDir.exists("app.js"))
             {
                 serverFile = "node";
-                serverArgs = {result.absoluteFilePath() + "/app.js"};
+                serverArgs = {serverDir.absolutePath() + "/app.js"};
             }
             else
             {
@@ -195,10 +196,6 @@ int MainWindow::getServer()
 
 void MainWindow::getArgs()
 {
-    if (serverFile == "")
-    {
-        return;
-    }
     if (ui->portEdit->text() != "")
     {
         serverArgs << "-p" << ui->portEdit->text();

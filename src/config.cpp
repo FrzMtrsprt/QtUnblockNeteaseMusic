@@ -7,7 +7,7 @@
 Config::Config(QObject *parent)
     : QObject{parent}
 {
-    settings = new QSettings("./config.ini", QSettings::IniFormat);
+    settings = new QSettings(QApplication::applicationDirPath() + "/config.ini", QSettings::IniFormat);
 }
 
 void Config::readSettings()
