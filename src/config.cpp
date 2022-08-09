@@ -39,7 +39,7 @@ void Config::setStartup(int state)
     if (state)
     {
         QString appPath = QApplication::applicationFilePath();
-        registry->setValue(appName, appPath.replace("/", "\\"));
+        registry->setValue(appName, "\"" + appPath.replace("/", "\\") + "\" -silent");
     }
     else
     {
