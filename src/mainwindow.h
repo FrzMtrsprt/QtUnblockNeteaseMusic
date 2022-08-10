@@ -34,10 +34,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QProcess *server = new QProcess();
+    QProcess *server;
     QString serverFile;
     QStringList serverArgs;
-    Config *config = new Config();
+    Config *config;
     QStringList styleList;
 
     QSystemTrayIcon *tray;
@@ -48,7 +48,7 @@ private:
     void closeEvent(QCloseEvent *); // reload closeEvent to add my own actions
     void loadSettings();
     void updateSettings();
-    int getServer();
+    bool getServer();
     void getArgs();
     void startServer();
     void outLog(const QString &log);

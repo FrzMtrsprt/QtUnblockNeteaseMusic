@@ -4,8 +4,7 @@
 
 #include <QApplication>
 
-Config::Config(QObject *parent)
-    : QObject{parent}
+Config::Config(QObject *parent) : QObject{parent}
 {
     settings = new QSettings(QApplication::applicationDirPath() + "/config.ini", QSettings::IniFormat);
 }
@@ -45,4 +44,5 @@ void Config::setStartup(int state)
     {
         registry->remove(appName);
     }
+    registry->~QSettings();
 }

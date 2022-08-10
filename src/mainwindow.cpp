@@ -16,10 +16,16 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(server, SIGNAL(readyReadStandardOutput()), this, SLOT(on_readoutput()));
-    connect(server, SIGNAL(readyReadStandardError()), this, SLOT(on_readerror()));
+
+    // setup & load config
+    config = new Config();
     config->readSettings();
     loadSettings();
+
+    // set up & start server
+    server = new QProcess();
+    connect(server, SIGNAL(readyReadStandardOutput()), this, SLOT(on_readoutput()));
+    connect(server, SIGNAL(readyReadStandardError()), this, SLOT(on_readerror()));
     startServer();
 
     // setup system tray
@@ -38,9 +44,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(trayShow, &QAction::triggered, this, &MainWindow::show);
     connect(trayExit, &QAction::triggered, this, [this]()
             {
-                tray->hide();
                 stopServer();
-                QApplication::quit(); });
+                QApplication::exit(); });
     // show MainWindow only when tray icon is left clicked
     connect(tray, &QSystemTrayIcon::activated, this, [this](QSystemTrayIcon::ActivationReason reason)
             {
@@ -157,7 +162,7 @@ void MainWindow::updateSettings()
     config->startup = ui->startupCheckBox->isChecked();
 }
 
-int MainWindow::getServer()
+bool MainWindow::getServer()
 {
     QDir appDir(QApplication::applicationDirPath());
     appDir.setFilter(QDir::Dirs | QDir::Files | QDir::NoSymLinks);
@@ -180,39 +185,39 @@ int MainWindow::getServer()
             }
             else
             {
-                return -1;
+                return false;
             }
         }
         qDebug() << "Server File:" << serverFile.toUtf8().data();
-        return 0;
+        return true;
     }
     else
     {
         serverFile = "";
         serverArgs = {};
-        return -1;
+        return false;
     }
 }
 
 void MainWindow::getArgs()
 {
-    if (ui->portEdit->text() != "")
+    if (ui->portEdit->text().isEmpty() == false)
     {
         serverArgs << "-p" << ui->portEdit->text();
     }
-    if (ui->addressEdit->text() != "")
+    if (ui->addressEdit->text().isEmpty() == false)
     {
         serverArgs << "-a" << ui->addressEdit->text();
     }
-    if (ui->urlEdit->text() != "")
+    if (ui->urlEdit->text().isEmpty() == false)
     {
         serverArgs << "-u" << ui->urlEdit->text();
     }
-    if (ui->hostEdit->text() != "")
+    if (ui->hostEdit->text().isEmpty() == false)
     {
         serverArgs << "-f" << ui->hostEdit->text();
     }
-    if (ui->sourceEdit->toPlainText() != "")
+    if (ui->sourceEdit->toPlainText().isEmpty() == false)
     {
         QString source = ui->sourceEdit->toPlainText();
         QStringList sources = source.split(QRegularExpression("[,.'，。 \n]+"));
@@ -228,7 +233,7 @@ void MainWindow::getArgs()
 
 void MainWindow::startServer()
 {
-    if (!getServer())
+    if (getServer())
     {
         getArgs();
         server->start(serverFile, serverArgs);
