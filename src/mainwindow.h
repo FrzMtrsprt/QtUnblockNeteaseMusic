@@ -38,7 +38,6 @@ private:
     QString serverFile;
     QStringList serverArgs;
     Config *config;
-    QStringList styleList;
 
     QSystemTrayIcon *tray;
     QMenu *trayMenu;

@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     config->readSettings();
     loadSettings();
 
-    // set up & start server
+    // setup & start server
     server = new QProcess();
     connect(server, SIGNAL(readyReadStandardOutput()), this, SLOT(on_readoutput()));
     connect(server, SIGNAL(readyReadStandardError()), this, SLOT(on_readerror()));
@@ -55,15 +55,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
                 } });
 
     // setup theme menu
-    styleList = QStyleFactory::keys();
-    for (int i = 0; i < styleList.count(); i++)
+    for (QString &style : QStyleFactory::keys())
     {
-        qDebug() << "Loading theme" << i << styleList[i];
+        qDebug() << "Loading theme" << style;
         // reference: https://stackoverflow.com/a/45265455
-        connect(ui->menuTheme->addAction(styleList[i]), &QAction::triggered, this, [i, this]()
+        connect(ui->menuTheme->addAction(style), &QAction::triggered, this, [style, this]()
                 {
-                    qDebug() << "Setting theme" << i;
-                    QApplication::setStyle(QStyleFactory::create(styleList[i]));
+                    qDebug() << "Setting theme" << style;
+                    QApplication::setStyle(QStyleFactory::create(style));
                     QApplication::setPalette(QApplication::style()->standardPalette()); });
     }
 }
