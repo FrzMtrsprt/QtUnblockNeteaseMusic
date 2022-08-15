@@ -7,6 +7,7 @@
 class Config : public QObject
 {
     Q_OBJECT
+
 public:
     explicit Config(QObject *parent = nullptr);
 
@@ -20,7 +21,7 @@ public:
 
     void readSettings();
     void writeSettings();
-    void setStartup(int);
+    void setStartup(int state);
 
 private:
     QSettings *settings;

@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
 
     // load Qt base translations
     QTranslator baseTranslator;
-    // look up e.g. translations/qt_en.qm
-    if (baseTranslator.load(QLocale::system(), "qt", "_", "translations", ".qm"))
+    // look up e.g. {current_path}/translations/qt_en.qm
+    if (baseTranslator.load(QLocale::system(), "qt", "_", a.applicationDirPath() + "/translations", ".qm"))
     {
         a.installTranslator(&baseTranslator);
     }

@@ -41,7 +41,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     trayMenu->addAction(trayExit);
     tray->setContextMenu(trayMenu);
     tray->show();
-    connect(trayShow, &QAction::triggered, this, &MainWindow::show);
+    connect(trayShow, &QAction::triggered, this, [this]()
+            {
+                this->show();
+                this->activateWindow(); });
     connect(trayExit, &QAction::triggered, this, [this]()
             {
                 stopServer();
@@ -49,9 +52,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     // show MainWindow only when tray icon is left clicked
     connect(tray, &QSystemTrayIcon::activated, this, [this](QSystemTrayIcon::ActivationReason reason)
             {
-                if(reason == QSystemTrayIcon::Trigger)
+                if (reason == QSystemTrayIcon::Trigger)
                 {
                     this->show();
+                    this->activateWindow();
                 } });
 
     // setup theme menu
@@ -80,27 +84,33 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox aboutDlg(this);
-    QString text = QString(tr("QtUnblockNeteaseMusic\n"
-                              "Version %1\n\n"
-                              "A desktop client for UnblockNeteaseMusic,\n"
-                              "written in Qt.\n\n"
-                              "Copyright 2022 FrzMtrsprt"))
-                       .arg(QApplication::applicationVersion());
-    aboutDlg.setWindowTitle("About");
-    aboutDlg.setIconPixmap(QPixmap(":/res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
-    aboutDlg.setText(text);
-    // add an invisible cancel button so that the dialog can be closed with esc
-    aboutDlg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel | QMessageBox::Help);
-    aboutDlg.button(QMessageBox::Cancel)->hide();
-    aboutDlg.button(QMessageBox::Help)->setText("GitHub");
-    if (aboutDlg.exec() == QMessageBox::Help)
+    QMessageBox *aboutDlg = new QMessageBox(this);
+    const QString text = tr("<h3>About QtUnblockNeteaseMusic</h3>"
+                            "<p>Version %1</p>")
+                             .arg(QApplication::applicationVersion());
+    const QString informativeText = tr("<p>A desktop client for UnblockNeteaseMusic, "
+                                       "written in Qt.</p>"
+                                       "<p>Copyright 2022 FrzMtrsprt</p>");
+    aboutDlg->setAttribute(Qt::WA_DeleteOnClose);
+    aboutDlg->setWindowTitle("About");
+    aboutDlg->setIconPixmap(QPixmap(":/res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
+    aboutDlg->setText(text);
+    aboutDlg->setInformativeText(informativeText);
+    aboutDlg->setStandardButtons(QMessageBox::Ok | QMessageBox::Help);
+    aboutDlg->setEscapeButton(QMessageBox::Ok);
+    aboutDlg->button(QMessageBox::Help)->setText("GitHub");
+    if (aboutDlg->exec() == QMessageBox::Help)
     {
         QDesktopServices::openUrl(QUrl(QApplication::organizationDomain()));
     }
 }
 
-void MainWindow::on_startupCheckBox_stateChanged(int state)
+void MainWindow::on_actionAboutQt_triggered()
+{
+    QMessageBox::aboutQt(this);
+}
+
+void MainWindow::on_startupCheckBox_stateChanged(const int state)
 {
     config->setStartup(state);
     updateSettings();
@@ -120,7 +130,6 @@ void MainWindow::on_readerror()
                         "Please change the arguments or check port usage and try again."));
     errorDlg.setDetailedText(server->readAllStandardError().data());
     errorDlg.setIcon(QMessageBox::Warning);
-    errorDlg.setStandardButtons(QMessageBox::Ok);
     errorDlg.exec();
 }
 
@@ -200,30 +209,30 @@ bool MainWindow::getServer()
 
 void MainWindow::getArgs()
 {
-    if (ui->portEdit->text().isEmpty() == false)
+    if (!ui->portEdit->text().isEmpty())
     {
         serverArgs << "-p" << ui->portEdit->text();
     }
-    if (ui->addressEdit->text().isEmpty() == false)
+    if (!ui->addressEdit->text().isEmpty())
     {
         serverArgs << "-a" << ui->addressEdit->text();
     }
-    if (ui->urlEdit->text().isEmpty() == false)
+    if (!ui->urlEdit->text().isEmpty())
     {
         serverArgs << "-u" << ui->urlEdit->text();
     }
-    if (ui->hostEdit->text().isEmpty() == false)
+    if (!ui->hostEdit->text().isEmpty())
     {
         serverArgs << "-f" << ui->hostEdit->text();
     }
-    if (ui->sourceEdit->toPlainText().isEmpty() == false)
+    if (!ui->sourceEdit->toPlainText().isEmpty())
     {
         QString source = ui->sourceEdit->toPlainText();
         QStringList sources = source.split(QRegularExpression("[,.'，。 \n]+"));
         sources.removeAll("");
         serverArgs << "-o" << sources;
     }
-    if (ui->strictCheckBox->isChecked() == true)
+    if (ui->strictCheckBox->isChecked())
     {
         serverArgs << "-s";
     }

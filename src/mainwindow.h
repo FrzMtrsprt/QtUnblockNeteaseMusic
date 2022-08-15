@@ -25,8 +25,9 @@ public:
 
 private slots:
     void on_actionExit_triggered();
-    void on_startupCheckBox_stateChanged(int);
+    void on_startupCheckBox_stateChanged(const int state);
     void on_actionAbout_triggered();
+    void on_actionAboutQt_triggered();
     void on_exitBtn_clicked();
     void on_restartBtn_clicked();
     void on_readoutput();
@@ -44,7 +45,7 @@ private:
     QAction *trayExit;
     QAction *trayShow;
 
-    void closeEvent(QCloseEvent *); // reload closeEvent to add my own actions
+    void closeEvent(QCloseEvent *e); // reload closeEvent to add my own actions
     void loadSettings();
     void updateSettings();
     bool getServer();

@@ -248,6 +248,7 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="actionAbout"/>
+    <addaction name="actionAboutQt"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -256,6 +257,10 @@
     <widget class="QMenu" name="menuTheme">
      <property name="title">
       <string>&amp;Theme</string>
+     </property>
+     <property name="icon">
+      <iconset theme="applications-graphics">
+       <normaloff>.</normaloff>.</iconset>
      </property>
     </widget>
     <addaction name="menuTheme"/>
@@ -266,13 +271,30 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
+   <property name="icon">
+    <iconset theme="application-exit">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
    <property name="text">
     <string>E&amp;xit</string>
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset theme="help-about">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
    <property name="text">
-    <string>&amp;About</string>
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="icon">
+    <iconset theme="help-about">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>About Qt</string>
    </property>
   </action>
  </widget>
