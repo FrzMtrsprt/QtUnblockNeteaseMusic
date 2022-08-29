@@ -36,20 +36,13 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QProcess *server;
-    QString serverFile;
-    QStringList serverArgs;
     Config *config;
-
-    QSystemTrayIcon *tray;
-    QMenu *trayMenu;
-    QAction *trayExit;
-    QAction *trayShow;
 
     void closeEvent(QCloseEvent *e); // reload closeEvent to add my own actions
     void loadSettings();
     void updateSettings();
-    bool getServer();
-    void getArgs();
+    bool getServer(QString &ServerFile, QStringList &serverArgs);
+    void getArgs(QStringList &serverArgs);
     void startServer();
     void outLog(const QString &log);
     void stopServer();

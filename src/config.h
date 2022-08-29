@@ -21,7 +21,7 @@ public:
 
     void readSettings();
     void writeSettings();
-    void setStartup(int state);
+    void setStartup(const int &state);
 
 private:
     QSettings *settings;

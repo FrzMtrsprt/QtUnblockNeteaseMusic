@@ -29,23 +29,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     startServer();
 
     // setup system tray
-    tray = new QSystemTrayIcon(this);
+    QSystemTrayIcon *tray = new QSystemTrayIcon(this);
     tray->setIcon(QIcon(":/res/icon.ico"));
     tray->setToolTip("QtUnblockNeteaseMusic");
-    trayMenu = new QMenu(this);
-    trayExit = new QAction(this);
-    trayShow = new QAction(this);
+    QMenu *trayMenu = new QMenu(this);
+    QAction *trayExit = new QAction(this);
+    QAction *trayShow = new QAction(this);
     trayShow->setText(tr("Show"));
     trayExit->setText(tr("Exit"));
     trayMenu->addAction(trayShow);
     trayMenu->addAction(trayExit);
     tray->setContextMenu(trayMenu);
     tray->show();
-    connect(trayShow, &QAction::triggered, this, [this]()
+    connect(trayShow, &QAction::triggered, this, [this]
             {
                 this->show();
                 this->activateWindow(); });
-    connect(trayExit, &QAction::triggered, this, [this]()
+    connect(trayExit, &QAction::triggered, this, [this]
             {
                 stopServer();
                 QApplication::exit(); });
@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     {
         qDebug() << "Loading theme" << style;
         // reference: https://stackoverflow.com/a/45265455
-        connect(ui->menuTheme->addAction(style), &QAction::triggered, this, [style, this]()
+        connect(ui->menuTheme->addAction(style), &QAction::triggered, this, [style]
                 {
                     qDebug() << "Setting theme" << style;
                     QApplication::setStyle(QStyleFactory::create(style));
@@ -119,16 +119,18 @@ void MainWindow::on_startupCheckBox_stateChanged(const int state)
 
 void MainWindow::on_readoutput()
 {
-    outLog(server->readAllStandardOutput().data());
+    const QByteArray &logArray = server->readAllStandardOutput();
+    outLog(logArray.data());
 }
 
 void MainWindow::on_readerror()
 {
     QMessageBox errorDlg(this);
+    const QByteArray &logArray = server->readAllStandardError();
     errorDlg.setWindowTitle(tr("Server error"));
     errorDlg.setText(tr("The UnblockNeteaseMusic server ran into an error.\n"
                         "Please change the arguments or check port usage and try again."));
-    errorDlg.setDetailedText(server->readAllStandardError().data());
+    errorDlg.setDetailedText(logArray.data());
     errorDlg.setIcon(QMessageBox::Warning);
     errorDlg.exec();
 }
@@ -170,7 +172,7 @@ void MainWindow::updateSettings()
     config->startup = ui->startupCheckBox->isChecked();
 }
 
-bool MainWindow::getServer()
+bool MainWindow::getServer(QString &serverFile, QStringList &serverArgs)
 {
     QDir appDir(QApplication::applicationDirPath());
     appDir.setFilter(QDir::Dirs | QDir::Files | QDir::NoSymLinks);
@@ -207,7 +209,7 @@ bool MainWindow::getServer()
     }
 }
 
-void MainWindow::getArgs()
+void MainWindow::getArgs(QStringList &serverArgs)
 {
     if (!ui->portEdit->text().isEmpty())
     {
@@ -227,8 +229,9 @@ void MainWindow::getArgs()
     }
     if (!ui->sourceEdit->toPlainText().isEmpty())
     {
-        QString source = ui->sourceEdit->toPlainText();
-        QStringList sources = source.split(QRegularExpression("[,.'，。 \n]+"));
+        const QString source = ui->sourceEdit->toPlainText();
+        static QRegularExpression sep("[,.'，。 \n]+");
+        QStringList sources = source.split(sep);
         sources.removeAll("");
         serverArgs << "-o" << sources;
     }
@@ -241,9 +244,11 @@ void MainWindow::getArgs()
 
 void MainWindow::startServer()
 {
-    if (getServer())
+    QString serverFile = "";
+    QStringList serverArgs = {};
+    if (getServer(serverFile, serverArgs))
     {
-        getArgs();
+        getArgs(serverArgs);
         server->start(serverFile, serverArgs);
         if (!server->waitForStarted())
         {

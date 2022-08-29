@@ -6,7 +6,8 @@
 
 Config::Config(QObject *parent) : QObject{parent}
 {
-    settings = new QSettings(QApplication::applicationDirPath() + "/config.ini", QSettings::IniFormat);
+    settings = new QSettings(QApplication::applicationDirPath() + "/config.ini",
+                             QSettings::IniFormat);
 }
 
 void Config::readSettings()
@@ -31,14 +32,14 @@ void Config::writeSettings()
     settings->setValue("startup", startup);
 }
 
-void Config::setStartup(int state)
+void Config::setStartup(const int &state)
 {
-    QString appName = QApplication::applicationName();
+    const QString appName = QApplication::applicationName();
     QSettings *registry = new QSettings(AUTO_RUN, QSettings::NativeFormat);
     if (state)
     {
-        QString appPath = QApplication::applicationFilePath();
-        registry->setValue(appName, "\"" + appPath.replace("/", "\\") + "\" -silent");
+        QString appPath = QApplication::applicationFilePath().replace("/", "\\");
+        registry->setValue(appName, "\"" + appPath + "\" -silent");
     }
     else
     {
