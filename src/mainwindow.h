@@ -1,4 +1,4 @@
-﻿#ifndef MAINWINDOW_H
+#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include "config.h"
@@ -24,12 +24,12 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_actionExit_triggered();
-    void on_startupCheckBox_stateChanged(const int state);
-    void on_actionAbout_triggered();
-    void on_actionAboutQt_triggered();
-    void on_exitBtn_clicked();
-    void on_restartBtn_clicked();
+    void on_show();
+    void on_exit();
+    void on_startupChanged(const int state);
+    void on_about();
+    void on_aboutQt();
+    void on_restart();
     void on_readoutput();
     void on_readerror();
 
@@ -44,7 +44,6 @@ private:
     bool getServer(QString &ServerFile, QStringList &serverArgs);
     void getArgs(QStringList &serverArgs);
     void startServer();
-    void outLog(const QString &log);
     void stopServer();
 };
 #endif // MAINWINDOW_H

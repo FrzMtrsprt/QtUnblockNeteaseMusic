@@ -11,22 +11,10 @@
 #include <QRegularExpression>
 #include <QStyle>
 #include <QStyleFactory>
-#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    // setup & load config
-    config = new Config();
-    config->readSettings();
-    loadSettings();
-
-    // setup & start server
-    server = new QProcess();
-    connect(server, SIGNAL(readyReadStandardOutput()), this, SLOT(on_readoutput()));
-    connect(server, SIGNAL(readyReadStandardError()), this, SLOT(on_readerror()));
-    startServer();
 
     // setup system tray
     QSystemTrayIcon *tray = new QSystemTrayIcon(this);
@@ -41,22 +29,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     trayMenu->addAction(trayExit);
     tray->setContextMenu(trayMenu);
     tray->show();
-    connect(trayShow, &QAction::triggered, this, [this]
-            {
-                this->show();
-                this->activateWindow(); });
-    connect(trayExit, &QAction::triggered, this, [this]
-            {
-                stopServer();
-                QApplication::exit(); });
+
+    // connect tray signals
+    connect(trayShow, &QAction::triggered, this, &MainWindow::on_show);
+    connect(trayExit, &QAction::triggered, this, &MainWindow::on_exit);
     // show MainWindow only when tray icon is left clicked
-    connect(tray, &QSystemTrayIcon::activated, this, [this](QSystemTrayIcon::ActivationReason reason)
-            {
-                if (reason == QSystemTrayIcon::Trigger)
-                {
-                    this->show();
-                    this->activateWindow();
-                } });
+    connect(tray, &QSystemTrayIcon::activated, this,
+            [this](QSystemTrayIcon::ActivationReason reason)
+            { if (reason == QSystemTrayIcon::Trigger) on_show(); });
+
+    // connect MainWindow signals
+    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::on_exit);
+    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::on_about);
+    connect(ui->actionAboutQt, &QAction::triggered, this, &MainWindow::on_aboutQt);
+    connect(ui->startupCheckBox, &QCheckBox::stateChanged, this, &MainWindow::on_startupChanged);
+    connect(ui->restartBtn, &QPushButton::clicked, this, &MainWindow::on_restart);
+    connect(ui->exitBtn, &QPushButton::clicked, this, &MainWindow::on_exit);
 
     // setup theme menu
     for (QString &style : QStyleFactory::keys())
@@ -69,6 +57,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
                     QApplication::setStyle(QStyleFactory::create(style));
                     QApplication::setPalette(QApplication::style()->standardPalette()); });
     }
+
+    // setup & load config
+    config = new Config();
+    loadSettings();
+
+    // setup & start server
+    server = new QProcess();
+    connect(server, &QProcess::readyReadStandardOutput, this, &MainWindow::on_readoutput);
+    connect(server, &QProcess::readyReadStandardError, this, &MainWindow::on_readerror);
+    startServer();
 }
 
 MainWindow::~MainWindow()
@@ -76,13 +74,19 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_actionExit_triggered()
+void MainWindow::on_show()
+{
+    this->show();
+    this->activateWindow();
+}
+
+void MainWindow::on_exit()
 {
     stopServer();
     QApplication::exit();
 }
 
-void MainWindow::on_actionAbout_triggered()
+void MainWindow::on_about()
 {
     QMessageBox *aboutDlg = new QMessageBox(this);
     const QString text = tr("<h3>About QtUnblockNeteaseMusic</h3>"
@@ -105,22 +109,21 @@ void MainWindow::on_actionAbout_triggered()
     }
 }
 
-void MainWindow::on_actionAboutQt_triggered()
+void MainWindow::on_aboutQt()
 {
     QMessageBox::aboutQt(this);
 }
 
-void MainWindow::on_startupCheckBox_stateChanged(const int state)
+void MainWindow::on_startupChanged(const int state)
 {
     config->setStartup(state);
     updateSettings();
-    config->writeSettings();
 }
 
 void MainWindow::on_readoutput()
 {
     const QByteArray &logArray = server->readAllStandardOutput();
-    outLog(logArray.data());
+    ui->outText->append(logArray.data());
 }
 
 void MainWindow::on_readerror()
@@ -135,21 +138,17 @@ void MainWindow::on_readerror()
     errorDlg.exec();
 }
 
-void MainWindow::on_restartBtn_clicked()
+void MainWindow::on_restart()
 {
     stopServer();
     ui->outText->clear();
     startServer();
 }
 
-void MainWindow::on_exitBtn_clicked()
-{
-    stopServer();
-    QApplication::exit();
-}
-
 void MainWindow::loadSettings()
 {
+    // load settings from file into variables
+    config->readSettings();
     // load settings from variables into ui
     ui->portEdit->setText(config->port);
     ui->addressEdit->setText(config->address);
@@ -170,6 +169,8 @@ void MainWindow::updateSettings()
     config->source = ui->sourceEdit->toPlainText();
     config->strict = ui->strictCheckBox->isChecked();
     config->startup = ui->startupCheckBox->isChecked();
+    // write settings from variables into file
+    config->writeSettings();
 }
 
 bool MainWindow::getServer(QString &serverFile, QStringList &serverArgs)
@@ -252,29 +253,19 @@ void MainWindow::startServer()
         server->start(serverFile, serverArgs);
         if (!server->waitForStarted())
         {
-            outLog(server->errorString());
+            ui->outText->append(server->errorString());
         }
     }
     else
     {
-        outLog(tr("Server not found."));
+        ui->outText->append(tr("Server not found."));
     }
-}
-
-// reference: https://github.com/barry-ran/QtScrcpy/blob/3929ebf62ee0eb594d566e570a79ccb8efe6bb60/QtScrcpy/ui/dialog.cpp#L359
-void MainWindow::outLog(const QString &log)
-{
-    // avoid sub thread update ui
-    QString backLog = log;
-    QTimer::singleShot(0, this, [this, backLog]()
-                       { ui->outText->append(backLog); });
 }
 
 void MainWindow::stopServer()
 {
     server->close();
     updateSettings();
-    config->writeSettings();
 }
 
 void MainWindow::closeEvent(QCloseEvent *e)
