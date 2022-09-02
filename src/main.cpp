@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QMessageBox>
+#include <QSharedMemory>
 #include <QTranslator>
 
 int main(int argc, char *argv[])
@@ -26,6 +28,21 @@ int main(int argc, char *argv[])
     if (baseTranslator.load(QLocale::system(), "qt", "_", a.applicationDirPath() + "/translations", ".qm"))
     {
         a.installTranslator(&baseTranslator);
+    }
+
+    // reference: https://forum.qt.io/post/504087
+    QSharedMemory singular(a.applicationName());
+    if (singular.attach(QSharedMemory::ReadOnly))
+    {
+        // instance already running
+        singular.detach();
+        QMessageBox::critical(NULL, QObject::tr("Error"), a.applicationName() + QObject::tr(" is already running."));
+        return -42;
+    }
+    else
+    {
+        // program not yet running
+        singular.create(1);
     }
 
     // don't show window if "-silent" in arguments
