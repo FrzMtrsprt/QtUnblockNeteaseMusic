@@ -12,6 +12,12 @@
 #include <QStyle>
 #include <QStyleFactory>
 
+#ifdef Q_OS_WIN32
+#include <windows.h>
+#include <Uxtheme.h>
+#pragma comment(lib, "uxtheme")
+#endif
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -51,9 +57,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     {
         qDebug() << "Loading theme" << style;
         // reference: https://stackoverflow.com/a/45265455
-        connect(ui->menuTheme->addAction(style), &QAction::triggered, this, [style]
+        connect(ui->menuTheme->addAction(style), &QAction::triggered, this, [this, style]
                 {
                     qDebug() << "Setting theme" << style;
+#ifdef Q_OS_WIN32
+                    HWND hWnd = (HWND)this->winId();
+                    // Enable classic window frame on Windows
+                    if (style == "Windows") SetWindowTheme(hWnd, TEXT(" "), TEXT(" "));
+                    else SetWindowTheme(hWnd, TEXT("EXPLORER"), NULL);
+#endif
                     QApplication::setStyle(QStyleFactory::create(style));
                     QApplication::setPalette(QApplication::style()->standardPalette()); });
     }
@@ -128,14 +140,15 @@ void MainWindow::on_readoutput()
 
 void MainWindow::on_readerror()
 {
-    QMessageBox errorDlg(this);
+    QMessageBox *errorDlg = new QMessageBox(this);
     const QByteArray &logArray = server->readAllStandardError();
-    errorDlg.setWindowTitle(tr("Server error"));
-    errorDlg.setText(tr("The UnblockNeteaseMusic server ran into an error.\n"
-                        "Please change the arguments or check port usage and try again."));
-    errorDlg.setDetailedText(logArray.data());
-    errorDlg.setIcon(QMessageBox::Warning);
-    errorDlg.exec();
+    errorDlg->setAttribute(Qt::WA_DeleteOnClose);
+    errorDlg->setWindowTitle(tr("Server error"));
+    errorDlg->setText(tr("The UnblockNeteaseMusic server ran into an error.\n"
+                         "Please change the arguments or check port usage and try again."));
+    errorDlg->setDetailedText(logArray.data());
+    errorDlg->setIcon(QMessageBox::Warning);
+    errorDlg->exec();
 }
 
 void MainWindow::on_restart()
@@ -231,7 +244,7 @@ void MainWindow::getArgs(QStringList &serverArgs)
     if (!ui->sourceEdit->toPlainText().isEmpty())
     {
         const QString source = ui->sourceEdit->toPlainText();
-        static QRegularExpression sep("[,.'，。 \n]+");
+        static const QRegularExpression sep("[,.'，。 \n]+");
         QStringList sources = source.split(sep);
         sources.removeAll("");
         serverArgs << "-o" << sources;
