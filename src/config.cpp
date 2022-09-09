@@ -19,6 +19,7 @@ void Config::readSettings()
     source = settings->value("source").toString();
     strict = settings->value("strict").toBool();
     startup = settings->value("startup").toBool();
+    theme = settings->value("theme").toString();
 }
 
 void Config::writeSettings()
@@ -30,6 +31,7 @@ void Config::writeSettings()
     settings->setValue("source", source);
     settings->setValue("strict", strict);
     settings->setValue("startup", startup);
+    settings->setValue("theme", theme);
 }
 
 void Config::setStartup(const int &state)

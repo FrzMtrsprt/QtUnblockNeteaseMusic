@@ -4,11 +4,6 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.ui" line="29"/>
-        <source>&amp;Restart</source>
-        <translation>重启(&amp;R)</translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="36"/>
         <location filename="../src/mainwindow.ui" line="279"/>
         <source>E&amp;xit</source>
@@ -106,6 +101,11 @@
         <translation>开机启动</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.ui" line="29"/>
+        <source>&amp;Apply</source>
+        <translation>应用(&amp;A)</translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.ui" line="242"/>
         <source>&amp;File</source>
         <translation>文件(&amp;F)</translation>
@@ -126,39 +126,39 @@
         <translation>主题(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="26"/>
+        <location filename="../src/mainwindow.cpp" line="32"/>
         <source>Show</source>
         <translation>显示</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="27"/>
+        <location filename="../src/mainwindow.cpp" line="33"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="92"/>
+        <location filename="../src/mainwindow.cpp" line="113"/>
         <source>&lt;h3&gt;About QtUnblockNeteaseMusic&lt;/h3&gt;&lt;p&gt;Version %1&lt;/p&gt;</source>
         <translation>&lt;h3&gt;关于 QtUnblockNeteaseMusic&lt;/h3&gt;&lt;p&gt;版本 %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="95"/>
+        <location filename="../src/mainwindow.cpp" line="116"/>
         <source>&lt;p&gt;A desktop client for UnblockNeteaseMusic, written in Qt.&lt;/p&gt;&lt;p&gt;Copyright 2022 FrzMtrsprt&lt;/p&gt;</source>
         <translation>&lt;p&gt;适用于 UnblockNeteaseMusic 的桌面应用，使用 Qt 编写。&lt;/p&gt;&lt;p&gt;版权所有 2022 FrzMtrsprt&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="133"/>
+        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>Server error</source>
         <translation>服务器错误</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="134"/>
+        <location filename="../src/mainwindow.cpp" line="155"/>
         <source>The UnblockNeteaseMusic server ran into an error.
 Please change the arguments or check port usage and try again.</source>
         <translation>UnblockNeteaseMusic 服务器出现错误。
 请修改服务器参数或检查端口占用，然后重试。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="261"/>
+        <location filename="../src/mainwindow.cpp" line="288"/>
         <source>Server not found.</source>
         <translation>未找到服务器。</translation>
     </message>

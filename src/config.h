@@ -18,6 +18,7 @@ public:
     QString source;
     bool strict;
     bool startup;
+    QString theme;
 
     void readSettings();
     void writeSettings();

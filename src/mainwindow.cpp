@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::on_about);
     connect(ui->actionAboutQt, &QAction::triggered, this, &MainWindow::on_aboutQt);
     connect(ui->startupCheckBox, &QCheckBox::stateChanged, this, &MainWindow::on_startupChanged);
-    connect(ui->restartBtn, &QPushButton::clicked, this, &MainWindow::on_restart);
+    connect(ui->applyBtn, &QPushButton::clicked, this, &MainWindow::on_apply);
     connect(ui->exitBtn, &QPushButton::clicked, this, &MainWindow::on_exit);
 
     // setup theme menu
@@ -59,15 +59,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         // reference: https://stackoverflow.com/a/45265455
         connect(ui->menuTheme->addAction(style), &QAction::triggered, this, [this, style]
                 {
-                    qDebug() << "Setting theme" << style;
-#ifdef Q_OS_WIN32
-                    HWND hWnd = (HWND)this->winId();
-                    // Enable classic window frame on Windows
-                    if (style == "Windows") SetWindowTheme(hWnd, TEXT(" "), TEXT(" "));
-                    else SetWindowTheme(hWnd, TEXT("EXPLORER"), NULL);
-#endif
-                    QApplication::setStyle(QStyleFactory::create(style));
-                    QApplication::setPalette(QApplication::style()->standardPalette()); });
+                    setTheme(style);
+                    updateSettings();
+        });
     }
 
     // setup & load config
@@ -84,6 +78,25 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setTheme(const QString theme)
+{
+    qDebug() << "Setting theme" << theme;
+#ifdef Q_OS_WIN32
+    HWND hWnd = (HWND)this->winId();
+    // Enable classic window frame on Windows
+    if (QString::compare(theme, "Windows", Qt::CaseInsensitive) == 0)
+    {
+        SetWindowTheme(hWnd, TEXT(" "), TEXT(" "));
+    }
+    else
+    {
+        SetWindowTheme(hWnd, TEXT("EXPLORER"), NULL);
+    }
+#endif
+    QApplication::setStyle(QStyleFactory::create(theme));
+    QApplication::setPalette(QApplication::style()->standardPalette());
 }
 
 void MainWindow::on_show()
@@ -129,7 +142,6 @@ void MainWindow::on_aboutQt()
 void MainWindow::on_startupChanged(const int state)
 {
     config->setStartup(state);
-    updateSettings();
 }
 
 void MainWindow::on_readoutput()
@@ -151,7 +163,7 @@ void MainWindow::on_readerror()
     errorDlg->exec();
 }
 
-void MainWindow::on_restart()
+void MainWindow::on_apply()
 {
     stopServer();
     ui->outText->clear();
@@ -160,6 +172,7 @@ void MainWindow::on_restart()
 
 void MainWindow::loadSettings()
 {
+    qDebug() << "Loading settings";
     // load settings from file into variables
     config->readSettings();
     // load settings from variables into ui
@@ -170,10 +183,13 @@ void MainWindow::loadSettings()
     ui->sourceEdit->append(config->source);
     ui->strictCheckBox->setChecked(config->strict);
     ui->startupCheckBox->setChecked(config->startup);
+    setTheme(config->theme);
+    qDebug() << "Load settings done";
 }
 
 void MainWindow::updateSettings()
 {
+    qDebug() << "Updating settings";
     // update settings from ui into variables
     config->port = ui->portEdit->text();
     config->address = ui->addressEdit->text();
@@ -182,8 +198,10 @@ void MainWindow::updateSettings()
     config->source = ui->sourceEdit->toPlainText();
     config->strict = ui->strictCheckBox->isChecked();
     config->startup = ui->startupCheckBox->isChecked();
+    config->theme = QApplication::style()->name();
     // write settings from variables into file
     config->writeSettings();
+    qDebug() << "Update settings done";
 }
 
 bool MainWindow::getServer(QString &serverFile, QStringList &serverArgs)

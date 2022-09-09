@@ -24,9 +24,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="restartBtn">
+       <widget class="QPushButton" name="applyBtn">
         <property name="text">
-         <string>&amp;Restart</string>
+         <string>&amp;Apply</string>
         </property>
        </widget>
       </item>

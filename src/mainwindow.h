@@ -29,7 +29,7 @@ private slots:
     void on_startupChanged(const int state);
     void on_about();
     void on_aboutQt();
-    void on_restart();
+    void on_apply();
     void on_readoutput();
     void on_readerror();
 
@@ -38,6 +38,7 @@ private:
     QProcess *server;
     Config *config;
 
+    void setTheme(const QString theme);
     void closeEvent(QCloseEvent *e); // reload closeEvent to add my own actions
     void loadSettings();
     void updateSettings();
