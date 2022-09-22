@@ -6,7 +6,6 @@
 #include <QCloseEvent>
 #include <QMainWindow>
 #include <QProcess>
-#include <QSystemTrayIcon>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -26,7 +25,7 @@ public:
 private slots:
     void on_show();
     void on_exit();
-    void on_startupChanged(const int state);
+    void on_startupChanged(const int &state);
     void on_about();
     void on_aboutQt();
     void on_apply();
@@ -38,13 +37,12 @@ private:
     QProcess *server;
     Config *config;
 
-    void setTheme(const QString theme);
+    void setTheme(const QString &theme);
     void closeEvent(QCloseEvent *e); // reload closeEvent to add my own actions
     void loadSettings();
     void updateSettings();
     bool getServer(QString &ServerFile, QStringList &serverArgs);
     void getArgs(QStringList &serverArgs);
     void startServer();
-    void stopServer();
 };
 #endif // MAINWINDOW_H

@@ -11,11 +11,10 @@
 #include <QRegularExpression>
 #include <QStyle>
 #include <QStyleFactory>
+#include <QSystemTrayIcon>
 
 #ifdef Q_OS_WIN32
-#include <windows.h>
-#include <Uxtheme.h>
-#pragma comment(lib, "uxtheme")
+#include "../utils/winutils.h"
 #endif
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -57,11 +56,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     {
         qDebug() << "Loading theme" << style;
         // reference: https://stackoverflow.com/a/45265455
-        connect(ui->menuTheme->addAction(style), &QAction::triggered, this, [this, style]
-                {
-                    setTheme(style);
-                    updateSettings();
-        });
+        connect(ui->menuTheme->addAction(style), &QAction::triggered,
+                this, [this, style]
+                { setTheme(style); });
     }
 
     // setup & load config
@@ -80,20 +77,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setTheme(const QString theme)
+void MainWindow::setTheme(const QString &theme)
 {
     qDebug() << "Setting theme" << theme;
 #ifdef Q_OS_WIN32
-    HWND hWnd = (HWND)this->winId();
-    // Enable classic window frame on Windows
-    if (QString::compare(theme, "Windows", Qt::CaseInsensitive) == 0)
-    {
-        SetWindowTheme(hWnd, TEXT(" "), TEXT(" "));
-    }
-    else
-    {
-        SetWindowTheme(hWnd, TEXT("EXPLORER"), NULL);
-    }
+    WinUtils::setWindowFrame((HWND)winId(), theme);
 #endif
     QApplication::setStyle(QStyleFactory::create(theme));
     QApplication::setPalette(QApplication::style()->standardPalette());
@@ -101,13 +89,18 @@ void MainWindow::setTheme(const QString theme)
 
 void MainWindow::on_show()
 {
+#ifdef Q_OS_WIN32
+    // Disable power throttling
+    WinUtils::setThrottle(false);
+#endif
     this->show();
     this->activateWindow();
 }
 
 void MainWindow::on_exit()
 {
-    stopServer();
+    server->close();
+    updateSettings();
     QApplication::exit();
 }
 
@@ -139,9 +132,11 @@ void MainWindow::on_aboutQt()
     QMessageBox::aboutQt(this);
 }
 
-void MainWindow::on_startupChanged(const int state)
+void MainWindow::on_startupChanged(const int &state)
 {
-    config->setStartup(state);
+#ifdef Q_OS_WIN32
+    WinUtils::setStartup(state);
+#endif
 }
 
 void MainWindow::on_readoutput()
@@ -154,7 +149,6 @@ void MainWindow::on_readerror()
 {
     QMessageBox *errorDlg = new QMessageBox(this);
     const QByteArray &logArray = server->readAllStandardError();
-    errorDlg->setAttribute(Qt::WA_DeleteOnClose);
     errorDlg->setWindowTitle(tr("Server error"));
     errorDlg->setText(tr("The UnblockNeteaseMusic server ran into an error.\n"
                          "Please change the arguments or check port usage and try again."));
@@ -165,7 +159,7 @@ void MainWindow::on_readerror()
 
 void MainWindow::on_apply()
 {
-    stopServer();
+    server->close();
     ui->outText->clear();
     startServer();
 }
@@ -173,105 +167,105 @@ void MainWindow::on_apply()
 void MainWindow::loadSettings()
 {
     qDebug() << "Loading settings";
+
     // load settings from file into variables
     config->readSettings();
+
     // load settings from variables into ui
     ui->portEdit->setText(config->port);
     ui->addressEdit->setText(config->address);
     ui->urlEdit->setText(config->url);
     ui->hostEdit->setText(config->host);
-    ui->sourceEdit->append(config->source);
+    ui->sourceEdit->append(config->sources.join(", "));
     ui->strictCheckBox->setChecked(config->strict);
     ui->startupCheckBox->setChecked(config->startup);
     setTheme(config->theme);
+
     qDebug() << "Load settings done";
 }
 
 void MainWindow::updateSettings()
 {
     qDebug() << "Updating settings";
+    static const QRegularExpression sep("\\W+");
+
     // update settings from ui into variables
     config->port = ui->portEdit->text();
     config->address = ui->addressEdit->text();
     config->url = ui->urlEdit->text();
     config->host = ui->hostEdit->text();
-    config->source = ui->sourceEdit->toPlainText();
+    config->sources = ui->sourceEdit->toPlainText().split(sep, Qt::SkipEmptyParts);
     config->strict = ui->strictCheckBox->isChecked();
     config->startup = ui->startupCheckBox->isChecked();
     config->theme = QApplication::style()->name();
+
     // write settings from variables into file
     config->writeSettings();
+
     qDebug() << "Update settings done";
 }
 
 bool MainWindow::getServer(QString &serverFile, QStringList &serverArgs)
 {
-    QDir appDir(QApplication::applicationDirPath());
-    appDir.setFilter(QDir::Dirs | QDir::Files | QDir::NoSymLinks);
-    appDir.setNameFilters({"unblock*", "server*"});
-    if (appDir.count())
+    const QDir appDir(QApplication::applicationDirPath());
+    const QFileInfoList results = appDir.entryInfoList(
+        {"unblock*", "server*"},
+        QDir::Dirs | QDir::Files | QDir::NoSymLinks);
+    for (const QFileInfo &result : results)
     {
-        QFileInfo result(QApplication::applicationDirPath(), appDir[0]);
         if (result.isFile())
         {
             serverFile = result.absoluteFilePath();
             serverArgs = {};
+            qDebug() << "Server File:"
+                     << serverFile.toUtf8().data();
+            return true;
         }
         if (result.isDir())
         {
-            QDir serverDir(result.absoluteFilePath());
+            const QDir serverDir(result.absoluteFilePath());
             if (serverDir.exists("app.js"))
             {
                 serverFile = "node";
                 serverArgs = {serverDir.absolutePath() + "/app.js"};
-            }
-            else
-            {
-                return false;
+                qDebug() << "Server File:"
+                         << serverFile.toUtf8().data();
+                return true;
             }
         }
-        qDebug() << "Server File:" << serverFile.toUtf8().data();
-        return true;
     }
-    else
-    {
-        serverFile = "";
-        serverArgs = {};
-        return false;
-    }
+    return false;
 }
 
 void MainWindow::getArgs(QStringList &serverArgs)
 {
-    if (!ui->portEdit->text().isEmpty())
+    updateSettings();
+    if (!config->port.isEmpty())
     {
-        serverArgs << "-p" << ui->portEdit->text();
+        serverArgs << "-p" << config->port;
     }
-    if (!ui->addressEdit->text().isEmpty())
+    if (!config->address.isEmpty())
     {
-        serverArgs << "-a" << ui->addressEdit->text();
+        serverArgs << "-a" << config->address;
     }
-    if (!ui->urlEdit->text().isEmpty())
+    if (!config->url.isEmpty())
     {
-        serverArgs << "-u" << ui->urlEdit->text();
+        serverArgs << "-u" << config->url;
     }
-    if (!ui->hostEdit->text().isEmpty())
+    if (!config->host.isEmpty())
     {
-        serverArgs << "-f" << ui->hostEdit->text();
+        serverArgs << "-f" << config->host;
     }
-    if (!ui->sourceEdit->toPlainText().isEmpty())
+    if (!config->sources.isEmpty())
     {
-        const QString source = ui->sourceEdit->toPlainText();
-        static const QRegularExpression sep("[,.'，。 \n]+");
-        QStringList sources = source.split(sep);
-        sources.removeAll("");
-        serverArgs << "-o" << sources;
+        serverArgs << "-o" << config->sources;
     }
-    if (ui->strictCheckBox->isChecked())
+    if (config->strict)
     {
         serverArgs << "-s";
     }
-    qDebug() << "Server Arguments:" << serverArgs.join(" ").toUtf8().data();
+    qDebug() << "Server Arguments:"
+             << serverArgs.join(" ").toUtf8().data();
 }
 
 void MainWindow::startServer()
@@ -293,14 +287,12 @@ void MainWindow::startServer()
     }
 }
 
-void MainWindow::stopServer()
-{
-    server->close();
-    updateSettings();
-}
-
 void MainWindow::closeEvent(QCloseEvent *e)
 {
     this->hide();
     e->ignore();
+#ifdef Q_OS_WIN32
+    // Enable power throttling
+    WinUtils::setThrottle(true);
+#endif
 }

@@ -36,7 +36,13 @@ int main(int argc, char *argv[])
     {
         // instance already running
         singular.detach();
-        QMessageBox::critical(NULL, QObject::tr("Error"), a.applicationName() + QObject::tr(" is already running."));
+
+        QMessageBox *errorDlg = new QMessageBox();
+        errorDlg->setWindowTitle(QObject::tr("Error"));
+        errorDlg->setText(a.applicationName() + QObject::tr(" is already running."));
+        errorDlg->setIcon(QMessageBox::Critical);
+        errorDlg->exec();
+
         return -42;
     }
     else
@@ -50,7 +56,7 @@ int main(int argc, char *argv[])
     bool isSilent = false;
     for (int i = 1; i < argc; i++)
     {
-        if (!QString::compare(argv[i], "-silent"))
+        if (QString::compare(argv[i], "-silent") == 0)
         {
             isSilent = true;
         }

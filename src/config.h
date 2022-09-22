@@ -15,14 +15,13 @@ public:
     QString address;
     QString url;
     QString host;
-    QString source;
+    QStringList sources;
     bool strict;
     bool startup;
     QString theme;
 
     void readSettings();
     void writeSettings();
-    void setStartup(const int &state);
 
 private:
     QSettings *settings;

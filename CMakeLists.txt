@@ -19,7 +19,7 @@ set(TS_FILES
         locale/QtUnblockNeteaseMusic_zh_CN.ts
 )
 
-set(PROJECT_SOURCES
+set(APP_SOURCES
         src/config.cpp
         src/config.h
         src/main.cpp
@@ -27,17 +27,26 @@ set(PROJECT_SOURCES
         src/mainwindow.h
         src/mainwindow.ui
 )
+source_group(src FILES ${APP_SOURCES})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    set(APP_SOURCES
+    set(UTILS_SOURCES
+        utils/winutils.cpp
+        utils/winutils.h
+    )
+    source_group(utils FILES ${UTILS_SOURCES})
+
+    set(RESOURCES
         res/QtUnblockNeteaseMusic.rc
     )
+    source_group(res FILES ${RESOURCES})
 endif()
 
 qt_add_executable(QtUnblockNeteaseMusic
     MANUAL_FINALIZATION
-    ${PROJECT_SOURCES}
     ${APP_SOURCES}
+    ${UTILS_SOURCES}
+    ${RESOURCES}
 )
 
 qt_add_resources(QtUnblockNeteaseMusic res

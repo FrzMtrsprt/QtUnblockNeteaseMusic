@@ -1,5 +1,3 @@
-#define AUTO_RUN "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
-
 #include "config.h"
 
 #include <QApplication>
@@ -12,40 +10,28 @@ Config::Config(QObject *parent) : QObject{parent}
 
 void Config::readSettings()
 {
+    settings->beginGroup(QApplication::applicationName());
     port = settings->value("port").toString();
     address = settings->value("address").toString();
     url = settings->value("url").toString();
     host = settings->value("host").toString();
-    source = settings->value("source").toString();
+    sources = settings->value("sources").toStringList();
     strict = settings->value("strict").toBool();
     startup = settings->value("startup").toBool();
     theme = settings->value("theme").toString();
+    settings->endGroup();
 }
 
 void Config::writeSettings()
 {
+    settings->beginGroup(QApplication::applicationName());
     settings->setValue("port", port);
     settings->setValue("address", address);
     settings->setValue("url", url);
     settings->setValue("host", host);
-    settings->setValue("source", source);
+    settings->setValue("sources", sources);
     settings->setValue("strict", strict);
     settings->setValue("startup", startup);
     settings->setValue("theme", theme);
-}
-
-void Config::setStartup(const int &state)
-{
-    const QString appName = QApplication::applicationName();
-    QSettings *registry = new QSettings(AUTO_RUN, QSettings::NativeFormat);
-    if (state)
-    {
-        QString appPath = QApplication::applicationFilePath().replace("/", "\\");
-        registry->setValue(appName, "\"" + appPath + "\" -silent");
-    }
-    else
-    {
-        registry->remove(appName);
-    }
-    registry->~QSettings();
+    settings->endGroup();
 }
