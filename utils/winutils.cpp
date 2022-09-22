@@ -1,11 +1,11 @@
-#define AUTO_RUN "Software\\Microsoft\\Windows\\CurrentVersion\\Run"
-
 #include "winutils.h"
 
 #include <QApplication>
 #include <Windows.h>
 #include <Uxtheme.h>
 #pragma comment(lib, "uxtheme")
+
+static LPCSTR lpSubKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
 static PROCESS_POWER_THROTTLING_STATE Throttle{
     PROCESS_POWER_THROTTLING_CURRENT_VERSION,
@@ -22,19 +22,19 @@ WinUtils::WinUtils() {}
 // Enable or disable startup
 void WinUtils::setStartup(const bool &enable)
 {
-    LPCSTR lpKeyName = QApplication::applicationName().toUtf8().data();
+    LPCSTR lpValueName = QApplication::applicationName().toUtf8().data();
     if (enable)
     {
-        QString value = "\"" + QApplication::applicationFilePath() + "\" -silent";
-        LPCSTR lpKeyValue = value.replace("/", "\\").toUtf8().data();
+        QByteArray path = QApplication::applicationFilePath().toUtf8();
+        QByteArray value = "\"" + path.replace("/", "\\") + "\" -silent";
 
         LSTATUS lSetRet = RegSetKeyValueA(
             HKEY_CURRENT_USER,
-            AUTO_RUN,
-            lpKeyName,
+            lpSubKey,
+            lpValueName,
             REG_SZ,
-            lpKeyValue,
-            lstrlenA(lpKeyValue));
+            value.data(),
+            value.size());
 
         if (lSetRet == ERROR_SUCCESS)
         {
@@ -45,8 +45,8 @@ void WinUtils::setStartup(const bool &enable)
     {
         LSTATUS lDelRet = RegDeleteKeyValueA(
             HKEY_CURRENT_USER,
-            AUTO_RUN,
-            lpKeyName);
+            lpSubKey,
+            lpValueName);
 
         if (lDelRet == ERROR_SUCCESS)
         {

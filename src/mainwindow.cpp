@@ -113,7 +113,6 @@ void MainWindow::on_about()
     const QString informativeText = tr("<p>A desktop client for UnblockNeteaseMusic, "
                                        "written in Qt.</p>"
                                        "<p>Copyright 2022 FrzMtrsprt</p>");
-    aboutDlg->setAttribute(Qt::WA_DeleteOnClose);
     aboutDlg->setWindowTitle("About");
     aboutDlg->setIconPixmap(QPixmap(":/res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
     aboutDlg->setText(text);
