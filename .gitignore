@@ -1,4 +1,5 @@
-# VS Code build folder
+# VS Code
+.vscode
 build
 
 # CMake user config
