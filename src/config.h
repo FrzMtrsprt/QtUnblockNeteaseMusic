@@ -2,14 +2,11 @@
 #define CONFIG_H
 
 #include <QSettings>
-#include <QObject>
 
-class Config : public QObject
+class Config
 {
-    Q_OBJECT
-
 public:
-    explicit Config(QObject *parent = nullptr);
+    Config();
 
     QString port;
     QString address;

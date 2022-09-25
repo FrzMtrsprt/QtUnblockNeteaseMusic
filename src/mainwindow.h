@@ -25,7 +25,7 @@ public:
 private slots:
     void on_show();
     void on_exit();
-    void on_startupChanged(const int &state);
+    void on_startup();
     void on_about();
     void on_aboutQt();
     void on_apply();
@@ -41,8 +41,8 @@ private:
     void closeEvent(QCloseEvent *e); // reload closeEvent to add my own actions
     void loadSettings();
     void updateSettings();
-    bool getServer(QString &ServerFile, QStringList &serverArgs);
-    void getArgs(QStringList &serverArgs);
+    bool getServer(QString &program, QStringList &argumets);
+    void getArgs(QStringList &arguments);
     void startServer();
 };
 #endif // MAINWINDOW_H

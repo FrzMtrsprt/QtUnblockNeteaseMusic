@@ -17,7 +17,8 @@
 #include "../utils/winutils.h"
 #endif
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -36,27 +37,40 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     tray->show();
 
     // connect tray signals
-    connect(trayShow, &QAction::triggered, this, &MainWindow::on_show);
-    connect(trayExit, &QAction::triggered, this, &MainWindow::on_exit);
+    connect(trayShow, &QAction::triggered,
+            this, &MainWindow::on_show);
+    connect(trayExit, &QAction::triggered,
+            this, &MainWindow::on_exit);
     // show MainWindow only when tray icon is left clicked
     connect(tray, &QSystemTrayIcon::activated, this,
             [this](QSystemTrayIcon::ActivationReason reason)
-            { if (reason == QSystemTrayIcon::Trigger) on_show(); });
+            {
+                if (reason == QSystemTrayIcon::Trigger)
+                {
+                    on_show();
+                }
+            });
 
     // connect MainWindow signals
-    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::on_exit);
-    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::on_about);
-    connect(ui->actionAboutQt, &QAction::triggered, this, &MainWindow::on_aboutQt);
-    connect(ui->startupCheckBox, &QCheckBox::stateChanged, this, &MainWindow::on_startupChanged);
-    connect(ui->applyBtn, &QPushButton::clicked, this, &MainWindow::on_apply);
-    connect(ui->exitBtn, &QPushButton::clicked, this, &MainWindow::on_exit);
+    connect(ui->actionExit, &QAction::triggered,
+            this, &MainWindow::on_exit);
+    connect(ui->actionAbout, &QAction::triggered,
+            this, &MainWindow::on_about);
+    connect(ui->actionAboutQt, &QAction::triggered,
+            this, &MainWindow::on_aboutQt);
+    connect(ui->startupCheckBox, &QCheckBox::stateChanged,
+            this, &MainWindow::on_startup);
+    connect(ui->applyBtn, &QPushButton::clicked,
+            this, &MainWindow::on_apply);
+    connect(ui->exitBtn, &QPushButton::clicked,
+            this, &MainWindow::on_exit);
 
     // setup theme menu
     for (QString &style : QStyleFactory::keys())
     {
-        qDebug() << "Loading theme" << style;
         // reference: https://stackoverflow.com/a/45265455
-        connect(ui->menuTheme->addAction(style), &QAction::triggered,
+        QAction *action = ui->menuTheme->addAction(style);
+        connect(action, &QAction::triggered,
                 this, [this, style]
                 { setTheme(style); });
     }
@@ -66,9 +80,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     loadSettings();
 
     // setup & start server
+    qDebug() << "---Starting server---";
     server = new QProcess();
-    connect(server, &QProcess::readyReadStandardOutput, this, &MainWindow::on_readoutput);
-    connect(server, &QProcess::readyReadStandardError, this, &MainWindow::on_readerror);
+    connect(server, &QProcess::readyReadStandardOutput,
+            this, &MainWindow::on_readoutput);
+    connect(server, &QProcess::readyReadStandardError,
+            this, &MainWindow::on_readerror);
     startServer();
 }
 
@@ -80,11 +97,13 @@ MainWindow::~MainWindow()
 void MainWindow::setTheme(const QString &theme)
 {
     qDebug() << "Setting theme" << theme;
+    QStyle *style = QStyleFactory::create(theme);
+
 #ifdef Q_OS_WIN32
-    WinUtils::setWindowFrame((HWND)winId(), theme);
+    WinUtils::setWindowFrame(winId(), theme);
 #endif
-    QApplication::setStyle(QStyleFactory::create(theme));
-    QApplication::setPalette(QApplication::style()->standardPalette());
+    QApplication::setStyle(style);
+    QApplication::setPalette(style->standardPalette());
 }
 
 void MainWindow::on_show()
@@ -93,12 +112,14 @@ void MainWindow::on_show()
     // Disable power throttling
     WinUtils::setThrottle(false);
 #endif
+
     this->show();
     this->activateWindow();
 }
 
 void MainWindow::on_exit()
 {
+    qDebug() << "---Shutting down---";
     server->close();
     updateSettings();
     QApplication::exit();
@@ -106,23 +127,40 @@ void MainWindow::on_exit()
 
 void MainWindow::on_about()
 {
+    const QPixmap logo =
+        QPixmap(":/res/icon.png")
+            .scaledToHeight(100, Qt::SmoothTransformation);
+
+    const QString text =
+        tr("<h3>About %1</h3>"
+           "<p>Version %2</p>")
+            .arg(QApplication::applicationName(),
+                 QApplication::applicationVersion());
+
+    const QString info =
+        tr("<p>A desktop client for UnblockNeteaseMusic, "
+           "written in Qt.</p>"
+           "<p>Copyright 2022 %1</p>")
+            .arg(QApplication::organizationName());
+
     QMessageBox *aboutDlg = new QMessageBox(this);
-    const QString text = tr("<h3>About QtUnblockNeteaseMusic</h3>"
-                            "<p>Version %1</p>")
-                             .arg(QApplication::applicationVersion());
-    const QString informativeText = tr("<p>A desktop client for UnblockNeteaseMusic, "
-                                       "written in Qt.</p>"
-                                       "<p>Copyright 2022 FrzMtrsprt</p>");
     aboutDlg->setWindowTitle("About");
-    aboutDlg->setIconPixmap(QPixmap(":/res/icon.png").scaledToHeight(100, Qt::SmoothTransformation));
+    aboutDlg->setIconPixmap(logo);
     aboutDlg->setText(text);
-    aboutDlg->setInformativeText(informativeText);
-    aboutDlg->setStandardButtons(QMessageBox::Ok | QMessageBox::Help);
+    aboutDlg->setInformativeText(info);
+    aboutDlg->setStandardButtons(QMessageBox::Ok |
+                                 QMessageBox::Help);
     aboutDlg->setEscapeButton(QMessageBox::Ok);
     aboutDlg->button(QMessageBox::Help)->setText("GitHub");
+#ifdef Q_OS_WIN32
+    const QString theme = QApplication::style()->name();
+    WinUtils::setWindowFrame(aboutDlg->winId(), theme);
+#endif
+
     if (aboutDlg->exec() == QMessageBox::Help)
     {
-        QDesktopServices::openUrl(QUrl(QApplication::organizationDomain()));
+        const QUrl url(QApplication::organizationDomain());
+        QDesktopServices::openUrl(url);
     }
 }
 
@@ -131,8 +169,9 @@ void MainWindow::on_aboutQt()
     QMessageBox::aboutQt(this);
 }
 
-void MainWindow::on_startupChanged(const int &state)
+void MainWindow::on_startup()
 {
+    const bool state = ui->startupCheckBox->isChecked();
 #ifdef Q_OS_WIN32
     WinUtils::setStartup(state);
 #endif
@@ -140,24 +179,32 @@ void MainWindow::on_startupChanged(const int &state)
 
 void MainWindow::on_readoutput()
 {
-    const QByteArray &logArray = server->readAllStandardOutput();
-    ui->outText->append(logArray.data());
+    const QByteArray log = server->readAllStandardOutput();
+    ui->outText->append(log);
 }
 
 void MainWindow::on_readerror()
 {
+    const QByteArray log = server->readAllStandardError();
+
     QMessageBox *errorDlg = new QMessageBox(this);
-    const QByteArray &logArray = server->readAllStandardError();
     errorDlg->setWindowTitle(tr("Server error"));
-    errorDlg->setText(tr("The UnblockNeteaseMusic server ran into an error.\n"
-                         "Please change the arguments or check port usage and try again."));
-    errorDlg->setDetailedText(logArray.data());
+    errorDlg->setText(
+        tr("The UnblockNeteaseMusic server ran into an error.\n"
+           "Please change the arguments or "
+           "check port usage and try again."));
+    errorDlg->setDetailedText(log);
     errorDlg->setIcon(QMessageBox::Warning);
+#ifdef Q_OS_WIN32
+    const QString theme = QApplication::style()->name();
+    WinUtils::setWindowFrame(errorDlg->winId(), theme);
+#endif
     errorDlg->exec();
 }
 
 void MainWindow::on_apply()
 {
+    qDebug() << "---Restarting server---";
     server->close();
     ui->outText->clear();
     startServer();
@@ -186,6 +233,7 @@ void MainWindow::loadSettings()
 void MainWindow::updateSettings()
 {
     qDebug() << "Updating settings";
+
     static const QRegularExpression sep("\\W+");
 
     // update settings from ui into variables
@@ -193,7 +241,8 @@ void MainWindow::updateSettings()
     config->address = ui->addressEdit->text();
     config->url = ui->urlEdit->text();
     config->host = ui->hostEdit->text();
-    config->sources = ui->sourceEdit->toPlainText().split(sep, Qt::SkipEmptyParts);
+    config->sources = ui->sourceEdit->toPlainText()
+                          .split(sep, Qt::SkipEmptyParts);
     config->strict = ui->strictCheckBox->isChecked();
     config->startup = ui->startupCheckBox->isChecked();
     config->theme = QApplication::style()->name();
@@ -204,31 +253,30 @@ void MainWindow::updateSettings()
     qDebug() << "Update settings done";
 }
 
-bool MainWindow::getServer(QString &serverFile, QStringList &serverArgs)
+bool MainWindow::getServer(QString &program, QStringList &arguments)
 {
     const QDir appDir(QApplication::applicationDirPath());
     const QFileInfoList results = appDir.entryInfoList(
         {"unblock*", "server*"},
         QDir::Dirs | QDir::Files | QDir::NoSymLinks);
+
     for (const QFileInfo &result : results)
     {
         if (result.isFile())
         {
-            serverFile = result.absoluteFilePath();
-            serverArgs = {};
-            qDebug() << "Server File:"
-                     << serverFile.toUtf8().data();
+            program = result.absoluteFilePath();
+            arguments = {};
             return true;
         }
         if (result.isDir())
         {
-            const QDir serverDir(result.absoluteFilePath());
-            if (serverDir.exists("app.js"))
+            const QString serverDir =
+                result.absoluteFilePath();
+
+            if (QDir(serverDir).exists("app.js"))
             {
-                serverFile = "node";
-                serverArgs = {serverDir.absolutePath() + "/app.js"};
-                qDebug() << "Server File:"
-                         << serverFile.toUtf8().data();
+                program = "node";
+                arguments = {serverDir + "/app.js"};
                 return true;
             }
         }
@@ -236,45 +284,49 @@ bool MainWindow::getServer(QString &serverFile, QStringList &serverArgs)
     return false;
 }
 
-void MainWindow::getArgs(QStringList &serverArgs)
+void MainWindow::getArgs(QStringList &arguments)
 {
     updateSettings();
+
     if (!config->port.isEmpty())
     {
-        serverArgs << "-p" << config->port;
+        arguments << "-p" << config->port;
     }
     if (!config->address.isEmpty())
     {
-        serverArgs << "-a" << config->address;
+        arguments << "-a" << config->address;
     }
     if (!config->url.isEmpty())
     {
-        serverArgs << "-u" << config->url;
+        arguments << "-u" << config->url;
     }
     if (!config->host.isEmpty())
     {
-        serverArgs << "-f" << config->host;
+        arguments << "-f" << config->host;
     }
     if (!config->sources.isEmpty())
     {
-        serverArgs << "-o" << config->sources;
+        arguments << "-o" << config->sources;
     }
     if (config->strict)
     {
-        serverArgs << "-s";
+        arguments << "-s";
     }
-    qDebug() << "Server Arguments:"
-             << serverArgs.join(" ").toUtf8().data();
 }
 
 void MainWindow::startServer()
 {
-    QString serverFile = "";
-    QStringList serverArgs = {};
-    if (getServer(serverFile, serverArgs))
+    QString program = "";
+    QStringList arguments = {};
+
+    if (getServer(program, arguments))
     {
-        getArgs(serverArgs);
-        server->start(serverFile, serverArgs);
+        getArgs(arguments);
+        qDebug() << "Server program:"
+                 << program;
+        qDebug() << "Server arguments:"
+                 << arguments.join(" ");
+        server->start(program, arguments);
         if (!server->waitForStarted())
         {
             ui->outText->append(server->errorString());
@@ -290,6 +342,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
 {
     this->hide();
     e->ignore();
+
 #ifdef Q_OS_WIN32
     // Enable power throttling
     WinUtils::setThrottle(true);

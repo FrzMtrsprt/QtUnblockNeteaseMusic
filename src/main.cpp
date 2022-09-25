@@ -17,7 +17,12 @@ int main(int argc, char *argv[])
     // load app translations
     QTranslator appTranslator;
     // look up e.g. :/i18n/QtUnblockNeteaseMusic_en.qm
-    if (appTranslator.load(QLocale::system(), "QtUnblockNeteaseMusic", "_", ":/i18n", ".qm"))
+    if (appTranslator.load(
+            QLocale::system(),
+            "QtUnblockNeteaseMusic",
+            "_",
+            ":/i18n",
+            ".qm"))
     {
         a.installTranslator(&appTranslator);
     }
@@ -25,21 +30,32 @@ int main(int argc, char *argv[])
     // load Qt base translations
     QTranslator baseTranslator;
     // look up e.g. {current_path}/translations/qt_en.qm
-    if (baseTranslator.load(QLocale::system(), "qt", "_", a.applicationDirPath() + "/translations", ".qm"))
+    if (baseTranslator.load(
+            QLocale::system(),
+            "qt",
+            "_",
+            a.applicationDirPath() + "/translations",
+            ".qm"))
     {
         a.installTranslator(&baseTranslator);
     }
 
     // reference: https://forum.qt.io/post/504087
     QSharedMemory singular(a.applicationName());
+
     if (singular.attach(QSharedMemory::ReadOnly))
     {
         // instance already running
         singular.detach();
 
+        const QString title = QObject::tr("Error");
+        const QString text =
+            a.applicationName() +
+            QObject::tr(" is already running.");
+
         QMessageBox *errorDlg = new QMessageBox();
-        errorDlg->setWindowTitle(QObject::tr("Error"));
-        errorDlg->setText(a.applicationName() + QObject::tr(" is already running."));
+        errorDlg->setWindowTitle(title);
+        errorDlg->setText(text);
         errorDlg->setIcon(QMessageBox::Critical);
         errorDlg->exec();
 
@@ -56,7 +72,7 @@ int main(int argc, char *argv[])
     bool isSilent = false;
     for (int i = 1; i < argc; i++)
     {
-        if (QString::compare(argv[i], "-silent") == 0)
+        if (strcmp(argv[i], "-silent") == 0)
         {
             isSilent = true;
         }
@@ -65,5 +81,6 @@ int main(int argc, char *argv[])
     {
         w.show();
     }
+
     return a.exec();
 }

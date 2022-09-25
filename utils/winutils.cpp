@@ -5,7 +5,8 @@
 #include <Uxtheme.h>
 #pragma comment(lib, "uxtheme")
 
-static LPCSTR lpSubKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+static LPCSTR lpSubKey =
+    "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
 static PROCESS_POWER_THROTTLING_STATE Throttle{
     PROCESS_POWER_THROTTLING_CURRENT_VERSION,
@@ -22,36 +23,42 @@ WinUtils::WinUtils() {}
 // Enable or disable startup
 void WinUtils::setStartup(const bool &enable)
 {
-    LPCSTR lpValueName = QApplication::applicationName().toUtf8().data();
+    LPCSTR lpValueName =
+        QApplication::applicationName()
+            .toUtf8()
+            .data();
+    LSTATUS lReturn;
+
     if (enable)
     {
-        QByteArray path = QApplication::applicationFilePath().toUtf8();
-        QByteArray value = "\"" + path.replace("/", "\\") + "\" -silent";
+        QByteArray value =
+            QString("\"%1\" -silent")
+                .arg(QApplication::applicationFilePath())
+                .toUtf8()
+                .replace("/", "\\");
+        LPCSTR lpData = value.data();
+        DWORD cbData = value.size();
 
-        LSTATUS lSetRet = RegSetKeyValueA(
+        lReturn = RegSetKeyValueA(
             HKEY_CURRENT_USER,
             lpSubKey,
             lpValueName,
             REG_SZ,
-            value.data(),
-            value.size());
-
-        if (lSetRet == ERROR_SUCCESS)
-        {
-            qDebug() << "Startup set";
-        }
+            lpData,
+            cbData);
     }
     else
     {
-        LSTATUS lDelRet = RegDeleteKeyValueA(
+        lReturn = RegDeleteKeyValueA(
             HKEY_CURRENT_USER,
             lpSubKey,
             lpValueName);
+    }
 
-        if (lDelRet == ERROR_SUCCESS)
-        {
-            qDebug() << "Startup deleted";
-        }
+    if (lReturn == ERROR_SUCCESS)
+    {
+        qDebug() << (enable ? "Startup set"
+                            : "Startup deleted");
     }
 }
 
@@ -71,16 +78,18 @@ void WinUtils::setThrottle(const bool &enable)
 }
 
 // Enable basic window frame when theme is "Windows"
-void WinUtils::setWindowFrame(const HWND &hWnd, const QString &theme)
+void WinUtils::setWindowFrame(const WId &winId, const QString &theme)
 {
-    if (QString::compare(theme, "Windows", Qt::CaseInsensitive) == 0)
+    LPCSTR lpTheme = theme.toUtf8().data();
+
+    if (lstrcmpiA(lpTheme, "Windows") == 0)
     {
         // Turn off visual style
-        SetWindowTheme(hWnd, TEXT(" "), TEXT(" "));
+        SetWindowTheme((HWND)winId, TEXT(" "), TEXT(" "));
     }
     else
     {
         // Enable visual style
-        SetWindowTheme(hWnd, TEXT("Explorer"), NULL);
+        SetWindowTheme((HWND)winId, TEXT("Explorer"), NULL);
     }
 }
