@@ -2,8 +2,11 @@
 
 #include <QApplication>
 #include <Windows.h>
+#include <Shlwapi.h>
+#pragma comment(lib, "ShLwApi")
+#include <strsafe.h>
 #include <Uxtheme.h>
-#pragma comment(lib, "uxtheme")
+#pragma comment(lib, "Uxtheme")
 
 static LPCSTR lpSubKey =
     "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
@@ -23,29 +26,27 @@ WinUtils::WinUtils() {}
 // Enable or disable startup
 void WinUtils::setStartup(const bool &enable)
 {
-    LPCSTR lpValueName =
-        QApplication::applicationName()
-            .toUtf8()
-            .data();
+    // Find app file name and trim ".exe"
+    LPSTR lpValueName = StrRChrA(__argv[0], NULL, '\\') + 1;
+    StrTrimA(lpValueName, ".exe");
     LSTATUS lReturn;
 
     if (enable)
     {
-        QByteArray value =
-            QString("\"%1\" -silent")
-                .arg(QApplication::applicationFilePath())
-                .toUtf8()
-                .replace("/", "\\");
-        LPCSTR lpData = value.data();
-        DWORD cbData = value.size();
+        // startup command: "{app path}" -silent
+        const int cbData = 0xFF;
+        char lpData[cbData] = "";
+
+        // format %s with app path
+        StringCbPrintfA(
+            lpData, cbData,
+            "\"%s\" -silent", __argv[0]);
 
         lReturn = RegSetKeyValueA(
             HKEY_CURRENT_USER,
             lpSubKey,
             lpValueName,
-            REG_SZ,
-            lpData,
-            cbData);
+            REG_SZ, lpData, cbData);
     }
     else
     {
