@@ -96,14 +96,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::setTheme(const QString &theme)
 {
-    qDebug() << "Setting theme" << theme;
-    QStyle *style = QStyleFactory::create(theme);
+    if (QStyleFactory::keys().contains(theme, Qt::CaseInsensitive))
+    {
+        qDebug() << "Setting theme" << theme;
+        QStyle *style = QStyleFactory::create(theme);
 
 #ifdef Q_OS_WIN32
-    WinUtils::setWindowFrame(winId(), theme);
+        WinUtils::setWindowFrame(winId(), theme);
 #endif
-    QApplication::setStyle(style);
-    QApplication::setPalette(style->standardPalette());
+        QApplication::setStyle(style);
+        QApplication::setPalette(style->standardPalette());
+    }
 }
 
 void MainWindow::on_show()
@@ -185,14 +188,17 @@ void MainWindow::on_readoutput()
 
 void MainWindow::on_readerror()
 {
+    const QString title = tr("Server error");
+    const QString text =
+        tr("The UnblockNeteaseMusic server "
+           "ran into an error.\n"
+           "Please change the arguments or "
+           "check port usage and try again.");
     const QByteArray log = server->readAllStandardError();
 
     QMessageBox *errorDlg = new QMessageBox(this);
-    errorDlg->setWindowTitle(tr("Server error"));
-    errorDlg->setText(
-        tr("The UnblockNeteaseMusic server ran into an error.\n"
-           "Please change the arguments or "
-           "check port usage and try again."));
+    errorDlg->setWindowTitle(title);
+    errorDlg->setText(text);
     errorDlg->setDetailedText(log);
     errorDlg->setIcon(QMessageBox::Warning);
 #ifdef Q_OS_WIN32
@@ -256,27 +262,30 @@ void MainWindow::updateSettings()
 bool MainWindow::getServer(QString &program, QStringList &arguments)
 {
     const QDir appDir(QApplication::applicationDirPath());
-    const QFileInfoList results = appDir.entryInfoList(
-        {"unblock*", "server*"},
-        QDir::Dirs | QDir::Files | QDir::NoSymLinks);
+    const QFileInfoList entries =
+        appDir.entryInfoList({"unblock*", "server*"});
 
-    for (const QFileInfo &result : results)
+    for (const QFileInfo &entry : entries)
     {
-        if (result.isFile())
+        const QString entryPath = entry.absoluteFilePath();
+
+        // server is packaged execuable
+        if (entry.isFile())
         {
-            program = result.absoluteFilePath();
+            program = entryPath;
             arguments = {};
             return true;
         }
-        if (result.isDir())
-        {
-            const QString serverDir =
-                result.absoluteFilePath();
 
-            if (QDir(serverDir).exists("app.js"))
+        // server is node script
+        if (entry.isDir())
+        {
+            const QString scriptPath = entryPath + "/app.js";
+
+            if (QFileInfo::exists(scriptPath))
             {
                 program = "node";
-                arguments = {serverDir + "/app.js"};
+                arguments = {scriptPath};
                 return true;
             }
         }
