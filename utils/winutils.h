@@ -12,6 +12,10 @@ public:
     static void setStartup(const bool &enable);
     static void setThrottle(const bool &enable);
     static void setWindowFrame(const WId &winId, const QString &theme);
+
+private:
+    static bool UseLightTheme();
+    static bool setDarkBorderToWindow(HWND hwnd, bool d);
 };
 
 #endif // WINUTILS_H

@@ -2,14 +2,19 @@
 
 #include <QApplication>
 #include <Windows.h>
+#include <dwmapi.h>
+#pragma comment(lib, "dwmapi")
 #include <Shlwapi.h>
 #pragma comment(lib, "ShLwApi")
 #include <strsafe.h>
 #include <Uxtheme.h>
 #pragma comment(lib, "Uxtheme")
 
-static LPCSTR lpSubKey =
-    "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+enum : WORD
+{
+    DwmwaUseImmersiveDarkMode = 20,
+    DwmwaUseImmersiveDarkModeBefore20h1 = 19
+};
 
 static PROCESS_POWER_THROTTLING_STATE Throttle{
     PROCESS_POWER_THROTTLING_CURRENT_VERSION,
@@ -26,10 +31,12 @@ WinUtils::WinUtils() {}
 // Enable or disable startup
 void WinUtils::setStartup(const bool &enable)
 {
-    // Find app file name and trim ".exe"
-    LPSTR lpValueName = StrRChrA(__argv[0], NULL, '\\') + 1;
-    StrTrimA(lpValueName, ".exe");
-    LSTATUS lReturn;
+    LPCSTR lpStartupKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+
+    // Find app file name and remove name extension
+    LPSTR lpValueName = PathFindFileNameA(__argv[0]);
+    PathRemoveExtensionA(lpValueName);
+    bool bSucceed;
 
     if (enable)
     {
@@ -42,21 +49,23 @@ void WinUtils::setStartup(const bool &enable)
             lpData, cbData,
             "\"%s\" -silent", __argv[0]);
 
-        lReturn = RegSetKeyValueA(
-            HKEY_CURRENT_USER,
-            lpSubKey,
-            lpValueName,
-            REG_SZ, lpData, cbData);
+        bSucceed = SUCCEEDED(
+            RegSetKeyValueA(
+                HKEY_CURRENT_USER,
+                lpStartupKey,
+                lpValueName,
+                REG_SZ, lpData, cbData));
     }
     else
     {
-        lReturn = RegDeleteKeyValueA(
-            HKEY_CURRENT_USER,
-            lpSubKey,
-            lpValueName);
+        bSucceed = SUCCEEDED(
+            RegDeleteKeyValueA(
+                HKEY_CURRENT_USER,
+                lpStartupKey,
+                lpValueName));
     }
 
-    if (lReturn == ERROR_SUCCESS)
+    if (bSucceed)
     {
         qDebug() << (enable ? "Startup set"
                             : "Startup deleted");
@@ -81,16 +90,62 @@ void WinUtils::setThrottle(const bool &enable)
 // Enable basic window frame when theme is "Windows"
 void WinUtils::setWindowFrame(const WId &winId, const QString &theme)
 {
-    LPCSTR lpTheme = theme.toUtf8().data();
+    const HWND hWnd = (HWND)winId;
+    const QByteArray themeArray = theme.toUtf8();
+    LPCSTR lpTheme = themeArray.data();
 
     if (lstrcmpiA(lpTheme, "Windows") == 0)
     {
-        // Turn off visual style
-        SetWindowTheme((HWND)winId, TEXT(" "), TEXT(" "));
+        // Disable visual style
+        SetWindowTheme(hWnd, TEXT(" "), TEXT(" "));
+
+        qDebug() << "Set theme \"Window\" with classic border";
     }
     else
     {
-        // Enable visual style
-        SetWindowTheme((HWND)winId, TEXT("Explorer"), NULL);
+        // Enable visual style & dark boarder
+        SetWindowTheme(hWnd, TEXT("Explorer"), NULL);
+
+        const bool bFusion = lstrcmpiA(lpTheme, "Fusion") == 0;
+        const bool bDark = bFusion && !UseLightTheme();
+        const bool bRet = setDarkBorderToWindow(hWnd, bDark);
+
+        qDebug() << "Set theme"
+                 << theme
+                 << (bRet ? (bDark ? "with dark border" : "with light border") : "");
     }
+}
+
+// Query Windows theme from registry
+bool WinUtils::UseLightTheme()
+{
+    DWORD buffer;
+    DWORD cbData = sizeof(DWORD);
+
+    const LSTATUS lReturn = RegGetValue(
+        HKEY_CURRENT_USER,
+        TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize"),
+        TEXT("AppsUseLightTheme"),
+        RRF_RT_REG_DWORD,
+        NULL,
+        &buffer,
+        &cbData);
+    if (lReturn == ERROR_SUCCESS)
+    {
+        return (bool)buffer;
+    }
+    return true;
+}
+
+// Set dark border to window
+// Reference: qt/qtbase.git/tree/src/plugins/platforms/windows/qwindowswindow.cpp
+bool WinUtils::setDarkBorderToWindow(HWND hwnd, bool d)
+{
+    const BOOL darkBorder = d ? TRUE : FALSE;
+    const bool ok =
+        SUCCEEDED(DwmSetWindowAttribute(hwnd, DwmwaUseImmersiveDarkMode, &darkBorder, sizeof(darkBorder)))
+        || SUCCEEDED(DwmSetWindowAttribute(hwnd, DwmwaUseImmersiveDarkModeBefore20h1, &darkBorder, sizeof(darkBorder)));
+    if (!ok)
+        qWarning("%s: Unable to set dark window border.", __FUNCTION__);
+    return ok;
 }
