@@ -87,7 +87,7 @@ void WinUtils::setThrottle(const bool &enable)
         enable ? IDLE_PRIORITY_CLASS : NORMAL_PRIORITY_CLASS);
 }
 
-// Enable basic window frame when theme is "Windows"
+// Set window frame according to theme
 void WinUtils::setWindowFrame(const WId &winId, const QString &theme)
 {
     const HWND hWnd = (HWND)winId;
@@ -103,21 +103,23 @@ void WinUtils::setWindowFrame(const WId &winId, const QString &theme)
     }
     else
     {
-        // Enable visual style & dark boarder
+        // Enable visual style & dark border
         SetWindowTheme(hWnd, TEXT("Explorer"), NULL);
 
         const bool bFusion = lstrcmpiA(lpTheme, "Fusion") == 0;
-        const bool bDark = bFusion && !UseLightTheme();
+        const bool bDark = bFusion && !useLightTheme();
         const bool bRet = setDarkBorderToWindow(hWnd, bDark);
 
         qDebug() << "Set theme"
                  << theme
-                 << (bRet ? (bDark ? "with dark border" : "with light border") : "");
+                 << (bRet ? (bDark ? "with dark border"
+                                   : "with light border")
+                          : "");
     }
 }
 
 // Query Windows theme from registry
-bool WinUtils::UseLightTheme()
+bool WinUtils::useLightTheme()
 {
     DWORD buffer;
     DWORD cbData = sizeof(DWORD);
@@ -143,8 +145,12 @@ bool WinUtils::setDarkBorderToWindow(HWND hwnd, bool d)
 {
     const BOOL darkBorder = d ? TRUE : FALSE;
     const bool ok =
-        SUCCEEDED(DwmSetWindowAttribute(hwnd, DwmwaUseImmersiveDarkMode, &darkBorder, sizeof(darkBorder)))
-        || SUCCEEDED(DwmSetWindowAttribute(hwnd, DwmwaUseImmersiveDarkModeBefore20h1, &darkBorder, sizeof(darkBorder)));
+        SUCCEEDED(
+            DwmSetWindowAttribute(
+                hwnd, DwmwaUseImmersiveDarkMode, &darkBorder, sizeof(darkBorder))) ||
+        SUCCEEDED(
+            DwmSetWindowAttribute(
+                hwnd, DwmwaUseImmersiveDarkModeBefore20h1, &darkBorder, sizeof(darkBorder)));
     if (!ok)
         qWarning("%s: Unable to set dark window border.", __FUNCTION__);
     return ok;
