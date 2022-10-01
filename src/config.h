@@ -7,6 +7,7 @@ class Config
 {
 public:
     Config();
+    ~Config();
 
     QString port;
     QString address;

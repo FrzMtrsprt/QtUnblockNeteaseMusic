@@ -105,7 +105,6 @@ void MainWindow::setTheme(const QString &theme)
 #endif
         QApplication::setStyle(style);
         QApplication::setPalette(style->standardPalette());
-        config->theme = theme;
     }
 }
 
@@ -125,6 +124,7 @@ void MainWindow::on_exit()
     qDebug() << "---Shutting down---";
     server->close();
     updateSettings();
+    config->~Config();
     QApplication::exit();
 }
 
@@ -178,7 +178,6 @@ void MainWindow::on_startup()
 #ifdef Q_OS_WIN32
     WinUtils::setStartup(state);
 #endif
-    config->startup = state;
 }
 
 void MainWindow::on_readoutput()

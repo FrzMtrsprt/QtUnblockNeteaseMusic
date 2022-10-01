@@ -9,6 +9,11 @@ Config::Config()
     settings = new QSettings(fileName, QSettings::IniFormat);
 }
 
+Config::~Config()
+{
+    settings->~QSettings();
+}
+
 void Config::readSettings()
 {
     settings->beginGroup(QApplication::applicationName());
