@@ -41,7 +41,7 @@ QtUnblockNeteaseMusic
 5. Set the proxy in the Netease Cloud Music client accordingly & enjoy!
 
 ## Build
-1. Set up the Qt development environment (Qt 6.3.2)
+1. Set up the Qt development environment (Qt 6.4.0)
 2. Clone the repository
 3. Open the project in VSCode / Qt Creator
 4. Compile & Run
@@ -58,6 +58,6 @@ This little tool wouldn't have been made possible without these incredible proje
 ## To be solved
 - ~~The log output from the enhanced server is messy ([#791](https://github.com/UnblockNeteaseMusic/server/issues/791))~~ Fixed in upstream ([#798](https://github.com/UnblockNeteaseMusic/server/pull/798))
 - Build everything with cmake ~~Done~~  
-  There's a bug in Qt 6.3.1 preventing lupdate from working with CMake, thus we have to lupdate manually
+  There's a bug in Qt 6 preventing lupdate from working with CMake, thus we have to lupdate manually
 - Untested/unsupported on macOS, Linux, and Windows 8 or lower
 - I'm a newbie
