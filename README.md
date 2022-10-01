@@ -6,6 +6,7 @@
 - Remembers the options from the last run in a config file
 - View real time log output from the server
 - Auto detects the server's file, node or packaged executable
+- Dark theme support
 
 ## Supports
 The original [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)
