@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
             {
                 if (reason == QSystemTrayIcon::Trigger)
                 {
-                    on_show();
+                    isHidden() ? on_show() : on_close();
                 }
             });
 
@@ -115,8 +115,18 @@ void MainWindow::on_show()
     WinUtils::setThrottle(false);
 #endif
 
-    this->show();
-    this->activateWindow();
+    show();
+    activateWindow();
+}
+
+void MainWindow::on_close()
+{
+    hide();
+
+#ifdef Q_OS_WIN32
+    // Enable power throttling
+    WinUtils::setThrottle(true);
+#endif
 }
 
 void MainWindow::on_exit()
@@ -349,11 +359,6 @@ void MainWindow::startServer()
 
 void MainWindow::closeEvent(QCloseEvent *e)
 {
-    this->hide();
+    on_close();
     e->ignore();
-
-#ifdef Q_OS_WIN32
-    // Enable power throttling
-    WinUtils::setThrottle(true);
-#endif
 }

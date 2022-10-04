@@ -24,6 +24,7 @@ public:
 
 private slots:
     void on_show();
+    void on_close();
     void on_exit();
     void on_startup();
     void on_about();
