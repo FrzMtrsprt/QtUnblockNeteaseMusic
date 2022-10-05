@@ -91,57 +91,50 @@ void WinUtils::setThrottle(const bool &enable)
 void WinUtils::setWindowFrame(const WId &winId, const QString &theme)
 {
     const HWND hWnd = (HWND)winId;
-    const QByteArray themeArray = theme.toUtf8();
-    LPCSTR lpTheme = themeArray.data();
+    LPCWSTR lpTheme = (LPCWSTR)theme.utf16();
+    const bool bClassic = lstrcmpiW(lpTheme, L"Windows") == 0;
+    const bool bDarkAware = lstrcmpiW(lpTheme, L"Fusion") == 0;
 
-    if (lstrcmpiA(lpTheme, "Windows") == 0)
-    {
-        // Disable visual style
-        SetWindowTheme(hWnd, TEXT(" "), TEXT(" "));
+    // Use dark window frame only when:
+    // Theme is not classic, theme is darkmode aware, and Windows is in darkmode
+    const bool bDark = !bClassic && bDarkAware && useDarkTheme();
+    const bool bRet = setDarkBorderToWindow(hWnd, bDark);
 
-        qDebug() << "Set theme \"Window\" with classic border";
-    }
-    else
-    {
-        // Enable visual style & dark border
-        SetWindowTheme(hWnd, TEXT("Explorer"), NULL);
+    // Disable / enable visual style
+    SetWindowTheme(
+        hWnd,
+        bClassic ? L" " : NULL,
+        bClassic ? L" " : NULL);
 
-        const bool bFusion = lstrcmpiA(lpTheme, "Fusion") == 0;
-        const bool bDark = bFusion && !useLightTheme();
-        const bool bRet = setDarkBorderToWindow(hWnd, bDark);
-
-        qDebug() << "Set theme"
-                 << theme
-                 << (bRet ? (bDark ? "with dark border"
-                                   : "with light border")
-                          : "");
-    }
+    qDebug() << "Set theme"
+             << theme
+             << (bRet ? (bClassic ? "with classic light border"
+                                  : (bDark ? "with dark border"
+                                           : "with light border"))
+                      : "with border color unset");
 }
 
 // Query Windows theme from registry
-bool WinUtils::useLightTheme()
+bool WinUtils::useDarkTheme()
 {
-    DWORD buffer;
+    DWORD dwData = 1;
     DWORD cbData = sizeof(DWORD);
 
-    const LSTATUS lReturn = RegGetValue(
+    RegGetValueW(
         HKEY_CURRENT_USER,
-        TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize"),
-        TEXT("AppsUseLightTheme"),
+        L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+        L"AppsUseLightTheme",
         RRF_RT_REG_DWORD,
         NULL,
-        &buffer,
+        &dwData,
         &cbData);
-    if (lReturn == ERROR_SUCCESS)
-    {
-        return (bool)buffer;
-    }
-    return true;
+
+    return dwData == 0;
 }
 
 // Set dark border to window
 // Reference: qt/qtbase.git/tree/src/plugins/platforms/windows/qwindowswindow.cpp
-bool WinUtils::setDarkBorderToWindow(HWND hwnd, bool d)
+bool WinUtils::setDarkBorderToWindow(const HWND &hwnd, const bool &d)
 {
     const BOOL darkBorder = d ? TRUE : FALSE;
     const bool ok =

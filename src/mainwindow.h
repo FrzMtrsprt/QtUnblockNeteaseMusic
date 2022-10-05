@@ -26,12 +26,12 @@ private slots:
     void on_show();
     void on_close();
     void on_exit();
-    void on_startup();
+    void on_startup(const int &state);
     void on_about();
     void on_aboutQt();
     void on_apply();
-    void on_readoutput();
-    void on_readerror();
+    void on_stdout();
+    void on_stderr();
 
 private:
     Ui::MainWindow *ui;

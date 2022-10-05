@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QDir>
+#include <QLibraryInfo>
 #include <QMessageBox>
 #include <QSharedMemory>
 #include <QTranslator>
@@ -14,15 +16,16 @@ int main(int argc, char *argv[])
     a.setOrganizationName("FrzMtrsprt");
     a.setOrganizationDomain("https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic");
 
+    QDir::setCurrent(QApplication::applicationDirPath());
+
+    const QLocale locale = QLocale();
+    const QString translationsPath =
+        QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+
     // load app translations
     QTranslator appTranslator;
     // look up e.g. :/i18n/QtUnblockNeteaseMusic_en.qm
-    if (appTranslator.load(
-            QLocale::system(),
-            "QtUnblockNeteaseMusic",
-            "_",
-            ":/i18n",
-            ".qm"))
+    if (appTranslator.load(locale, "QtUnblockNeteaseMusic", "_", ":/i18n"))
     {
         a.installTranslator(&appTranslator);
     }
@@ -30,12 +33,7 @@ int main(int argc, char *argv[])
     // load Qt base translations
     QTranslator baseTranslator;
     // look up e.g. {current_path}/translations/qt_en.qm
-    if (baseTranslator.load(
-            QLocale::system(),
-            "qt",
-            "_",
-            a.applicationDirPath() + "/translations",
-            ".qm"))
+    if (baseTranslator.load(locale, "qt", "_", translationsPath))
     {
         a.installTranslator(&baseTranslator);
     }
@@ -69,15 +67,15 @@ int main(int argc, char *argv[])
 
     // don't show window if "-silent" in arguments
     MainWindow w;
-    bool isSilent = false;
+    bool silent = false;
     for (int i = 1; i < argc; i++)
     {
         if (strcmp(argv[i], "-silent") == 0)
         {
-            isSilent = true;
+            silent = true;
         }
     }
-    if (!isSilent)
+    if (!silent)
     {
         w.show();
     }

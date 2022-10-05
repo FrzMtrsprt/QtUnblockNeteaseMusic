@@ -83,9 +83,9 @@ MainWindow::MainWindow(QWidget *parent)
     qDebug() << "---Starting server---";
     server = new QProcess();
     connect(server, &QProcess::readyReadStandardOutput,
-            this, &MainWindow::on_readoutput);
+            this, &MainWindow::on_stdout);
     connect(server, &QProcess::readyReadStandardError,
-            this, &MainWindow::on_readerror);
+            this, &MainWindow::on_stderr);
     startServer();
 }
 
@@ -142,7 +142,9 @@ void MainWindow::on_about()
 {
     const QPixmap logo =
         QPixmap(":/res/icon.png")
-            .scaledToHeight(100, Qt::SmoothTransformation);
+            .scaled(100, 100,
+                    Qt::KeepAspectRatio,
+                    Qt::SmoothTransformation);
 
     const QString text =
         tr("<h3>About %1</h3>"
@@ -182,21 +184,21 @@ void MainWindow::on_aboutQt()
     QMessageBox::aboutQt(this);
 }
 
-void MainWindow::on_startup()
+void MainWindow::on_startup(const int &state)
 {
-    const bool state = ui->startupCheckBox->isChecked();
+    const bool enable = state != Qt::Unchecked;
 #ifdef Q_OS_WIN32
-    WinUtils::setStartup(state);
+    WinUtils::setStartup(enable);
 #endif
 }
 
-void MainWindow::on_readoutput()
+void MainWindow::on_stdout()
 {
     const QByteArray log = server->readAllStandardOutput();
     ui->outText->append(log);
 }
 
-void MainWindow::on_readerror()
+void MainWindow::on_stderr()
 {
     const QString title = tr("Server error");
     const QString text =
@@ -271,13 +273,13 @@ void MainWindow::updateSettings()
 
 bool MainWindow::getServer(QString &program, QStringList &arguments)
 {
-    const QDir appDir(QApplication::applicationDirPath());
     const QFileInfoList entries =
-        appDir.entryInfoList({"unblock*", "server*"});
+        QDir::current()
+            .entryInfoList({"unblock*", "server*"});
 
     for (const QFileInfo &entry : entries)
     {
-        const QString entryPath = entry.absoluteFilePath();
+        const QString entryPath = entry.filePath();
 
         // server is packaged execuable
         if (entry.isFile())
@@ -345,7 +347,8 @@ void MainWindow::startServer()
                  << program;
         qDebug() << "Server arguments:"
                  << arguments.join(" ");
-        server->start(program, arguments);
+        server->start(program, arguments,
+                      QIODeviceBase::ReadOnly);
         if (!server->waitForStarted())
         {
             ui->outText->append(server->errorString());
