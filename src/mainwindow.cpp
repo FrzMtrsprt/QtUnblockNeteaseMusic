@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // setup system tray
     QSystemTrayIcon *tray = new QSystemTrayIcon(this);
-    tray->setIcon(QIcon(":/res/icon.ico"));
+    tray->setIcon(QIcon(":/res/icon.png"));
     tray->setToolTip("QtUnblockNeteaseMusic");
     QMenu *trayMenu = new QMenu(this);
     QAction *trayExit = new QAction(this);

@@ -51,9 +51,8 @@ qt_add_executable(QtUnblockNeteaseMusic
 
 qt_add_resources(QtUnblockNeteaseMusic res
     # resource path = FILES - BASE + PREFIX
-    PREFIX "/res"
-    BASE "res"
-    FILES res/icon.ico res/icon.png
+    PREFIX "/"
+    FILES res/icon.png
 )
 
 qt_add_translations(QtUnblockNeteaseMusic
