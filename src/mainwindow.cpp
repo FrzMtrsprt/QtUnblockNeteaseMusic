@@ -96,16 +96,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::setTheme(const QString &theme)
 {
-    if (QStyleFactory::keys().contains(theme, Qt::CaseInsensitive))
-    {
-        QStyle *style = QStyleFactory::create(theme);
+    QStyle *style = QStyleFactory::create(theme);
 
 #ifdef Q_OS_WIN32
-        WinUtils::setWindowFrame(winId(), theme);
+    WinUtils::setWindowFrame(winId(), theme);
 #endif
-        QApplication::setStyle(style);
-        QApplication::setPalette(style->standardPalette());
-    }
+    QApplication::setStyle(style);
+    QApplication::setPalette(style->standardPalette());
 }
 
 void MainWindow::on_show()
@@ -159,14 +156,14 @@ void MainWindow::on_about()
             .arg(QApplication::organizationName());
 
     QMessageBox *aboutDlg = new QMessageBox(this);
+    aboutDlg->setAttribute(Qt::WA_DeleteOnClose);
     aboutDlg->setWindowTitle("About");
     aboutDlg->setIconPixmap(logo);
     aboutDlg->setText(text);
     aboutDlg->setInformativeText(info);
-    aboutDlg->setStandardButtons(QMessageBox::Ok |
-                                 QMessageBox::Help);
+    aboutDlg->setStandardButtons(QMessageBox::Ok);
     aboutDlg->setEscapeButton(QMessageBox::Ok);
-    aboutDlg->button(QMessageBox::Help)->setText("GitHub");
+    aboutDlg->addButton(QMessageBox::Help)->setText("GitHub");
 #ifdef Q_OS_WIN32
     const QString theme = QApplication::style()->name();
     WinUtils::setWindowFrame(aboutDlg->winId(), theme);
@@ -209,6 +206,7 @@ void MainWindow::on_stderr()
     const QByteArray log = server->readAllStandardError();
 
     QMessageBox *errorDlg = new QMessageBox(this);
+    errorDlg->setAttribute(Qt::WA_DeleteOnClose);
     errorDlg->setWindowTitle(title);
     errorDlg->setText(text);
     errorDlg->setDetailedText(log);
@@ -243,7 +241,11 @@ void MainWindow::loadSettings()
     ui->sourceEdit->append(config->sources.join(", "));
     ui->strictCheckBox->setChecked(config->strict);
     ui->startupCheckBox->setChecked(config->startup);
-    setTheme(config->theme);
+    if (QStyleFactory::keys()
+            .contains(config->theme, Qt::CaseInsensitive))
+    {
+        setTheme(config->theme);
+    }
 
     qDebug() << "Load settings done";
 }

@@ -6,7 +6,6 @@
 #pragma comment(lib, "dwmapi")
 #include <Shlwapi.h>
 #pragma comment(lib, "ShLwApi")
-#include <strsafe.h>
 #include <Uxtheme.h>
 #pragma comment(lib, "Uxtheme")
 
@@ -36,39 +35,35 @@ void WinUtils::setStartup(const bool &enable)
     // Find app file name and remove name extension
     LPSTR lpValueName = PathFindFileNameA(__argv[0]);
     PathRemoveExtensionA(lpValueName);
-    bool bSucceed;
 
     if (enable)
     {
         // startup command: "{app path}" -silent
-        const int cbData = 0xFF;
-        char lpData[cbData] = "";
+        char lpData[MAX_PATH];
 
         // format %s with app path
-        StringCbPrintfA(
-            lpData, cbData,
-            "\"%s\" -silent", __argv[0]);
+        sprintf_s(lpData, MAX_PATH, "\"%s\" -silent", __argv[0]);
 
-        bSucceed = SUCCEEDED(
-            RegSetKeyValueA(
-                HKEY_CURRENT_USER,
-                lpStartupKey,
-                lpValueName,
-                REG_SZ, lpData, cbData));
+        if (SUCCEEDED(
+                RegSetKeyValueA(
+                    HKEY_CURRENT_USER,
+                    lpStartupKey,
+                    lpValueName,
+                    REG_SZ, lpData, MAX_PATH)))
+        {
+            qDebug() << "Startup set";
+        }
     }
     else
     {
-        bSucceed = SUCCEEDED(
-            RegDeleteKeyValueA(
-                HKEY_CURRENT_USER,
-                lpStartupKey,
-                lpValueName));
-    }
-
-    if (bSucceed)
-    {
-        qDebug() << (enable ? "Startup set"
-                            : "Startup deleted");
+        if (SUCCEEDED(
+                RegDeleteKeyValueA(
+                    HKEY_CURRENT_USER,
+                    lpStartupKey,
+                    lpValueName)))
+        {
+            qDebug() << "Startup deleted";
+        }
     }
 }
 
@@ -91,27 +86,28 @@ void WinUtils::setThrottle(const bool &enable)
 void WinUtils::setWindowFrame(const WId &winId, const QString &theme)
 {
     const HWND hWnd = (HWND)winId;
-    LPCWSTR lpTheme = (LPCWSTR)theme.utf16();
-    const bool bClassic = lstrcmpiW(lpTheme, L"Windows") == 0;
-    const bool bDarkAware = lstrcmpiW(lpTheme, L"Fusion") == 0;
+    const QByteArray szTheme = theme.toUtf8();
+    const bool bClassic = lstrcmpiA(szTheme, "Windows") == 0;
+    const bool bDarkAware = lstrcmpiA(szTheme, "Fusion") == 0;
 
     // Use dark window frame only when:
     // Theme is not classic, theme is darkmode aware, and Windows is in darkmode
     const bool bDark = !bClassic && bDarkAware && useDarkTheme();
-    const bool bRet = setDarkBorderToWindow(hWnd, bDark);
+
+    qDebug() << "Setting theme"
+             << theme
+             << (bClassic ? "with classic light border"
+                          : (bDark ? "with dark border"
+                                   : "with light border"));
+
+    setDarkBorderToWindow(hWnd, bDark);
 
     // Disable / enable visual style
-    SetWindowTheme(
-        hWnd,
-        bClassic ? L" " : NULL,
-        bClassic ? L" " : NULL);
-
-    qDebug() << "Set theme"
-             << theme
-             << (bRet ? (bClassic ? "with classic light border"
-                                  : (bDark ? "with dark border"
-                                           : "with light border"))
-                      : "with border color unset");
+    if (!SUCCEEDED(bClassic ? SetWindowTheme(hWnd, L" ", L" ")
+                            : SetWindowTheme(hWnd, NULL, NULL)))
+    {
+        qWarning("%s: Unable to set visual style.", __FUNCTION__);
+    }
 }
 
 // Query Windows theme from registry

@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
             QObject::tr(" is already running.");
 
         QMessageBox *errorDlg = new QMessageBox();
+        errorDlg->setAttribute(Qt::WA_DeleteOnClose);
         errorDlg->setWindowTitle(title);
         errorDlg->setText(text);
         errorDlg->setIcon(QMessageBox::Critical);
