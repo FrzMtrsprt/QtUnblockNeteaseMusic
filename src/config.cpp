@@ -1,12 +1,15 @@
 #include "config.h"
 
 #include <QApplication>
+#include <QDir>
+
+using namespace Qt;
 
 Config::Config()
 {
-    const QString appPath = QApplication::applicationDirPath();
-    const QString fileName = appPath + "/config.ini";
-    settings = new QSettings(fileName, QSettings::IniFormat);
+    settings = new QSettings(
+        QDir::currentPath() + u"/config.ini"_s,
+        QSettings::IniFormat);
 }
 
 Config::~Config()

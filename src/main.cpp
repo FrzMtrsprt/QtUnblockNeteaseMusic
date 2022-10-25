@@ -7,14 +7,15 @@
 #include <QSharedMemory>
 #include <QTranslator>
 
+using namespace Qt;
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setWindowIcon(QIcon(":/res/icon.ico"));
-    a.setApplicationName("QtUnblockNeteaseMusic");
-    a.setApplicationVersion("1.3.1");
-    a.setOrganizationName("FrzMtrsprt");
-    a.setOrganizationDomain("https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic");
+    a.setApplicationName(u"QtUnblockNeteaseMusic"_s);
+    a.setApplicationVersion(u"1.3.1"_s);
+    a.setOrganizationName(u"FrzMtrsprt"_s);
+    a.setOrganizationDomain(u"https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic"_s);
 
     QDir::setCurrent(QApplication::applicationDirPath());
 
@@ -25,7 +26,7 @@ int main(int argc, char *argv[])
     // load app translations
     QTranslator appTranslator;
     // look up e.g. :/i18n/QtUnblockNeteaseMusic_en.qm
-    if (appTranslator.load(locale, "QtUnblockNeteaseMusic", "_", ":/i18n"))
+    if (appTranslator.load(locale, u"QtUnblockNeteaseMusic"_s, u"_"_s, u":/i18n"_s))
     {
         a.installTranslator(&appTranslator);
     }
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
     // load Qt base translations
     QTranslator baseTranslator;
     // look up e.g. {current_path}/translations/qt_en.qm
-    if (baseTranslator.load(locale, "qt", "_", translationsPath))
+    if (baseTranslator.load(locale, u"qt"_s, u"_"_s, translationsPath))
     {
         a.installTranslator(&baseTranslator);
     }
@@ -41,15 +42,15 @@ int main(int argc, char *argv[])
     // reference: https://forum.qt.io/post/504087
     QSharedMemory singular(a.applicationName());
 
-    if (singular.attach(QSharedMemory::ReadOnly))
+    singular.create(1, QSharedMemory::ReadOnly);
+
+    if (singular.error() == QSharedMemory::AlreadyExists)
     {
         // instance already running
-        singular.detach();
-
         const QString title = QObject::tr("Error");
         const QString text =
-            a.applicationName() +
-            QObject::tr(" is already running.");
+            QObject::tr("%1 is already running.")
+                .arg(a.applicationName());
 
         QMessageBox *errorDlg = new QMessageBox();
         errorDlg->setAttribute(Qt::WA_DeleteOnClose);
@@ -59,11 +60,6 @@ int main(int argc, char *argv[])
         errorDlg->exec();
 
         return -42;
-    }
-    else
-    {
-        // program not yet running
-        singular.create(1);
     }
 
     // don't show window if "-silent" in arguments

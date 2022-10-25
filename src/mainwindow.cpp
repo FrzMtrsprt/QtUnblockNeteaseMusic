@@ -17,6 +17,8 @@
 #include "../utils/winutils.h"
 #endif
 
+using namespace Qt;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -25,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     // setup system tray
     QSystemTrayIcon *tray = new QSystemTrayIcon(this);
     tray->setIcon(QIcon(":/res/icon.png"));
-    tray->setToolTip("QtUnblockNeteaseMusic");
+    tray->setToolTip(u"QtUnblockNeteaseMusic"_s);
     QMenu *trayMenu = new QMenu(this);
     QAction *trayExit = new QAction(this);
     QAction *trayShow = new QAction(this);
@@ -66,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::on_exit);
 
     // setup theme menu
-    for (QString &style : QStyleFactory::keys())
+    for (const QString &style : QStyleFactory::keys())
     {
         // reference: https://stackoverflow.com/a/45265455
         QAction *action = ui->menuTheme->addAction(style);
@@ -97,12 +99,14 @@ MainWindow::~MainWindow()
 void MainWindow::setTheme(const QString &theme)
 {
     QStyle *style = QStyleFactory::create(theme);
-
+    if (style)
+    {
 #ifdef Q_OS_WIN32
-    WinUtils::setWindowFrame(winId(), theme);
+        WinUtils::setWindowFrame(winId(), theme);
 #endif
-    QApplication::setStyle(style);
-    QApplication::setPalette(style->standardPalette());
+        QApplication::setStyle(style);
+        QApplication::setPalette(style->standardPalette());
+    }
 }
 
 void MainWindow::on_show()
@@ -157,13 +161,13 @@ void MainWindow::on_about()
 
     QMessageBox *aboutDlg = new QMessageBox(this);
     aboutDlg->setAttribute(Qt::WA_DeleteOnClose);
-    aboutDlg->setWindowTitle("About");
+    aboutDlg->setWindowTitle(tr("About"));
     aboutDlg->setIconPixmap(logo);
     aboutDlg->setText(text);
     aboutDlg->setInformativeText(info);
     aboutDlg->setStandardButtons(QMessageBox::Ok);
     aboutDlg->setEscapeButton(QMessageBox::Ok);
-    aboutDlg->addButton(QMessageBox::Help)->setText("GitHub");
+    aboutDlg->addButton(QMessageBox::Help)->setText(u"GitHub"_s);
 #ifdef Q_OS_WIN32
     const QString theme = QApplication::style()->name();
     WinUtils::setWindowFrame(aboutDlg->winId(), theme);
@@ -238,14 +242,10 @@ void MainWindow::loadSettings()
     ui->addressEdit->setText(config->address);
     ui->urlEdit->setText(config->url);
     ui->hostEdit->setText(config->host);
-    ui->sourceEdit->append(config->sources.join(", "));
+    ui->sourceEdit->append(config->sources.join(u", "_s));
     ui->strictCheckBox->setChecked(config->strict);
     ui->startupCheckBox->setChecked(config->startup);
-    if (QStyleFactory::keys()
-            .contains(config->theme, Qt::CaseInsensitive))
-    {
-        setTheme(config->theme);
-    }
+    setTheme(config->theme);
 
     qDebug("Load settings done");
 }
@@ -254,7 +254,7 @@ void MainWindow::updateSettings()
 {
     qDebug("Updating settings");
 
-    static const QRegularExpression sep("\\W+");
+    static const QRegularExpression sep(u"\\W+"_s);
 
     // update settings from ui into variables
     config->port = ui->portEdit->text();
@@ -276,8 +276,8 @@ void MainWindow::updateSettings()
 bool MainWindow::getServer(QString &program, QStringList &arguments)
 {
     const QFileInfoList entries =
-        QDir::current()
-            .entryInfoList({"unblock*", "server*"});
+        QDir::current().entryInfoList(
+            {u"unblock*"_s, u"server*"_s});
 
     for (const QFileInfo &entry : entries)
     {
@@ -294,11 +294,12 @@ bool MainWindow::getServer(QString &program, QStringList &arguments)
         // server is node script
         if (entry.isDir())
         {
-            const QString scriptPath = entryPath + "/app.js";
+            const QString scriptPath =
+                entryPath + u"/app.js"_s;
 
             if (QFileInfo::exists(scriptPath))
             {
-                program = "node";
+                program = u"node"_s;
                 arguments = {scriptPath};
                 return true;
             }
@@ -313,34 +314,34 @@ void MainWindow::getArgs(QStringList &arguments)
 
     if (!config->port.isEmpty())
     {
-        arguments << "-p" << config->port;
+        arguments << u"-p"_s << config->port;
     }
     if (!config->address.isEmpty())
     {
-        arguments << "-a" << config->address;
+        arguments << u"-a"_s << config->address;
     }
     if (!config->url.isEmpty())
     {
-        arguments << "-u" << config->url;
+        arguments << u"-u"_s << config->url;
     }
     if (!config->host.isEmpty())
     {
-        arguments << "-f" << config->host;
+        arguments << u"-f"_s << config->host;
     }
     if (!config->sources.isEmpty())
     {
-        arguments << "-o" << config->sources;
+        arguments << u"-o"_s << config->sources;
     }
     if (config->strict)
     {
-        arguments << "-s";
+        arguments << u"-s"_s;
     }
 }
 
 void MainWindow::startServer()
 {
-    QString program = "";
-    QStringList arguments = {};
+    QString program;
+    QStringList arguments;
 
     if (getServer(program, arguments))
     {
@@ -348,7 +349,7 @@ void MainWindow::startServer()
         qDebug() << "Server program:"
                  << program;
         qDebug() << "Server arguments:"
-                 << arguments.join(" ");
+                 << arguments.join(u" "_s);
         server->start(program, arguments,
                       QIODeviceBase::ReadOnly);
         if (!server->waitForStarted())

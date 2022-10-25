@@ -101,13 +101,7 @@ void WinUtils::setWindowFrame(const WId &winId, const QString &theme)
                              : "with light border"));
 
     setDarkBorderToWindow(hWnd, bDark);
-
-    // Disable / enable visual style
-    if (!SUCCEEDED(bClassic ? SetWindowTheme(hWnd, L" ", L" ")
-                            : SetWindowTheme(hWnd, NULL, NULL)))
-    {
-        qWarning("%s: Unable to set visual style.", __FUNCTION__);
-    }
+    setVisualStyleToWindow(hWnd, !bClassic);
 }
 
 // Query Windows theme from registry
@@ -142,5 +136,16 @@ bool WinUtils::setDarkBorderToWindow(const HWND &hwnd, const bool &d)
                 hwnd, DwmwaUseImmersiveDarkModeBefore20h1, &darkBorder, sizeof(darkBorder)));
     if (!ok)
         qWarning("%s: Unable to set dark window border.", __FUNCTION__);
+    return ok;
+}
+
+// Disable / enable visual style
+bool WinUtils::setVisualStyleToWindow(const HWND &hWnd, const bool &enable)
+{
+    LPCWSTR pszSubAppName = enable ? NULL : L" ";
+    LPCWSTR pszSubIdList = enable ? NULL : L" ";
+    const bool ok = SUCCEEDED(SetWindowTheme(hWnd, pszSubAppName, pszSubIdList));
+    if (!ok)
+        qWarning("%s: Unable to set visual style.", __FUNCTION__);
     return ok;
 }
