@@ -80,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
     loadSettings();
 
     // setup & start server
-    qDebug() << "---Starting server---";
+    qDebug("---Starting server---");
     server = new QProcess();
     connect(server, &QProcess::readyReadStandardOutput,
             this, &MainWindow::on_stdout);
@@ -128,7 +128,7 @@ void MainWindow::on_close()
 
 void MainWindow::on_exit()
 {
-    qDebug() << "---Shutting down---";
+    qDebug("---Shutting down---");
     server->close();
     updateSettings();
     config->~Config();
@@ -220,7 +220,7 @@ void MainWindow::on_stderr()
 
 void MainWindow::on_apply()
 {
-    qDebug() << "---Restarting server---";
+    qDebug("---Restarting server---");
     server->close();
     ui->outText->clear();
     startServer();
@@ -228,7 +228,7 @@ void MainWindow::on_apply()
 
 void MainWindow::loadSettings()
 {
-    qDebug() << "Loading settings";
+    qDebug("Loading settings");
 
     // load settings from file into variables
     config->readSettings();
@@ -247,12 +247,12 @@ void MainWindow::loadSettings()
         setTheme(config->theme);
     }
 
-    qDebug() << "Load settings done";
+    qDebug("Load settings done");
 }
 
 void MainWindow::updateSettings()
 {
-    qDebug() << "Updating settings";
+    qDebug("Updating settings");
 
     static const QRegularExpression sep("\\W+");
 
@@ -270,7 +270,7 @@ void MainWindow::updateSettings()
     // write settings from variables into file
     config->writeSettings();
 
-    qDebug() << "Update settings done";
+    qDebug("Update settings done");
 }
 
 bool MainWindow::getServer(QString &program, QStringList &arguments)

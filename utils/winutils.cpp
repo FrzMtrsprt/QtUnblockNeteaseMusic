@@ -44,25 +44,25 @@ void WinUtils::setStartup(const bool &enable)
         // format %s with app path
         sprintf_s(lpData, MAX_PATH, "\"%s\" -silent", __argv[0]);
 
-        if (SUCCEEDED(
+        if (!SUCCEEDED(
                 RegSetKeyValueA(
                     HKEY_CURRENT_USER,
                     lpStartupKey,
                     lpValueName,
                     REG_SZ, lpData, MAX_PATH)))
         {
-            qDebug() << "Startup set";
+            qWarning("%s: Unable to set startup.", __FUNCTION__);
         }
     }
     else
     {
-        if (SUCCEEDED(
+        if (!SUCCEEDED(
                 RegDeleteKeyValueA(
                     HKEY_CURRENT_USER,
                     lpStartupKey,
                     lpValueName)))
         {
-            qDebug() << "Startup deleted";
+            qWarning("%s: Unable to delete startup.", __FUNCTION__);
         }
     }
 }
@@ -94,11 +94,11 @@ void WinUtils::setWindowFrame(const WId &winId, const QString &theme)
     // Theme is not classic, theme is darkmode aware, and Windows is in darkmode
     const bool bDark = !bClassic && bDarkAware && useDarkTheme();
 
-    qDebug() << "Setting theme"
-             << theme
-             << (bClassic ? "with classic light border"
-                          : (bDark ? "with dark border"
-                                   : "with light border"));
+    qDebug("Setting theme \"%s\" %s",
+           szTheme.data(),
+           bClassic ? "with classic light border"
+                    : (bDark ? "with dark border"
+                             : "with light border"));
 
     setDarkBorderToWindow(hWnd, bDark);
 
