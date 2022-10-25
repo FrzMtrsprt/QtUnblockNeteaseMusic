@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setApplicationName(u"QtUnblockNeteaseMusic"_s);
-    a.setApplicationVersion(u"1.3.1"_s);
+    a.setApplicationVersion(u"1.3.2"_s);
     a.setOrganizationName(u"FrzMtrsprt"_s);
     a.setOrganizationDomain(u"https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic"_s);
 
