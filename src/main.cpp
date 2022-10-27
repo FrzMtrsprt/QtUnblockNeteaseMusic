@@ -1,11 +1,15 @@
-#include "mainwindow.h"
-
 #include <QApplication>
 #include <QDir>
 #include <QLibraryInfo>
 #include <QMessageBox>
 #include <QSharedMemory>
 #include <QTranslator>
+
+#include "mainwindow.h"
+
+#ifdef Q_OS_WIN
+#include "../utils/winutils.h"
+#endif
 
 using namespace Qt;
 
@@ -76,6 +80,11 @@ int main(int argc, char *argv[])
     {
         w.show();
     }
+
+#ifdef Q_OS_WIN
+    // Enable power throttling
+    WinUtils::setThrottle(silent);
+#endif
 
     return a.exec();
 }

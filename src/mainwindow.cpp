@@ -1,4 +1,3 @@
-#include "config.h"
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
@@ -13,7 +12,9 @@
 #include <QStyleFactory>
 #include <QSystemTrayIcon>
 
-#ifdef Q_OS_WIN32
+#include "config.h"
+
+#ifdef Q_OS_WIN
 #include "../utils/winutils.h"
 #endif
 
@@ -101,7 +102,7 @@ void MainWindow::setTheme(const QString &theme)
     QStyle *style = QStyleFactory::create(theme);
     if (style)
     {
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
         WinUtils::setWindowFrame(winId(), theme);
 #endif
         QApplication::setStyle(style);
@@ -111,7 +112,7 @@ void MainWindow::setTheme(const QString &theme)
 
 void MainWindow::on_show()
 {
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     // Disable power throttling
     WinUtils::setThrottle(false);
 #endif
@@ -124,7 +125,7 @@ void MainWindow::on_close()
 {
     hide();
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     // Enable power throttling
     WinUtils::setThrottle(true);
 #endif
@@ -168,7 +169,7 @@ void MainWindow::on_about()
     aboutDlg->setStandardButtons(QMessageBox::Ok);
     aboutDlg->setEscapeButton(QMessageBox::Ok);
     aboutDlg->addButton(QMessageBox::Help)->setText(u"GitHub"_s);
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     const QString theme = QApplication::style()->name();
     WinUtils::setWindowFrame(aboutDlg->winId(), theme);
 #endif
@@ -188,7 +189,7 @@ void MainWindow::on_aboutQt()
 void MainWindow::on_startup(const int &state)
 {
     const bool enable = state != Qt::Unchecked;
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     WinUtils::setStartup(enable);
 #endif
 }
@@ -215,7 +216,7 @@ void MainWindow::on_stderr()
     errorDlg->setText(text);
     errorDlg->setDetailedText(log);
     errorDlg->setIcon(QMessageBox::Warning);
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     const QString theme = QApplication::style()->name();
     WinUtils::setWindowFrame(errorDlg->winId(), theme);
 #endif
