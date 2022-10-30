@@ -11,8 +11,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
 
 set(TS_FILES
         locale/QtUnblockNeteaseMusic_en.ts
@@ -31,10 +30,10 @@ source_group(src FILES ${APP_SOURCES})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(UTILS_SOURCES
-        utils/winutils.cpp
-        utils/winutils.h
+        src/utils/winutils.cpp
+        src/utils/winutils.h
     )
-    source_group(utils FILES ${UTILS_SOURCES})
+    source_group(src FILES ${UTILS_SOURCES})
 
     set(RESOURCES
         res/QtUnblockNeteaseMusic.rc
@@ -59,12 +58,9 @@ qt_add_translations(QtUnblockNeteaseMusic
     TS_FILES ${TS_FILES}
 )
 
-target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt6::Widgets)
 
 set_target_properties(QtUnblockNeteaseMusic PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )

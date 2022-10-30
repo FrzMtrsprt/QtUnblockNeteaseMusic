@@ -8,7 +8,7 @@
 #include "mainwindow.h"
 
 #ifdef Q_OS_WIN
-#include "../utils/winutils.h"
+#include "utils/winutils.h"
 #endif
 
 using namespace Qt;
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     }
     if (!silent)
     {
-        w.show();
+        w.show(true);
     }
 
 #ifdef Q_OS_WIN

@@ -15,7 +15,7 @@
 #include "config.h"
 
 #ifdef Q_OS_WIN
-#include "../utils/winutils.h"
+#include "utils/winutils.h"
 #endif
 
 using namespace Qt;
@@ -41,22 +41,22 @@ MainWindow::MainWindow(QWidget *parent)
 
     // connect tray signals
     connect(trayShow, &QAction::triggered,
-            this, &MainWindow::on_show);
+            this, &MainWindow::show);
     connect(trayExit, &QAction::triggered,
-            this, &MainWindow::on_exit);
+            this, &MainWindow::exit);
     // show MainWindow only when tray icon is left clicked
     connect(tray, &QSystemTrayIcon::activated, this,
             [this](QSystemTrayIcon::ActivationReason reason)
             {
                 if (reason == QSystemTrayIcon::Trigger)
                 {
-                    isHidden() ? on_show() : on_close();
+                    show(isHidden());
                 }
             });
 
     // connect MainWindow signals
     connect(ui->actionExit, &QAction::triggered,
-            this, &MainWindow::on_exit);
+            this, &MainWindow::exit);
     connect(ui->actionAbout, &QAction::triggered,
             this, &MainWindow::on_about);
     connect(ui->actionAboutQt, &QAction::triggered,
@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->applyBtn, &QPushButton::clicked,
             this, &MainWindow::on_apply);
     connect(ui->exitBtn, &QPushButton::clicked,
-            this, &MainWindow::on_exit);
+            this, &MainWindow::exit);
 
     // setup theme menu
     for (const QString &style : QStyleFactory::keys())
@@ -110,28 +110,18 @@ void MainWindow::setTheme(const QString &theme)
     }
 }
 
-void MainWindow::on_show()
+// Reload QWidget::show()
+void MainWindow::show(const bool &show)
 {
-#ifdef Q_OS_WIN
-    // Disable power throttling
-    WinUtils::setThrottle(false);
-#endif
-
-    show();
+    setVisible(show);
     activateWindow();
-}
-
-void MainWindow::on_close()
-{
-    hide();
 
 #ifdef Q_OS_WIN
-    // Enable power throttling
-    WinUtils::setThrottle(true);
+    WinUtils::setThrottle(!show);
 #endif
 }
 
-void MainWindow::on_exit()
+void MainWindow::exit()
 {
     qDebug("---Shutting down---");
     server->close();
@@ -143,7 +133,7 @@ void MainWindow::on_exit()
 void MainWindow::on_about()
 {
     const QPixmap logo =
-        QPixmap(":/res/icon.png")
+        QPixmap(u":/res/icon.png"_s)
             .scaled(100, 100,
                     Qt::KeepAspectRatio,
                     Qt::SmoothTransformation);
@@ -366,6 +356,6 @@ void MainWindow::startServer()
 
 void MainWindow::closeEvent(QCloseEvent *e)
 {
-    on_close();
+    hide();
     e->ignore();
 }

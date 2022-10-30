@@ -22,16 +22,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void on_show();
-    void on_close();
-    void on_exit();
-    void on_startup(const int &state);
-    void on_about();
-    void on_aboutQt();
-    void on_apply();
-    void on_stdout();
-    void on_stderr();
+public slots:
+    void show(const bool &show);
+    void exit();
 
 private:
     Ui::MainWindow *ui;
@@ -45,5 +38,13 @@ private:
     bool getServer(QString &program, QStringList &argumets);
     void getArgs(QStringList &arguments);
     void startServer();
+
+private slots:
+    void on_startup(const int &state);
+    void on_about();
+    void on_aboutQt();
+    void on_apply();
+    void on_stdout();
+    void on_stderr();
 };
 #endif // MAINWINDOW_H

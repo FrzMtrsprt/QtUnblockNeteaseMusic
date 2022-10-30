@@ -87,7 +87,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="288"/>
-        <location filename="../src/mainwindow.cpp" line="164"/>
+        <location filename="../src/mainwindow.cpp" line="155"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -127,39 +127,39 @@
         <translation>主题(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="34"/>
+        <location filename="../src/mainwindow.cpp" line="35"/>
         <source>Show</source>
         <translation>显示</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="35"/>
+        <location filename="../src/mainwindow.cpp" line="36"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="151"/>
+        <location filename="../src/mainwindow.cpp" line="142"/>
         <source>&lt;h3&gt;About %1&lt;/h3&gt;&lt;p&gt;Version %2&lt;/p&gt;</source>
         <translation>&lt;h3&gt;关于 %1&lt;/h3&gt;&lt;p&gt;版本 %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="157"/>
+        <location filename="../src/mainwindow.cpp" line="148"/>
         <source>&lt;p&gt;A desktop client for UnblockNeteaseMusic, written in Qt.&lt;/p&gt;&lt;p&gt;Copyright 2022 %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;适用于 UnblockNeteaseMusic 的桌面应用，使用 Qt 编写。&lt;/p&gt;&lt;p&gt;版权所有 2022 %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="204"/>
+        <location filename="../src/mainwindow.cpp" line="195"/>
         <source>Server error</source>
         <translation>服务器错误</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="206"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>The UnblockNeteaseMusic server ran into an error.
 Please change the arguments or check port usage and try again.</source>
         <translation>UnblockNeteaseMusic 服务器出现错误。
 请修改服务器参数或检查端口占用，然后重试。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="362"/>
+        <location filename="../src/mainwindow.cpp" line="353"/>
         <source>Server not found.</source>
         <translation>未找到服务器。</translation>
     </message>
@@ -167,12 +167,12 @@ Please change the arguments or check port usage and try again.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/main.cpp" line="50"/>
+        <location filename="../src/main.cpp" line="54"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="52"/>
+        <location filename="../src/main.cpp" line="56"/>
         <source>%1 is already running.</source>
         <translation>%1 已经正在运行。</translation>
     </message>
