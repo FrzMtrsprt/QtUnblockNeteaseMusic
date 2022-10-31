@@ -40,10 +40,10 @@ MainWindow::MainWindow(QWidget *parent)
     tray->show();
 
     // connect tray signals
-    connect(trayShow, &QAction::triggered,
-            this, &MainWindow::show);
-    connect(trayExit, &QAction::triggered,
-            this, &MainWindow::exit);
+    connect(trayShow, &QAction::triggered, this, [this]()
+            { show(true); });
+    connect(trayExit, &QAction::triggered, this, [this]()
+            { exit(); });
     // show MainWindow only when tray icon is left clicked
     connect(tray, &QSystemTrayIcon::activated, this,
             [this](QSystemTrayIcon::ActivationReason reason)
