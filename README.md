@@ -1,6 +1,11 @@
 # QtUnblockNeteaseMusic
  A desktop client for UnblockNeteaseMusic, written in Qt.
 
+[![CodeFactor](https://www.codefactor.io/repository/github/frzmtrsprt/qtunblockneteasemusic/badge)](https://www.codefactor.io/repository/github/frzmtrsprt/qtunblockneteasemusic)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/FrzMtrsprt/QtUnblockNeteaseMusic)
+![GitHub all releases](https://img.shields.io/github/downloads/FrzMtrsprt/QtUnblockNeteaseMusic/total)
+
+
 ## Features
 - Choose the UNM server's starting arguments
 - Remembers the options from the last run in a config file
