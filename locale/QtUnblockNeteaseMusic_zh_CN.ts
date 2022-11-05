@@ -159,7 +159,12 @@ Please change the arguments or check port usage and try again.</source>
 请修改服务器参数或检查端口占用，然后重试。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="353"/>
+        <location filename="../src/mainwindow.cpp" line="305"/>
+        <source>Node.js is not installed.</source>
+        <translation>未安装 Node.js。</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="365"/>
         <source>Server not found.</source>
         <translation>未找到服务器。</translation>
     </message>
