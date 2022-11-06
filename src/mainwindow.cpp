@@ -293,7 +293,10 @@ bool MainWindow::getServer(QString &program, QStringList &arguments)
                 // Check if node.js installed
                 server->start(u"node"_s, {u"-v"_s},
                               QIODeviceBase::ReadOnly);
-                if (server->waitForStarted())
+                const bool exists = server->waitForStarted();
+                server->close();
+
+                if (exists)
                 {
                     program = u"node"_s;
                     arguments = {scriptPath};
@@ -304,7 +307,6 @@ bool MainWindow::getServer(QString &program, QStringList &arguments)
                     ui->outText->append(
                         tr("Node.js is not installed."));
                 }
-                server->close();
             }
         }
     }
