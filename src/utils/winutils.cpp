@@ -3,11 +3,8 @@
 #include <QApplication>
 #include <Windows.h>
 #include <dwmapi.h>
-#pragma comment(lib, "dwmapi")
-#include <Shlwapi.h>
-#pragma comment(lib, "ShLwApi")
-#include <Uxtheme.h>
-#pragma comment(lib, "Uxtheme")
+#include <shlwapi.h>
+#include <uxtheme.h>
 
 enum : WORD
 {
@@ -23,7 +20,7 @@ static PROCESS_POWER_THROTTLING_STATE Throttle{
 static PROCESS_POWER_THROTTLING_STATE Unthrottle{
     PROCESS_POWER_THROTTLING_CURRENT_VERSION,
     PROCESS_POWER_THROTTLING_EXECUTION_SPEED,
-    NULL};
+    0UL};
 
 WinUtils::WinUtils() {}
 

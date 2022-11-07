@@ -60,6 +60,8 @@ qt_add_translations(QtUnblockNeteaseMusic
 
 target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt6::Widgets)
 
+target_link_libraries(QtUnblockNeteaseMusic PRIVATE dwmapi shlwapi uxtheme)
+
 set_target_properties(QtUnblockNeteaseMusic PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
