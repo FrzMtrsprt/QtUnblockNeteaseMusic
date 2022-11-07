@@ -87,7 +87,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="288"/>
-        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="125"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -127,44 +127,34 @@
         <translation>主题(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="35"/>
-        <source>Show</source>
-        <translation>显示</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="36"/>
-        <source>Exit</source>
-        <translation>退出</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="142"/>
+        <location filename="../src/mainwindow.cpp" line="112"/>
         <source>&lt;h3&gt;About %1&lt;/h3&gt;&lt;p&gt;Version %2&lt;/p&gt;</source>
         <translation>&lt;h3&gt;关于 %1&lt;/h3&gt;&lt;p&gt;版本 %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="148"/>
+        <location filename="../src/mainwindow.cpp" line="118"/>
         <source>&lt;p&gt;A desktop client for UnblockNeteaseMusic, written in Qt.&lt;/p&gt;&lt;p&gt;Copyright 2022 %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;适用于 UnblockNeteaseMusic 的桌面应用，使用 Qt 编写。&lt;/p&gt;&lt;p&gt;版权所有 2022 %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="195"/>
+        <location filename="../src/mainwindow.cpp" line="165"/>
         <source>Server error</source>
         <translation>服务器错误</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="167"/>
         <source>The UnblockNeteaseMusic server ran into an error.
 Please change the arguments or check port usage and try again.</source>
         <translation>UnblockNeteaseMusic 服务器出现错误。
 请修改服务器参数或检查端口占用，然后重试。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="305"/>
+        <location filename="../src/mainwindow.cpp" line="278"/>
         <source>Node.js is not installed.</source>
         <translation>未安装 Node.js。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="365"/>
+        <location filename="../src/mainwindow.cpp" line="337"/>
         <source>Server not found.</source>
         <translation>未找到服务器。</translation>
     </message>
@@ -172,14 +162,27 @@ Please change the arguments or check port usage and try again.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/main.cpp" line="54"/>
+        <location filename="../src/main.cpp" line="55"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="56"/>
+        <location filename="../src/main.cpp" line="57"/>
         <source>%1 is already running.</source>
         <translation>%1 已经正在运行。</translation>
+    </message>
+</context>
+<context>
+    <name>Tray</name>
+    <message>
+        <location filename="../src/tray.cpp" line="11"/>
+        <source>Show</source>
+        <translation>显示</translation>
+    </message>
+    <message>
+        <location filename="../src/tray.cpp" line="12"/>
+        <source>Exit</source>
+        <translation>退出</translation>
     </message>
 </context>
 </TS>

@@ -6,10 +6,7 @@
 #include <QTranslator>
 
 #include "mainwindow.h"
-
-#ifdef Q_OS_WIN
-#include "utils/winutils.h"
-#endif
+#include "tray.h"
 
 using namespace Qt;
 
@@ -66,8 +63,28 @@ int main(int argc, char *argv[])
         return -42;
     }
 
-    // don't show window if "-silent" in arguments
     MainWindow w;
+
+    Tray tray;
+
+    // connect tray signals
+    QObject::connect(tray.show, &QAction::triggered, &w, [&w]
+                     { w.show(true); });
+    QObject::connect(tray.exit, &QAction::triggered, &w, [&w]
+                     { w.exit(); });
+    // show MainWindow only when tray icon is left clicked
+    QObject::connect(&tray, &Tray::activated, &w,
+                     [&w](QSystemTrayIcon::ActivationReason reason)
+                     {
+                         if (reason == QSystemTrayIcon::Trigger)
+                         {
+                             w.show(w.isHidden());
+                         }
+                     });
+
+    tray.setVisible(true);
+
+    // don't show window if "-silent" in arguments
     bool silent = false;
     for (int i = 1; i < argc; i++)
     {
@@ -76,15 +93,7 @@ int main(int argc, char *argv[])
             silent = true;
         }
     }
-    if (!silent)
-    {
-        w.show(true);
-    }
-
-#ifdef Q_OS_WIN
-    // Enable power throttling
-    WinUtils::setThrottle(silent);
-#endif
+    w.show(!silent);
 
     return a.exec();
 }

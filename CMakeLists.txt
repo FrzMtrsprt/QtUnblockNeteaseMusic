@@ -25,6 +25,8 @@ set(APP_SOURCES
         src/mainwindow.cpp
         src/mainwindow.h
         src/mainwindow.ui
+        src/tray.cpp
+        src/tray.h
 )
 source_group(src FILES ${APP_SOURCES})
 

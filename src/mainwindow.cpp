@@ -10,7 +10,6 @@
 #include <QRegularExpression>
 #include <QStyle>
 #include <QStyleFactory>
-#include <QSystemTrayIcon>
 
 #include "config.h"
 
@@ -24,35 +23,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    // setup system tray
-    QSystemTrayIcon *tray = new QSystemTrayIcon(this);
-    tray->setIcon(QIcon(":/res/icon.png"));
-    tray->setToolTip(u"QtUnblockNeteaseMusic"_s);
-    QMenu *trayMenu = new QMenu(this);
-    QAction *trayExit = new QAction(this);
-    QAction *trayShow = new QAction(this);
-    trayShow->setText(tr("Show"));
-    trayExit->setText(tr("Exit"));
-    trayMenu->addAction(trayShow);
-    trayMenu->addAction(trayExit);
-    tray->setContextMenu(trayMenu);
-    tray->show();
-
-    // connect tray signals
-    connect(trayShow, &QAction::triggered, this, [this]()
-            { show(true); });
-    connect(trayExit, &QAction::triggered, this, [this]()
-            { exit(); });
-    // show MainWindow only when tray icon is left clicked
-    connect(tray, &QSystemTrayIcon::activated, this,
-            [this](QSystemTrayIcon::ActivationReason reason)
-            {
-                if (reason == QSystemTrayIcon::Trigger)
-                {
-                    show(isHidden());
-                }
-            });
 
     // connect MainWindow signals
     connect(ui->actionExit, &QAction::triggered,
