@@ -72,15 +72,8 @@ int main(int argc, char *argv[])
                      { w.show(true); });
     QObject::connect(tray.exit, &QAction::triggered, &w, [&w]
                      { w.exit(); });
-    // show MainWindow only when tray icon is left clicked
-    QObject::connect(&tray, &Tray::activated, &w,
-                     [&w](QSystemTrayIcon::ActivationReason reason)
-                     {
-                         if (reason == QSystemTrayIcon::Trigger)
-                         {
-                             w.show(w.isHidden());
-                         }
-                     });
+    QObject::connect(&tray, &Tray::clicked, &w, [&w]
+                     { w.show(w.isHidden()); });
 
     tray.setVisible(true);
 

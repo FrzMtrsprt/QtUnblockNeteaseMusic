@@ -14,6 +14,9 @@ public:
     QAction *show;
     QAction *exit;
 
+signals:
+    void clicked();
+
 private:
     QMenu *menu;
 };

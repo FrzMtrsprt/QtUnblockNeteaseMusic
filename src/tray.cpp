@@ -17,6 +17,16 @@ Tray::Tray(QWidget *parent) : QSystemTrayIcon(parent)
     this->setContextMenu(menu);
     this->setIcon(QIcon(u":/res/icon.png"_s));
     this->setToolTip(u"QtUnblockNeteaseMusic"_s);
+
+    // emit only when tray icon is left clicked
+    connect(this, &Tray::activated, this,
+            [this](ActivationReason reason)
+            {
+                if (reason == Trigger)
+                {
+                    emit clicked();
+                }
+            });
 }
 
 Tray::~Tray()
