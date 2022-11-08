@@ -1,50 +1,42 @@
 #include "config.h"
 
 #include <QApplication>
-#include <QDir>
 
 using namespace Qt;
 
 Config::Config()
-{
-    settings = new QSettings(
-        QDir::currentPath() + u"/config.ini"_s,
-        QSettings::IniFormat);
-}
+    : QSettings(u"config.ini"_s, IniFormat) {}
 
-Config::~Config()
-{
-    settings->~QSettings();
-}
+Config::~Config() {}
 
 void Config::readSettings()
 {
-    settings->beginGroup(QApplication::applicationName());
+    beginGroup(QApplication::applicationName());
 
-    port = settings->value("port").toString();
-    address = settings->value("address").toString();
-    url = settings->value("url").toString();
-    host = settings->value("host").toString();
-    sources = settings->value("sources").toStringList();
-    strict = settings->value("strict").toBool();
-    startup = settings->value("startup").toBool();
-    theme = settings->value("theme").toString();
+    port = value("port").toString();
+    address = value("address").toString();
+    url = value("url").toString();
+    host = value("host").toString();
+    sources = value("sources").toStringList();
+    strict = value("strict").toBool();
+    startup = value("startup").toBool();
+    theme = value("theme").toString();
 
-    settings->endGroup();
+    endGroup();
 }
 
 void Config::writeSettings()
 {
-    settings->beginGroup(QApplication::applicationName());
+    beginGroup(QApplication::applicationName());
 
-    settings->setValue("port", port);
-    settings->setValue("address", address);
-    settings->setValue("url", url);
-    settings->setValue("host", host);
-    settings->setValue("sources", sources);
-    settings->setValue("strict", strict);
-    settings->setValue("startup", startup);
-    settings->setValue("theme", theme);
+    setValue("port", port);
+    setValue("address", address);
+    setValue("url", url);
+    setValue("host", host);
+    setValue("sources", sources);
+    setValue("strict", strict);
+    setValue("startup", startup);
+    setValue("theme", theme);
 
-    settings->endGroup();
+    endGroup();
 }

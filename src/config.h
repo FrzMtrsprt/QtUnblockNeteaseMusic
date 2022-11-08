@@ -3,7 +3,7 @@
 
 #include <QSettings>
 
-class Config
+class Config : public QSettings
 {
 public:
     Config();
@@ -20,9 +20,6 @@ public:
 
     void readSettings();
     void writeSettings();
-
-private:
-    QSettings *settings;
 };
 
 #endif // CONFIG_H

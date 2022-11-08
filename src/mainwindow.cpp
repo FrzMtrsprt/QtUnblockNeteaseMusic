@@ -65,6 +65,8 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    server->~QProcess();
+    config->~Config();
 }
 
 void MainWindow::setTheme(const QString &theme)
@@ -96,7 +98,6 @@ void MainWindow::exit()
     qDebug("---Shutting down---");
     server->close();
     updateSettings();
-    config->~Config();
     QApplication::exit();
 }
 
