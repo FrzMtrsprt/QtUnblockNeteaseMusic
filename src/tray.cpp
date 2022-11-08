@@ -18,3 +18,10 @@ Tray::Tray(QWidget *parent) : QSystemTrayIcon(parent)
     this->setIcon(QIcon(u":/res/icon.png"_s));
     this->setToolTip(u"QtUnblockNeteaseMusic"_s);
 }
+
+Tray::~Tray()
+{
+    show->~QAction();
+    exit->~QAction();
+    menu->~QMenu();
+}

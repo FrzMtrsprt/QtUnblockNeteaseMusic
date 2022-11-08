@@ -10,6 +10,7 @@ class Tray : public QSystemTrayIcon
 
 public:
     Tray(QWidget *parent = nullptr);
+    ~Tray();
     QAction *show;
     QAction *exit;
 
