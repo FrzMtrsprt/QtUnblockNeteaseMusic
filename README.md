@@ -1,5 +1,5 @@
 # QtUnblockNeteaseMusic
- A desktop client for UnblockNeteaseMusic, written in Qt.
+ A desktop client for UnblockNeteaseMusic, made with Qt.
 
 [![CodeFactor](https://www.codefactor.io/repository/github/frzmtrsprt/qtunblockneteasemusic/badge)](https://www.codefactor.io/repository/github/frzmtrsprt/qtunblockneteasemusic)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/FrzMtrsprt/QtUnblockNeteaseMusic)
