@@ -339,8 +339,18 @@ void MainWindow::startServer()
     }
 }
 
-void MainWindow::closeEvent(QCloseEvent *e)
+// reload QWidget::closeEvent()
+void MainWindow::closeEvent(QCloseEvent *event)
 {
     hide();
-    e->ignore();
+    event->ignore();
+}
+
+// reload QWidget::keyPressEvent()
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape)
+    {
+        hide();
+    }
 }

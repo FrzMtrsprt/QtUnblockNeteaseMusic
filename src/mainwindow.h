@@ -32,7 +32,8 @@ private:
     Config *config;
 
     void setTheme(const QString &theme);
-    void closeEvent(QCloseEvent *e); // reload closeEvent to add my own actions
+    void closeEvent(QCloseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
     void loadSettings();
     void updateSettings();
     bool getServer(QString &program, QStringList &argumets);
