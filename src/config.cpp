@@ -4,15 +4,18 @@
 
 using namespace Qt;
 
-Config::Config()
-    : QSettings(u"config.ini"_s, IniFormat) {}
+Config::Config() : QSettings(u"config.ini"_s, IniFormat)
+{
+    beginGroup(QApplication::applicationName());
+}
 
-Config::~Config() {}
+Config::~Config()
+{
+    endGroup();
+}
 
 void Config::readSettings()
 {
-    beginGroup(QApplication::applicationName());
-
     port = value("port").toString();
     address = value("address").toString();
     url = value("url").toString();
@@ -21,14 +24,10 @@ void Config::readSettings()
     strict = value("strict").toBool();
     startup = value("startup").toBool();
     theme = value("theme").toString();
-
-    endGroup();
 }
 
 void Config::writeSettings()
 {
-    beginGroup(QApplication::applicationName());
-
     setValue("port", port);
     setValue("address", address);
     setValue("url", url);
@@ -37,6 +36,4 @@ void Config::writeSettings()
     setValue("strict", strict);
     setValue("startup", startup);
     setValue("theme", theme);
-
-    endGroup();
 }

@@ -9,7 +9,7 @@ class Tray : public QSystemTrayIcon
     Q_OBJECT
 
 public:
-    Tray(QWidget *parent = nullptr);
+    Tray();
     ~Tray();
     QAction *show;
     QAction *exit;
@@ -19,6 +19,9 @@ signals:
 
 private:
     QMenu *menu;
+
+private slots:
+    void on_activated(ActivationReason reason);
 };
 
 #endif // TRAY_H

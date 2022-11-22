@@ -2,11 +2,11 @@
 
 using namespace Qt;
 
-Tray::Tray(QWidget *parent) : QSystemTrayIcon(parent)
+Tray::Tray() : QSystemTrayIcon()
 {
-    menu = new QMenu(parent);
-    show = new QAction(menu);
-    exit = new QAction(menu);
+    menu = new QMenu();
+    show = new QAction();
+    exit = new QAction();
 
     show->setText(tr("Show"));
     exit->setText(tr("Exit"));
@@ -14,19 +14,11 @@ Tray::Tray(QWidget *parent) : QSystemTrayIcon(parent)
     menu->addAction(show);
     menu->addAction(exit);
 
-    this->setContextMenu(menu);
-    this->setIcon(QIcon(u":/res/icon.png"_s));
-    this->setToolTip(u"QtUnblockNeteaseMusic"_s);
+    setContextMenu(menu);
+    setIcon(QIcon(u":/res/icon.png"_s));
+    setToolTip(u"QtUnblockNeteaseMusic"_s);
 
-    // emit only when tray icon is left clicked
-    connect(this, &Tray::activated, this,
-            [this](ActivationReason reason)
-            {
-                if (reason == Trigger)
-                {
-                    emit clicked();
-                }
-            });
+    connect(this, &Tray::activated, this, &Tray::on_activated);
 }
 
 Tray::~Tray()
@@ -34,4 +26,13 @@ Tray::~Tray()
     show->~QAction();
     exit->~QAction();
     menu->~QMenu();
+}
+
+void Tray::on_activated(ActivationReason reason)
+{
+    // emit only when tray icon is left clicked
+    if (reason == Trigger)
+    {
+        emit clicked();
+    }
 }

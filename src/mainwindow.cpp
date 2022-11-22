@@ -117,7 +117,7 @@ void MainWindow::on_about()
 
     const QString info =
         tr("<p>A desktop client for UnblockNeteaseMusic, "
-           "written in Qt.</p>"
+           "made with Qt.</p>"
            "<p>Copyright 2022 %1</p>")
             .arg(QApplication::organizationName());
 
