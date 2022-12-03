@@ -1,7 +1,9 @@
 #ifndef WINUTILS_H
 #define WINUTILS_H
 
-#include <QApplication>
+#include <QStyle>
+#include <QWindow>
+
 #include <Windows.h>
 
 class WinUtils
@@ -11,7 +13,7 @@ public:
 
     static void setStartup(const bool &enable);
     static void setThrottle(const bool &enable);
-    static void setWindowFrame(const WId &winId, const QString &theme);
+    static void setWindowFrame(const WId &winId, const QStyle *style);
 
 private:
     static bool useDarkTheme();

@@ -1,6 +1,9 @@
 #include "winutils.h"
 
-#include <QApplication>
+#include <QString>
+#include <QStyle>
+#include <QWindow>
+
 #include <Windows.h>
 #include <dwmapi.h>
 #include <shlwapi.h>
@@ -80,10 +83,10 @@ void WinUtils::setThrottle(const bool &enable)
 }
 
 // Set window frame according to theme
-void WinUtils::setWindowFrame(const WId &winId, const QString &theme)
+void WinUtils::setWindowFrame(const WId &winId, const QStyle *style)
 {
     const HWND hWnd = (HWND)winId;
-    const QByteArray szTheme = theme.toUtf8();
+    const QByteArray szTheme = style->name().toUtf8();
     const bool bClassic = lstrcmpiA(szTheme, "Windows") == 0;
     const bool bDarkAware = lstrcmpiA(szTheme, "Fusion") == 0;
 

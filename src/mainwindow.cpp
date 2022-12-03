@@ -75,7 +75,7 @@ void MainWindow::setTheme(const QString &theme)
     if (style)
     {
 #ifdef Q_OS_WIN
-        WinUtils::setWindowFrame(winId(), theme);
+        WinUtils::setWindowFrame(winId(), style);
 #endif
         QApplication::setStyle(style);
         QApplication::setPalette(style->standardPalette());
@@ -131,8 +131,7 @@ void MainWindow::on_about()
     aboutDlg->setEscapeButton(QMessageBox::Ok);
     aboutDlg->addButton(QMessageBox::Help)->setText(u"GitHub"_s);
 #ifdef Q_OS_WIN
-    const QString theme = QApplication::style()->name();
-    WinUtils::setWindowFrame(aboutDlg->winId(), theme);
+    WinUtils::setWindowFrame(aboutDlg->winId(), aboutDlg->style());
 #endif
 
     if (aboutDlg->exec() == QMessageBox::Help)
@@ -178,8 +177,7 @@ void MainWindow::on_stderr()
     errorDlg->setDetailedText(log);
     errorDlg->setIcon(QMessageBox::Warning);
 #ifdef Q_OS_WIN
-    const QString theme = QApplication::style()->name();
-    WinUtils::setWindowFrame(errorDlg->winId(), theme);
+    WinUtils::setWindowFrame(errorDlg->winId(), errorDlg->style());
 #endif
     errorDlg->exec();
 }
