@@ -28,19 +28,19 @@ set(APP_SOURCES
         src/tray.cpp
         src/tray.h
 )
-source_group(src FILES ${APP_SOURCES})
+source_group("Source Files" FILES ${APP_SOURCES})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(UTILS_SOURCES
         src/utils/winutils.cpp
         src/utils/winutils.h
     )
-    source_group(src FILES ${UTILS_SOURCES})
+    source_group("Source Files" FILES ${UTILS_SOURCES})
 
     set(RESOURCES
         res/QtUnblockNeteaseMusic.rc
     )
-    source_group(res FILES ${RESOURCES})
+    source_group("Resources" FILES ${RESOURCES})
 endif()
 
 qt_add_executable(QtUnblockNeteaseMusic
@@ -52,7 +52,7 @@ qt_add_executable(QtUnblockNeteaseMusic
 
 qt_add_resources(QtUnblockNeteaseMusic res
     # resource path = FILES - BASE + PREFIX
-    PREFIX "/"
+    PREFIX /
     FILES res/icon.png
 )
 
@@ -62,7 +62,9 @@ qt_add_translations(QtUnblockNeteaseMusic
 
 target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt6::Widgets)
 
-target_link_libraries(QtUnblockNeteaseMusic PRIVATE dwmapi shlwapi uxtheme)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    target_link_libraries(QtUnblockNeteaseMusic PRIVATE dwmapi shlwapi uxtheme)
+endif()
 
 set_target_properties(QtUnblockNeteaseMusic PROPERTIES
     MACOSX_BUNDLE TRUE
