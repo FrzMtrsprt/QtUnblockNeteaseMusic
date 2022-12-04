@@ -1,10 +1,10 @@
 # QtUnblockNeteaseMusic
- A desktop client for UnblockNeteaseMusic, made with Qt.
 
 [![CodeFactor](https://www.codefactor.io/repository/github/frzmtrsprt/qtunblockneteasemusic/badge)](https://www.codefactor.io/repository/github/frzmtrsprt/qtunblockneteasemusic)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/FrzMtrsprt/QtUnblockNeteaseMusic)
 ![GitHub all releases](https://img.shields.io/github/downloads/FrzMtrsprt/QtUnblockNeteaseMusic/total)
 
+A desktop client for UnblockNeteaseMusic, made with Qt.
 
 ## Features
 - Choose the UNM server's starting arguments
@@ -19,7 +19,7 @@ The original [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockN
 And the enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server)
 
 ## Screenshot
-![image](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/blob/main/screenshot.png)
+![Screenshot](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/raw/main/screenshot.png)
 
 ## Usage
 1. Download the latest version from [releases](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/releases)
@@ -48,7 +48,7 @@ QtUnblockNeteaseMusic
 ## Build
 1. Set up the Qt development environment (Qt 6.4.0)
 2. Clone the repository
-3. Open the project in VSCode / Qt Creator
+3. Open the project in Qt Creator / VSCode (extra extensions needed)
 4. Compile & Run
 - When compiling on Windows, MSVC v143 + Windows 11 SDK (10.0.22621.0) is recommended, to support Windows specific features like EcoQoS.
 - If you want to generate a complete package with libraries,  
