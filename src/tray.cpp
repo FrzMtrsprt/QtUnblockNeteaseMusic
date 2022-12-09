@@ -1,6 +1,6 @@
 #include "tray.h"
 
-using namespace Qt;
+using namespace Qt::Literals::StringLiterals;
 
 Tray::Tray() : QSystemTrayIcon()
 {

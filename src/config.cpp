@@ -2,7 +2,7 @@
 
 #include <QApplication>
 
-using namespace Qt;
+using namespace Qt::Literals::StringLiterals;
 
 Config::Config() : QSettings(u"config.ini"_s, IniFormat)
 {

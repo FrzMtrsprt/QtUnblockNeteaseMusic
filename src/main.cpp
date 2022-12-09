@@ -8,7 +8,7 @@
 #include "mainwindow.h"
 #include "tray.h"
 
-using namespace Qt;
+using namespace Qt::Literals::StringLiterals;
 
 int main(int argc, char *argv[])
 {

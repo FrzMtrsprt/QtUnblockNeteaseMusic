@@ -17,7 +17,7 @@
 #include "utils/winutils.h"
 #endif
 
-using namespace Qt;
+using namespace Qt::Literals::StringLiterals;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
