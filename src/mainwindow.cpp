@@ -78,7 +78,15 @@ void MainWindow::setTheme(const QString &theme)
         WinUtils::setWindowFrame(winId(), style);
 #endif
         QApplication::setStyle(style);
-        QApplication::setPalette(style->standardPalette());
+        if (style->name() == u"windowsvista"_s || style->name() == u"macOS"_s)
+        {
+            // Do not set palette for native styles
+            QApplication::setPalette(QPalette());
+        }
+        else
+        {
+            QApplication::setPalette(style->standardPalette());
+        }
     }
 }
 
