@@ -44,23 +44,27 @@ void WinUtils::setStartup(const bool &enable)
         // format %s with app path
         sprintf_s(lpData, MAX_PATH, "\"%s\" -silent", __argv[0]);
 
-        if (!SUCCEEDED(
-                RegSetKeyValueA(
-                    HKEY_CURRENT_USER,
-                    lpStartupKey,
-                    lpValueName,
-                    REG_SZ, lpData, MAX_PATH)))
+        const bool ok = SUCCEEDED(
+            RegSetKeyValueA(
+                HKEY_CURRENT_USER,
+                lpStartupKey,
+                lpValueName,
+                REG_SZ, lpData, MAX_PATH));
+
+        if (!ok)
         {
             qWarning("%s: Unable to set startup.", __FUNCTION__);
         }
     }
     else
     {
-        if (!SUCCEEDED(
-                RegDeleteKeyValueA(
-                    HKEY_CURRENT_USER,
-                    lpStartupKey,
-                    lpValueName)))
+        const bool ok = SUCCEEDED(
+            RegDeleteKeyValueA(
+                HKEY_CURRENT_USER,
+                lpStartupKey,
+                lpValueName));
+
+        if (!ok)
         {
             qWarning("%s: Unable to delete startup.", __FUNCTION__);
         }
@@ -88,55 +92,13 @@ void WinUtils::setWindowFrame(const WId &winId, const QStyle *style)
     const HWND hWnd = (HWND)winId;
     const QByteArray szTheme = style->name().toUtf8();
     const bool bClassic = lstrcmpiA(szTheme, "Windows") == 0;
-    const bool bDarkAware = lstrcmpiA(szTheme, "Fusion") == 0;
-
-    // Use dark window frame only when:
-    // Theme is not classic, theme is darkmode aware, and Windows is in darkmode
-    const bool bDark = !bClassic && bDarkAware && useDarkTheme();
 
     qDebug("Setting theme \"%s\" %s",
            szTheme.data(),
-           bClassic ? "with classic light border"
-                    : (bDark ? "with dark border"
-                             : "with light border"));
+           bClassic ? "with classic border"
+                    : "");
 
-    setDarkBorderToWindow(hWnd, bDark);
     setVisualStyleToWindow(hWnd, !bClassic);
-}
-
-// Query Windows theme from registry
-bool WinUtils::useDarkTheme()
-{
-    DWORD dwData = 1;
-    DWORD cbData = sizeof(DWORD);
-
-    RegGetValueW(
-        HKEY_CURRENT_USER,
-        L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
-        L"AppsUseLightTheme",
-        RRF_RT_REG_DWORD,
-        NULL,
-        &dwData,
-        &cbData);
-
-    return dwData == 0;
-}
-
-// Set dark border to window
-// Reference: qt/qtbase.git/tree/src/plugins/platforms/windows/qwindowswindow.cpp
-bool WinUtils::setDarkBorderToWindow(const HWND &hwnd, const bool &d)
-{
-    const BOOL darkBorder = d ? TRUE : FALSE;
-    const bool ok =
-        SUCCEEDED(
-            DwmSetWindowAttribute(
-                hwnd, DwmwaUseImmersiveDarkMode, &darkBorder, sizeof(darkBorder))) ||
-        SUCCEEDED(
-            DwmSetWindowAttribute(
-                hwnd, DwmwaUseImmersiveDarkModeBefore20h1, &darkBorder, sizeof(darkBorder)));
-    if (!ok)
-        qWarning("%s: Unable to set dark window border.", __FUNCTION__);
-    return ok;
 }
 
 // Disable / enable visual style
@@ -146,6 +108,8 @@ bool WinUtils::setVisualStyleToWindow(const HWND &hWnd, const bool &enable)
     LPCWSTR pszSubIdList = enable ? NULL : L" ";
     const bool ok = SUCCEEDED(SetWindowTheme(hWnd, pszSubAppName, pszSubIdList));
     if (!ok)
+    {
         qWarning("%s: Unable to set visual style.", __FUNCTION__);
+    }
     return ok;
 }

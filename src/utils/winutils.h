@@ -16,8 +16,6 @@ public:
     static void setWindowFrame(const WId &winId, const QStyle *style);
 
 private:
-    static bool useDarkTheme();
-    static bool setDarkBorderToWindow(const HWND &hwnd, const bool &d);
     static bool setVisualStyleToWindow(const HWND &hWnd, const bool &enable);
 };
 

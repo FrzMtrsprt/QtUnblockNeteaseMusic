@@ -46,7 +46,7 @@ QtUnblockNeteaseMusic
 5. Set the proxy in the Netease Cloud Music client accordingly & enjoy!
 
 ## Build
-1. Set up the Qt development environment (Qt 6.4.0)
+1. Set up the Qt development environment (Qt 6.4.2)
 2. Clone the repository
 3. Open the project in Qt Creator / VSCode (extra extensions needed)
 4. Compile & Run
