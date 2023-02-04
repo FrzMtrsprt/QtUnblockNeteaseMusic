@@ -31,8 +31,10 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::on_about);
     connect(ui->actionAboutQt, &QAction::triggered,
             this, &MainWindow::on_aboutQt);
-    connect(ui->startupCheckBox, &QCheckBox::stateChanged,
+    connect(ui->startupCheckBox, &QCheckBox::clicked,
             this, &MainWindow::on_startup);
+    connect(ui->proxyCheckBox, &QCheckBox::clicked,
+            this, &MainWindow::on_setProxy);
     connect(ui->applyBtn, &QPushButton::clicked,
             this, &MainWindow::on_apply);
     connect(ui->exitBtn, &QPushButton::clicked,
@@ -176,12 +178,35 @@ void MainWindow::on_aboutQt()
     QMessageBox::aboutQt(this);
 }
 
-void MainWindow::on_startup(const int &state)
+void MainWindow::on_startup(const bool &enable)
 {
-    const bool enable = state != Qt::Unchecked;
 #ifdef Q_OS_WIN
     WinUtils::setStartup(enable);
 #endif
+}
+
+void MainWindow::on_setProxy(const bool &enable)
+{
+    if (!setProxy(enable))
+    {
+        ui->proxyCheckBox->setChecked(isProxy());
+
+        const QString title = tr("Error");
+        const QString text =
+            tr("Failed to set system proxy.\n"
+               "Please check the server port "
+               "and address, and try again.");
+
+        QMessageBox *errorDlg = new QMessageBox();
+        errorDlg->setAttribute(Qt::WA_DeleteOnClose);
+        errorDlg->setWindowTitle(title);
+        errorDlg->setText(text);
+        errorDlg->setIcon(QMessageBox::Warning);
+#ifdef Q_OS_WIN
+        WinUtils::setWindowFrame(errorDlg->winId(), errorDlg->style());
+#endif
+        errorDlg->exec();
+    }
 }
 
 void MainWindow::on_stdout()
@@ -372,18 +397,31 @@ void MainWindow::startServer()
     }
 }
 
-// reload QWidget::closeEvent()
-void MainWindow::closeEvent(QCloseEvent *event)
+// Event reloads
+bool MainWindow::event(QEvent *e)
 {
-    hide();
-    event->ignore();
-}
-
-// reload QWidget::keyPressEvent()
-void MainWindow::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Escape)
+    switch (e->type())
+    {
+    case QEvent::KeyPress:
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
+        if (keyEvent->key() == Qt::Key_Escape)
+        {
+            hide();
+        }
+        break;
+    }
+    case QEvent::Close:
     {
         hide();
+        e->ignore();
+        return true;
     }
+    case QEvent::WindowActivate:
+    {
+        ui->proxyCheckBox->setChecked(isProxy());
+        break;
+    }
+    };
+    return QMainWindow::event(e);
 }

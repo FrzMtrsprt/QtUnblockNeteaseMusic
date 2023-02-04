@@ -34,8 +34,7 @@ private:
     Config *config;
 
     void setTheme(const QString &theme);
-    void closeEvent(QCloseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
+    bool event(QEvent *e);
     void loadSettings();
     void updateSettings();
     bool getServer(QString &program, QStringList &argumets);
@@ -43,10 +42,11 @@ private:
     void startServer();
 
 private slots:
-    void on_startup(const int &state);
+    void on_startup(const bool &enable);
     void on_about();
     void on_aboutQt();
     void on_apply();
+    void on_setProxy(const bool &enable);
     void on_stdout();
     void on_stderr();
 };
