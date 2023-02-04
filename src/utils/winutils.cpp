@@ -8,6 +8,7 @@
 #include <dwmapi.h>
 #include <shlwapi.h>
 #include <uxtheme.h>
+#include <wininet.h>
 
 enum : WORD
 {
@@ -112,4 +113,70 @@ bool WinUtils::setVisualStyleToWindow(const HWND &hWnd, const bool &enable)
         qWarning("%s: Unable to set visual style.", __FUNCTION__);
     }
     return ok;
+}
+
+bool WinUtils::setSystemProxy(const bool &enable, const QString &address, const QString &port)
+{
+    INTERNET_PER_CONN_OPTION_LISTW optionList;
+    INTERNET_PER_CONN_OPTIONW options[3];
+
+    optionList.dwSize = sizeof(optionList);
+    optionList.pszConnection = NULL;
+    optionList.dwOptionCount = 3;
+    optionList.pOptions = options;
+
+    options[0].dwOption = INTERNET_PER_CONN_FLAGS;
+    options[0].Value.dwValue = enable ? PROXY_TYPE_PROXY
+                                      : PROXY_TYPE_DIRECT;
+
+    WCHAR proxy_server[32];
+    (address + ":" + port).toWCharArray(proxy_server);
+    options[1].dwOption = INTERNET_PER_CONN_PROXY_SERVER;
+    options[1].Value.pszValue = proxy_server;
+
+    WCHAR proxy_bypass[32] = L"localhost";
+    options[2].dwOption = INTERNET_PER_CONN_PROXY_BYPASS;
+    options[2].Value.pszValue = proxy_bypass;
+
+    if (InternetSetOptionW(NULL, INTERNET_OPTION_PER_CONNECTION_OPTION,
+                           &optionList, optionList.dwSize))
+    {
+        InternetSetOptionW(NULL, INTERNET_OPTION_SETTINGS_CHANGED, NULL, 0);
+        InternetSetOptionW(NULL, INTERNET_OPTION_REFRESH, NULL, 0);
+        return true;
+    }
+    qWarning("%s: Unable to set system proxy.", __FUNCTION__);
+    return false;
+}
+
+bool WinUtils::isSystemProxy(const QString &address, const QString &port)
+{
+    INTERNET_PER_CONN_OPTION_LISTW optionList;
+    INTERNET_PER_CONN_OPTIONW options[2];
+
+    optionList.dwSize = sizeof(optionList);
+    optionList.pszConnection = NULL;
+    optionList.dwOptionCount = 2;
+    optionList.pOptions = options;
+
+    options[0].dwOption = INTERNET_PER_CONN_FLAGS;
+    options[1].dwOption = INTERNET_PER_CONN_PROXY_SERVER;
+
+    if (InternetQueryOptionW(NULL, INTERNET_OPTION_PER_CONNECTION_OPTION,
+                             &optionList, &optionList.dwSize))
+    {
+        WCHAR proxy_server[32];
+        (address + ":" + port).toWCharArray(proxy_server);
+
+        if (options[0].Value.dwValue & PROXY_TYPE_PROXY &&
+            lstrcmpW(options[1].Value.pszValue, proxy_server) == 0)
+        {
+            return true;
+        }
+    }
+    else
+    {
+        qWarning("%s: Unable to get system proxy.", __FUNCTION__);
+    }
+    return false;
 }

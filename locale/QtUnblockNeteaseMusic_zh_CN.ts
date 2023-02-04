@@ -87,7 +87,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="288"/>
-        <location filename="../src/mainwindow.cpp" line="126"/>
+        <location filename="../src/mainwindow.cpp" line="156"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -127,34 +127,34 @@
         <translation>主题(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="113"/>
+        <location filename="../src/mainwindow.cpp" line="143"/>
         <source>&lt;h3&gt;About %1&lt;/h3&gt;&lt;p&gt;Version %2&lt;/p&gt;</source>
         <translation>&lt;h3&gt;关于 %1&lt;/h3&gt;&lt;p&gt;版本 %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="119"/>
+        <location filename="../src/mainwindow.cpp" line="149"/>
         <source>&lt;p&gt;A desktop client for UnblockNeteaseMusic, made with Qt.&lt;/p&gt;&lt;p&gt;Copyright 2022 %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;适用于 UnblockNeteaseMusic 的桌面应用，使用 Qt 制作。&lt;/p&gt;&lt;p&gt;版权所有 2022 %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="166"/>
+        <location filename="../src/mainwindow.cpp" line="195"/>
         <source>Server error</source>
         <translation>服务器错误</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="168"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>The UnblockNeteaseMusic server ran into an error.
 Please change the arguments or check port usage and try again.</source>
         <translation>UnblockNeteaseMusic 服务器出现错误。
 请修改服务器参数或检查端口占用，然后重试。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="279"/>
+        <location filename="../src/mainwindow.cpp" line="312"/>
         <source>Node.js is not installed.</source>
         <translation>未安装 Node.js。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="338"/>
+        <location filename="../src/mainwindow.cpp" line="371"/>
         <source>Server not found.</source>
         <translation>未找到服务器。</translation>
     </message>
@@ -175,12 +175,17 @@ Please change the arguments or check port usage and try again.</source>
 <context>
     <name>Tray</name>
     <message>
-        <location filename="../src/tray.cpp" line="11"/>
+        <location filename="../src/tray.cpp" line="12"/>
         <source>Show</source>
         <translation>显示</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="12"/>
+        <location filename="../src/tray.cpp" line="13"/>
+        <source>System Proxy</source>
+        <translation>系统代理</translation>
+    </message>
+    <message>
+        <location filename="../src/tray.cpp" line="15"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>

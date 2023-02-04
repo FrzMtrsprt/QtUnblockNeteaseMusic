@@ -70,10 +70,18 @@ int main(int argc, char *argv[])
     // connect tray signals
     QObject::connect(tray.show, &QAction::triggered, &w, [&w]
                      { w.show(true); });
+    QObject::connect(tray.proxy, &QAction::toggled, &w, [&w, &tray](const bool &enable)
+                     { w.setProxy(enable); });
     QObject::connect(tray.exit, &QAction::triggered, &w, [&w]
                      { w.exit(); });
+    QObject::connect(&tray, &Tray::activated, &w, [&w, &tray]
+                     { tray.proxy->setChecked(w.isProxy()); });
     QObject::connect(&tray, &Tray::clicked, &w, [&w]
                      { w.show(w.isHidden()); });
+
+    // Disable proxy before quit or shutdown
+    QObject::connect(&a, &QApplication::aboutToQuit, &w, [&w]
+                     { if (w.isProxy()) w.setProxy(false); });
 
     tray.setVisible(true);
 

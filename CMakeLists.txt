@@ -63,7 +63,7 @@ qt_add_translations(QtUnblockNeteaseMusic
 target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt6::Widgets)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    target_link_libraries(QtUnblockNeteaseMusic PRIVATE dwmapi shlwapi uxtheme)
+    target_link_libraries(QtUnblockNeteaseMusic PRIVATE dwmapi shlwapi uxtheme wininet)
 endif()
 
 set_target_properties(QtUnblockNeteaseMusic PROPERTIES

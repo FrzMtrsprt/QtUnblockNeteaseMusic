@@ -6,12 +6,16 @@ Tray::Tray() : QSystemTrayIcon()
 {
     menu = new QMenu();
     show = new QAction();
+    proxy = new QAction();
     exit = new QAction();
 
     show->setText(tr("Show"));
+    proxy->setText(tr("System Proxy"));
+    proxy->setCheckable(true);
     exit->setText(tr("Exit"));
 
     menu->addAction(show);
+    menu->addAction(proxy);
     menu->addAction(exit);
 
     setContextMenu(menu);
@@ -24,6 +28,7 @@ Tray::Tray() : QSystemTrayIcon()
 Tray::~Tray()
 {
     show->~QAction();
+    proxy->~QAction();
     exit->~QAction();
     menu->~QMenu();
 }

@@ -101,6 +101,28 @@ void MainWindow::show(const bool &show)
 #endif
 }
 
+bool MainWindow::setProxy(const bool &enable)
+{
+    const QString address = config->address;
+    const QString port = config->port.split(':')[0];
+    bool ok = false;
+#ifdef Q_OS_WIN
+    ok = WinUtils::setSystemProxy(enable, address, port);
+#endif
+    return ok;
+}
+
+bool MainWindow::isProxy()
+{
+    const QString address = config->address;
+    const QString port = config->port.split(':')[0];
+    bool isProxy = false;
+#ifdef Q_OS_WIN
+    isProxy = WinUtils::isSystemProxy(address, port);
+#endif
+    return isProxy;
+}
+
 void MainWindow::exit()
 {
     qDebug("---Shutting down---");
@@ -193,9 +215,14 @@ void MainWindow::on_stderr()
 void MainWindow::on_apply()
 {
     qDebug("---Restarting server---");
+    const bool wasProxy = isProxy();
     server->close();
     ui->outText->clear();
     startServer();
+    if (wasProxy)
+    {
+        setProxy(true);
+    }
 }
 
 void MainWindow::loadSettings()

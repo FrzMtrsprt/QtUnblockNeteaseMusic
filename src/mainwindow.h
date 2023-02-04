@@ -21,6 +21,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    bool setProxy(const bool &enable);
+    bool isProxy();
 
 public slots:
     void show(const bool &show);

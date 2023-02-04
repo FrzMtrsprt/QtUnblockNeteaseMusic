@@ -13,6 +13,7 @@ public:
     ~Tray();
     QAction *show;
     QAction *exit;
+    QAction *proxy;
 
 signals:
     void clicked();
