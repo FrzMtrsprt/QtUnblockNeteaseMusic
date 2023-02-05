@@ -10,12 +10,6 @@
 #include <uxtheme.h>
 #include <wininet.h>
 
-enum : WORD
-{
-    DwmwaUseImmersiveDarkMode = 20,
-    DwmwaUseImmersiveDarkModeBefore20h1 = 19
-};
-
 static PROCESS_POWER_THROTTLING_STATE Throttle{
     PROCESS_POWER_THROTTLING_CURRENT_VERSION,
     PROCESS_POWER_THROTTLING_EXECUTION_SPEED,
