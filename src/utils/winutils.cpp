@@ -128,9 +128,8 @@ bool WinUtils::setSystemProxy(const bool &enable, const QString &address, const 
     options[1].dwOption = INTERNET_PER_CONN_PROXY_SERVER;
     options[1].Value.pszValue = proxy_server;
 
-    WCHAR proxy_bypass[32] = L"localhost";
     options[2].dwOption = INTERNET_PER_CONN_PROXY_BYPASS;
-    options[2].Value.pszValue = proxy_bypass;
+    options[2].Value.pszValue = NULL;
 
     if (InternetSetOptionW(NULL, INTERNET_OPTION_PER_CONNECTION_OPTION,
                            &optionList, optionList.dwSize))
