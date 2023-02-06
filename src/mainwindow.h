@@ -46,7 +46,6 @@ private slots:
     void on_about();
     void on_aboutQt();
     void on_apply();
-    void on_setProxy(const bool &enable);
     void on_stdout();
     void on_stderr();
 };

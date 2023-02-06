@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->startupCheckBox, &QCheckBox::clicked,
             this, &MainWindow::on_startup);
     connect(ui->proxyCheckBox, &QCheckBox::clicked,
-            this, &MainWindow::on_setProxy);
+            this, &MainWindow::setProxy);
     connect(ui->applyBtn, &QPushButton::clicked,
             this, &MainWindow::on_apply);
     connect(ui->exitBtn, &QPushButton::clicked,
@@ -111,6 +111,26 @@ bool MainWindow::setProxy(const bool &enable)
 #ifdef Q_OS_WIN
     ok = WinUtils::setSystemProxy(enable, address, port);
 #endif
+    if (!ok)
+    {
+        ui->proxyCheckBox->setChecked(isProxy());
+
+        const QString title = tr("Error");
+        const QString text =
+            tr("Failed to set system proxy.\n"
+               "Please check the server port "
+               "and address, and try again.");
+
+        QMessageBox *errorDlg = new QMessageBox();
+        errorDlg->setAttribute(Qt::WA_DeleteOnClose);
+        errorDlg->setWindowTitle(title);
+        errorDlg->setText(text);
+        errorDlg->setIcon(QMessageBox::Warning);
+#ifdef Q_OS_WIN
+        WinUtils::setWindowFrame(errorDlg->winId(), errorDlg->style());
+#endif
+        errorDlg->exec();
+    }
     return ok;
 }
 
@@ -183,30 +203,6 @@ void MainWindow::on_startup(const bool &enable)
 #ifdef Q_OS_WIN
     WinUtils::setStartup(enable);
 #endif
-}
-
-void MainWindow::on_setProxy(const bool &enable)
-{
-    if (!setProxy(enable))
-    {
-        ui->proxyCheckBox->setChecked(isProxy());
-
-        const QString title = tr("Error");
-        const QString text =
-            tr("Failed to set system proxy.\n"
-               "Please check the server port "
-               "and address, and try again.");
-
-        QMessageBox *errorDlg = new QMessageBox();
-        errorDlg->setAttribute(Qt::WA_DeleteOnClose);
-        errorDlg->setWindowTitle(title);
-        errorDlg->setText(text);
-        errorDlg->setIcon(QMessageBox::Warning);
-#ifdef Q_OS_WIN
-        WinUtils::setWindowFrame(errorDlg->winId(), errorDlg->style());
-#endif
-        errorDlg->exec();
-    }
 }
 
 void MainWindow::on_stdout()

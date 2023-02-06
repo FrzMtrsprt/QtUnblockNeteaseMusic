@@ -70,8 +70,8 @@ int main(int argc, char *argv[])
     // connect tray signals
     QObject::connect(tray.show, &QAction::triggered, &w, [&w]
                      { w.show(true); });
-    QObject::connect(tray.proxy, &QAction::toggled, &w, [&w, &tray](const bool &enable)
-                     { w.setProxy(enable); });
+    QObject::connect(tray.proxy, &QAction::triggered, &w, [&w](const bool &checked)
+                     { w.setProxy(checked); });
     QObject::connect(tray.exit, &QAction::triggered, &w, [&w]
                      { w.exit(); });
     QObject::connect(&tray, &Tray::activated, &w, [&w, &tray]
@@ -82,6 +82,9 @@ int main(int argc, char *argv[])
     // Disable proxy before quit or shutdown
     QObject::connect(&a, &QApplication::aboutToQuit, &w, [&w]
                      { if (w.isProxy()) w.setProxy(false); });
+
+    // Don't quit when closing dialog
+    a.setQuitOnLastWindowClosed(false);
 
     tray.setVisible(true);
 
