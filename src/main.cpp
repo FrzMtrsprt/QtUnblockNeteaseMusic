@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QSharedMemory>
 #include <QTranslator>
+#include <QtSingleApplication>
 
 #include "mainwindow.h"
 #include "tray.h"
@@ -12,11 +13,16 @@ using namespace Qt::Literals::StringLiterals;
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QtSingleApplication a(u"QtUnblockNeteaseMusic"_s, argc, argv);
     a.setApplicationName(u"QtUnblockNeteaseMusic"_s);
     a.setApplicationVersion(u"1.3.4"_s);
     a.setOrganizationName(u"FrzMtrsprt"_s);
     a.setOrganizationDomain(u"https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic"_s);
+
+    if (a.isRunning() && a.sendMessage(u""_s))
+    {
+        return -1;
+    }
 
     QDir::setCurrent(QApplication::applicationDirPath());
 
@@ -40,29 +46,6 @@ int main(int argc, char *argv[])
         a.installTranslator(&baseTranslator);
     }
 
-    // reference: https://forum.qt.io/post/504087
-    QSharedMemory singular(a.applicationName());
-
-    singular.create(1, QSharedMemory::ReadOnly);
-
-    if (singular.error() == QSharedMemory::AlreadyExists)
-    {
-        // instance already running
-        const QString title = QObject::tr("Error");
-        const QString text =
-            QObject::tr("%1 is already running.")
-                .arg(a.applicationName());
-
-        QMessageBox *errorDlg = new QMessageBox();
-        errorDlg->setAttribute(Qt::WA_DeleteOnClose);
-        errorDlg->setWindowTitle(title);
-        errorDlg->setText(text);
-        errorDlg->setIcon(QMessageBox::Critical);
-        errorDlg->exec();
-
-        return -42;
-    }
-
     MainWindow w;
 
     Tray tray;
@@ -78,6 +61,10 @@ int main(int argc, char *argv[])
                      { tray.proxy->setChecked(w.isProxy()); });
     QObject::connect(&tray, &Tray::clicked, &w, [&w]
                      { w.show(w.isHidden()); });
+
+    // Open existing instance
+    QObject::connect(&a, &QtSingleApplication::messageReceived, &w, [&w]
+                     { w.show(true); });
 
     // Disable proxy before quit or shutdown
     QObject::connect(&a, &QApplication::aboutToQuit, &w, [&w]

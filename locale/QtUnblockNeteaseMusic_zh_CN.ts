@@ -177,19 +177,6 @@ Please change the arguments or check port usage and try again.</source>
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <location filename="../src/main.cpp" line="51"/>
-        <source>Error</source>
-        <translation>错误</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="53"/>
-        <source>%1 is already running.</source>
-        <translation>%1 已经正在运行。</translation>
-    </message>
-</context>
-<context>
     <name>Tray</name>
     <message>
         <location filename="../src/tray.cpp" line="12"/>

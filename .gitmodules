@@ -1,0 +1,3 @@
+[submodule "qt-solutions"]
+	path = qt-solutions
+	url = https://github.com/qtproject/qt-solutions.git

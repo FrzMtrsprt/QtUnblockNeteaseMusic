@@ -80,15 +80,10 @@ void MainWindow::setTheme(const QString &theme)
         WinUtils::setWindowFrame(winId(), style);
 #endif
         QApplication::setStyle(style);
-        if (style->name() == u"windowsvista"_s || style->name() == u"macOS"_s)
-        {
+        style->name() == u"windowsvista"_s || style->name() == u"macOS"_s
             // Do not set palette for native styles
-            QApplication::setPalette(QPalette());
-        }
-        else
-        {
-            QApplication::setPalette(style->standardPalette());
-        }
+            ? QApplication::setPalette(QPalette())
+            : QApplication::setPalette(style->standardPalette());
     }
 }
 
@@ -96,7 +91,12 @@ void MainWindow::setTheme(const QString &theme)
 void MainWindow::show(const bool &show)
 {
     setVisible(show);
-    activateWindow();
+    if (show)
+    {
+        setWindowState(windowState() & ~Qt::WindowMinimized);
+        raise();
+        activateWindow();
+    }
 
 #ifdef Q_OS_WIN
     WinUtils::setThrottle(!show);
@@ -379,7 +379,7 @@ void MainWindow::startServer()
         qDebug() << "Server program:"
                  << program;
         qDebug() << "Server arguments:"
-                 << arguments.join(u" "_s);
+                 << arguments.join(' ');
         server->start(program, arguments,
                       QIODeviceBase::ReadOnly);
         if (!server->waitForStarted())
