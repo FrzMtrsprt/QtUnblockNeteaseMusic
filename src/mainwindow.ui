@@ -226,11 +226,6 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="font">
-            <font>
-             <family>Consolas</family>
-            </font>
-           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>

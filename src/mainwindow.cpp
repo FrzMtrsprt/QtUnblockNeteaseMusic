@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
+#include <QFontDatabase>
 #include <QMessageBox>
 #include <QProcess>
 #include <QRegularExpression>
@@ -23,6 +24,13 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+#ifdef Q_OS_WIN
+    QFont font = QFont(u"Consolas"_s);
+    font.setStyleHint(QFont::Monospace);
+#else
+    QFont font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+#endif
+    ui->outText->setFont(font);
 
     // connect MainWindow signals
     connect(ui->actionExit, &QAction::triggered,
