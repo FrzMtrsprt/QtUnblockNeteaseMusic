@@ -1,3 +1,3 @@
-[submodule "qt-solutions"]
-	path = qt-solutions
-	url = https://github.com/qtproject/qt-solutions.git
+[submodule "src/third-party/SingleApplication"]
+	path = src/third-party/SingleApplication
+	url = git@github.com:itay-grudev/SingleApplication.git

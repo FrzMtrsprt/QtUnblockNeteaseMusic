@@ -4,7 +4,11 @@
 #include <QMessageBox>
 #include <QSharedMemory>
 #include <QTranslator>
-#include <QtSingleApplication>
+#include <SingleApplication>
+
+#ifdef Q_OS_WIN
+#include <Windows.h>
+#endif
 
 #include "mainwindow.h"
 #include "tray.h"
@@ -13,15 +17,21 @@ using namespace Qt::Literals::StringLiterals;
 
 int main(int argc, char *argv[])
 {
-    QtSingleApplication a(u"QtUnblockNeteaseMusic"_s, argc, argv);
+    SingleApplication a(argc, argv, true);
     a.setApplicationName(u"QtUnblockNeteaseMusic"_s);
     a.setApplicationVersion(u"1.3.4"_s);
     a.setOrganizationName(u"FrzMtrsprt"_s);
     a.setOrganizationDomain(u"https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic"_s);
 
-    if (a.isRunning() && a.sendMessage(u""_s))
+    if (a.isSecondary())
     {
-        return -1;
+#ifdef Q_OS_WIN
+        AllowSetForegroundWindow(DWORD(a.primaryPid()));
+#endif
+        if (a.sendMessage(" "_qba))
+        {
+            return -1;
+        }
     }
 
     QDir::setCurrent(QApplication::applicationDirPath());
@@ -63,7 +73,7 @@ int main(int argc, char *argv[])
                      { w.show(w.isHidden()); });
 
     // Open existing instance
-    QObject::connect(&a, &QtSingleApplication::messageReceived, &w, [&w]
+    QObject::connect(&a, &SingleApplication::receivedMessage, &w, [&w]
                      { w.show(true); });
 
     // Disable proxy before quit or shutdown
