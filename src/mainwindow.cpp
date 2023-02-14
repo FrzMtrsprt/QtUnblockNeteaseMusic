@@ -180,7 +180,7 @@ void MainWindow::on_about()
     const QString info =
         tr("<p>A desktop client for UnblockNeteaseMusic, "
            "made with Qt.</p>"
-           "<p>Copyright 2022 %1</p>")
+           "<p>Copyright 2023 %1</p>")
             .arg(QApplication::organizationName());
 
     QMessageBox *aboutDlg = new QMessageBox(this);
