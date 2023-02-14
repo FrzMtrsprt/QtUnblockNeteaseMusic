@@ -9,7 +9,9 @@ public:
     Config();
     ~Config();
 
-    QString port;
+    QString httpPort;
+    QString httpsPort;
+    bool useHttps;
     QString address;
     QString url;
     QString host;

@@ -16,7 +16,9 @@ Config::~Config()
 
 void Config::readSettings()
 {
-    port = value("port").toString();
+    httpPort = value("httpPort").toString();
+    httpsPort = value("httpsPort").toString();
+    useHttps = value("useHttps").toBool();
     address = value("address").toString();
     url = value("url").toString();
     host = value("host").toString();
@@ -28,7 +30,9 @@ void Config::readSettings()
 
 void Config::writeSettings()
 {
-    setValue("port", port);
+    setValue("httpPort", httpPort);
+    setValue("httpsPort", httpsPort);
+    setValue("useHttps", useHttps);
     setValue("address", address);
     setValue("url", url);
     setValue("host", host);

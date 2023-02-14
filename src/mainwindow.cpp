@@ -39,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::on_about);
     connect(ui->actionAboutQt, &QAction::triggered,
             this, &MainWindow::on_aboutQt);
+    connect(ui->httpsCheckBox, &QCheckBox::clicked,
+            this, &MainWindow::on_https);
     connect(ui->startupCheckBox, &QCheckBox::clicked,
             this, &MainWindow::on_startup);
     connect(ui->proxyCheckBox, &QCheckBox::clicked,
@@ -114,7 +116,7 @@ void MainWindow::show(const bool &show)
 bool MainWindow::setProxy(const bool &enable)
 {
     const QString address = config->address;
-    const QString port = config->port.split(':')[0];
+    const QString port = config->httpPort;
     bool ok = false;
 #ifdef Q_OS_WIN
     ok = WinUtils::setSystemProxy(enable, address, port);
@@ -145,7 +147,7 @@ bool MainWindow::setProxy(const bool &enable)
 bool MainWindow::isProxy()
 {
     const QString address = config->address;
-    const QString port = config->port.split(':')[0];
+    const QString port = config->httpPort;
     bool isProxy = false;
 #ifdef Q_OS_WIN
     isProxy = WinUtils::isSystemProxy(address, port);
@@ -206,6 +208,11 @@ void MainWindow::on_aboutQt()
     QMessageBox::aboutQt(this);
 }
 
+void MainWindow::on_https(const bool &enable)
+{
+    ui->httpsEdit->setEnabled(enable);
+}
+
 void MainWindow::on_startup(const bool &enable)
 {
 #ifdef Q_OS_WIN
@@ -262,7 +269,10 @@ void MainWindow::loadSettings()
     config->readSettings();
 
     // load settings from variables into ui
-    ui->portEdit->setText(config->port);
+    ui->httpEdit->setText(config->httpPort);
+    ui->httpsEdit->setText(config->httpsPort);
+    ui->httpsCheckBox->setChecked(config->useHttps);
+    ui->httpsEdit->setEnabled(config->useHttps);
     ui->addressEdit->setText(config->address);
     ui->urlEdit->setText(config->url);
     ui->hostEdit->setText(config->host);
@@ -281,7 +291,9 @@ void MainWindow::updateSettings()
     static const QRegularExpression sep(u"\\W+"_s);
 
     // update settings from ui into variables
-    config->port = ui->portEdit->text();
+    config->httpPort = ui->httpEdit->text();
+    config->httpsPort = ui->httpsEdit->text();
+    config->useHttps = ui->httpsCheckBox->isChecked();
     config->address = ui->addressEdit->text();
     config->url = ui->urlEdit->text();
     config->host = ui->hostEdit->text();
@@ -350,9 +362,11 @@ void MainWindow::getArgs(QStringList &arguments)
 {
     updateSettings();
 
-    if (!config->port.isEmpty())
+    if (!config->httpPort.isEmpty())
     {
-        arguments << u"-p"_s << config->port;
+        config->useHttps
+            ? arguments << u"-p"_s << config->httpPort + ':' + config->httpsPort
+            : arguments << u"-p"_s << config->httpPort;
     }
     if (!config->address.isEmpty())
     {
