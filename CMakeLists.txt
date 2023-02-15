@@ -55,6 +55,7 @@ qt_add_executable(QtUnblockNeteaseMusic
 )
 
 qt_add_resources(QtUnblockNeteaseMusic res
+    PREFIX /
     FILES res/icon.png
 )
 
