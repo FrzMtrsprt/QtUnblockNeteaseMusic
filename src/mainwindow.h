@@ -2,10 +2,10 @@
 #define MAINWINDOW_H
 
 #include "config.h"
+#include "server.h"
 
 #include <QCloseEvent>
 #include <QMainWindow>
-#include <QProcess>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -30,16 +30,13 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    QProcess *server;
+    Server *server;
     Config *config;
 
     void setTheme(const QString &theme);
     bool event(QEvent *e);
     void loadSettings();
     void updateSettings();
-    bool getServer(QString &program, QStringList &argumets);
-    void getArgs(QStringList &arguments);
-    void startServer();
 
 private slots:
     void on_startup(const bool &enable);
@@ -47,7 +44,5 @@ private slots:
     void on_aboutQt();
     void on_https(const bool &enable);
     void on_apply();
-    void on_stdout();
-    void on_stderr();
 };
 #endif // MAINWINDOW_H

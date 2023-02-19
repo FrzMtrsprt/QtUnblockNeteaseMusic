@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(QtUnblockNeteaseMusic VERSION 0.1 LANGUAGES CXX)
+project(QtUnblockNeteaseMusic)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -11,7 +11,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets Network LinguistTools)
+find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
 
 # SingleApplication
 set(QAPPLICATION_CLASS QApplication)
@@ -29,6 +29,8 @@ set(APP_SOURCES
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindow.ui
+    src/server.cpp
+    src/server.h
     src/tray.cpp
     src/tray.h
 )

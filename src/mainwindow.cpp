@@ -4,15 +4,11 @@
 #include <QCloseEvent>
 #include <QDebug>
 #include <QDesktopServices>
-#include <QDir>
 #include <QFontDatabase>
 #include <QMessageBox>
-#include <QProcess>
 #include <QRegularExpression>
 #include <QStyle>
 #include <QStyleFactory>
-
-#include "config.h"
 
 #ifdef Q_OS_WIN
 #include "utils/winutils.h"
@@ -66,18 +62,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     // setup & start server
     qDebug("---Starting server---");
-    server = new QProcess();
-    connect(server, &QProcess::readyReadStandardOutput,
-            this, &MainWindow::on_stdout);
-    connect(server, &QProcess::readyReadStandardError,
-            this, &MainWindow::on_stderr);
-    startServer();
+    server = new Server(ui->outText, config);
+    server->start();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    server->~QProcess();
+    server->~Server();
     config->~Config();
 }
 
@@ -220,41 +212,12 @@ void MainWindow::on_startup(const bool &enable)
 #endif
 }
 
-void MainWindow::on_stdout()
-{
-    const QByteArray log = server->readAllStandardOutput();
-    ui->outText->append(log);
-}
-
-void MainWindow::on_stderr()
-{
-    const QString title = tr("Server error");
-    const QString text =
-        tr("The UnblockNeteaseMusic server "
-           "ran into an error.\n"
-           "Please change the arguments or "
-           "check port usage and try again.");
-    const QByteArray log = server->readAllStandardError();
-
-    QMessageBox *errorDlg = new QMessageBox(this);
-    errorDlg->setAttribute(Qt::WA_DeleteOnClose);
-    errorDlg->setWindowTitle(title);
-    errorDlg->setText(text);
-    errorDlg->setDetailedText(log);
-    errorDlg->setIcon(QMessageBox::Warning);
-#ifdef Q_OS_WIN
-    WinUtils::setWindowFrame(errorDlg->winId(), errorDlg->style());
-#endif
-    errorDlg->exec();
-}
-
 void MainWindow::on_apply()
 {
     qDebug("---Restarting server---");
     const bool wasProxy = isProxy();
-    server->close();
-    ui->outText->clear();
-    startServer();
+    updateSettings();
+    server->restart();
     if (wasProxy)
     {
         setProxy(true);
@@ -309,112 +272,6 @@ void MainWindow::updateSettings()
     qDebug("Update settings done");
 }
 
-bool MainWindow::getServer(QString &program, QStringList &arguments)
-{
-    const QFileInfoList entries =
-        QDir::current().entryInfoList(
-            {u"unblock*"_s, u"server*"_s});
-
-    for (const QFileInfo &entry : entries)
-    {
-        const QString entryPath = entry.filePath();
-
-        // server is packaged execuable
-        if (entry.isFile())
-        {
-            program = entryPath;
-            arguments = {};
-            return true;
-        }
-
-        // server is node script
-        if (entry.isDir())
-        {
-            const QString scriptPath =
-                entryPath + u"/app.js"_s;
-
-            if (QFileInfo::exists(scriptPath))
-            {
-                // Check if node.js installed
-                server->start(u"node"_s, {u"-v"_s},
-                              QIODeviceBase::ReadOnly);
-                const bool exists = server->waitForStarted();
-                server->close();
-
-                if (exists)
-                {
-                    program = u"node"_s;
-                    arguments = {scriptPath};
-                    return true;
-                }
-                else
-                {
-                    ui->outText->append(
-                        tr("Node.js is not installed."));
-                }
-            }
-        }
-    }
-    return false;
-}
-
-void MainWindow::getArgs(QStringList &arguments)
-{
-    updateSettings();
-
-    if (!config->httpPort.isEmpty())
-    {
-        config->useHttps
-            ? arguments << u"-p"_s << config->httpPort + ':' + config->httpsPort
-            : arguments << u"-p"_s << config->httpPort;
-    }
-    if (!config->address.isEmpty())
-    {
-        arguments << u"-a"_s << config->address;
-    }
-    if (!config->url.isEmpty())
-    {
-        arguments << u"-u"_s << config->url;
-    }
-    if (!config->host.isEmpty())
-    {
-        arguments << u"-f"_s << config->host;
-    }
-    if (!config->sources.isEmpty())
-    {
-        arguments << u"-o"_s << config->sources;
-    }
-    if (config->strict)
-    {
-        arguments << u"-s"_s;
-    }
-}
-
-void MainWindow::startServer()
-{
-    QString program;
-    QStringList arguments;
-
-    if (getServer(program, arguments))
-    {
-        getArgs(arguments);
-        qDebug() << "Server program:"
-                 << program;
-        qDebug() << "Server arguments:"
-                 << arguments.join(' ');
-        server->start(program, arguments,
-                      QIODeviceBase::ReadOnly);
-        if (!server->waitForStarted())
-        {
-            ui->outText->append(server->errorString());
-        }
-    }
-    else
-    {
-        ui->outText->append(tr("Server not found."));
-    }
-}
-
 // Event reloads
 bool MainWindow::event(QEvent *e)
 {
@@ -439,6 +296,9 @@ bool MainWindow::event(QEvent *e)
     {
         ui->proxyCheckBox->setChecked(isProxy());
         break;
+    }
+    default:
+    {
     }
     };
     return QMainWindow::event(e);
