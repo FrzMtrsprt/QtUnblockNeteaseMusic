@@ -177,22 +177,22 @@ Please check the server port and address, and try again.</source>
 <context>
     <name>Server</name>
     <message>
-        <location filename="../src/server.cpp" line="68"/>
+        <location filename="../src/server.cpp" line="65"/>
         <source>Node.js is not installed.</source>
         <translation type="unfinished">未安装 Node.js。</translation>
     </message>
     <message>
-        <location filename="../src/server.cpp" line="120"/>
+        <location filename="../src/server.cpp" line="117"/>
         <source>Server not found.</source>
         <translation type="unfinished">未找到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/server.cpp" line="138"/>
+        <location filename="../src/server.cpp" line="135"/>
         <source>Server error</source>
         <translation type="unfinished">服务器错误</translation>
     </message>
     <message>
-        <location filename="../src/server.cpp" line="140"/>
+        <location filename="../src/server.cpp" line="137"/>
         <source>The UnblockNeteaseMusic server ran into an error.
 Please change the arguments or check port usage and try again.</source>
         <translation type="unfinished">UnblockNeteaseMusic 服务器出现错误。
@@ -202,17 +202,17 @@ Please change the arguments or check port usage and try again.</source>
 <context>
     <name>Tray</name>
     <message>
-        <location filename="../src/tray.cpp" line="12"/>
+        <location filename="../src/tray.cpp" line="14"/>
         <source>Show</source>
         <translation>显示</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="13"/>
+        <location filename="../src/tray.cpp" line="15"/>
         <source>System Proxy</source>
         <translation>系统代理</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="15"/>
+        <location filename="../src/tray.cpp" line="17"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>

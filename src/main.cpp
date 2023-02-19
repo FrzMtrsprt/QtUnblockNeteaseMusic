@@ -58,19 +58,7 @@ int main(int argc, char *argv[])
 
     MainWindow w;
 
-    Tray tray;
-
-    // connect tray signals
-    QObject::connect(tray.show, &QAction::triggered, &w, [&w]
-                     { w.show(true); });
-    QObject::connect(tray.proxy, &QAction::triggered, &w, [&w](const bool &checked)
-                     { w.setProxy(checked); });
-    QObject::connect(tray.exit, &QAction::triggered, &w, [&w]
-                     { w.exit(); });
-    QObject::connect(&tray, &Tray::activated, &w, [&w, &tray]
-                     { tray.proxy->setChecked(w.isProxy()); });
-    QObject::connect(&tray, &Tray::clicked, &w, [&w]
-                     { w.show(w.isHidden()); });
+    Tray tray(&w);
 
     // Open existing instance
     QObject::connect(&a, &SingleApplication::receivedMessage, &w, [&w]

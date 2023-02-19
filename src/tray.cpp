@@ -2,8 +2,10 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-Tray::Tray() : QSystemTrayIcon()
+Tray::Tray(MainWindow *w) : QSystemTrayIcon(w)
 {
+    this->w = w;
+
     menu = new QMenu();
     show = new QAction();
     proxy = new QAction();
@@ -23,6 +25,9 @@ Tray::Tray() : QSystemTrayIcon()
     setToolTip(u"QtUnblockNeteaseMusic"_s);
 
     connect(this, &Tray::activated, this, &Tray::on_activated);
+    connect(show, &QAction::triggered, this, &Tray::on_show);
+    connect(proxy, &QAction::triggered, this, &Tray::on_proxy);
+    connect(exit, &QAction::triggered, this, &Tray::on_exit);
 }
 
 Tray::~Tray()
@@ -35,9 +40,30 @@ Tray::~Tray()
 
 void Tray::on_activated(ActivationReason reason)
 {
-    // emit only when tray icon is left clicked
-    if (reason == Trigger)
+    switch (reason)
     {
-        emit clicked();
+    case Context:
+        proxy->setChecked(w->isProxy());
+        break;
+    case Trigger:
+        w->show(w->isHidden());
+        break;
+    default:
+        break;
     }
+}
+
+void Tray::on_show()
+{
+    w->show(true);
+}
+
+void Tray::on_proxy(const bool &checked)
+{
+    w->setProxy(checked);
+}
+
+void Tray::on_exit()
+{
+    w->exit();
 }
