@@ -72,7 +72,6 @@ bool Server::findProgram()
 
 void Server::loadArgs()
 {
-
     if (!config->httpPort.isEmpty())
     {
         config->useHttps
