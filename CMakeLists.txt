@@ -58,7 +58,7 @@ qt_add_executable(QtUnblockNeteaseMusic
 
 qt_add_resources(QtUnblockNeteaseMusic res
     PREFIX /
-    FILES res/icon.png
+    FILES src/third-party/server/ca.crt res/icon.png
 )
 
 qt_add_translations(QtUnblockNeteaseMusic

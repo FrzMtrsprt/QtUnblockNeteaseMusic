@@ -2,6 +2,7 @@
 
 #include <QString>
 #include <QStyle>
+#include <QProcess>
 #include <QWindow>
 
 #include <Windows.h>
@@ -9,6 +10,8 @@
 #include <shlwapi.h>
 #include <uxtheme.h>
 #include <wininet.h>
+
+using namespace Qt::Literals::StringLiterals;
 
 static PROCESS_POWER_THROTTLING_STATE Throttle{
     PROCESS_POWER_THROTTLING_CURRENT_VERSION,
@@ -172,4 +175,13 @@ bool WinUtils::isSystemProxy(const QString &address, const QString &port)
         qWarning("%s: Unable to get system proxy.", __FUNCTION__);
     }
     return false;
+}
+
+// Install CA certificate and return the output
+QString WinUtils::installCA(const QString &caPath)
+{
+    QProcess process;
+    process.start(u"certutil"_s, {u"-addstore"_s, u"-f"_s, u"root"_s, caPath});
+    process.waitForFinished();
+    return QString::fromLocal8Bit(process.readAllStandardOutput());
 }

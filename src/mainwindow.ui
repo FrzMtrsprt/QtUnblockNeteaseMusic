@@ -276,6 +276,7 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionInstallCA"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -307,8 +308,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
    <property name="icon">
-    <iconset theme="application-exit">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="application-exit"/>
    </property>
    <property name="text">
     <string>E&amp;xit</string>
@@ -330,6 +330,11 @@
    </property>
    <property name="text">
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionInstallCA">
+   <property name="text">
+    <string>&amp;Install Certificate</string>
    </property>
   </action>
  </widget>

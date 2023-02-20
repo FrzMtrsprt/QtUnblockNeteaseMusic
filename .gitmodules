@@ -1,3 +1,6 @@
+[submodule "src/third-party/server"]
+	path = src/third-party/server
+	url = git@github.com:UnblockNeteaseMusic/server.git
 [submodule "src/third-party/SingleApplication"]
 	path = src/third-party/SingleApplication
 	url = git@github.com:itay-grudev/SingleApplication.git

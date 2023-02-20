@@ -86,7 +86,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="323"/>
-        <location filename="../src/mainwindow.cpp" line="180"/>
+        <location filename="../src/mainwindow.cpp" line="205"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -137,37 +137,42 @@
         <translation>文件(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="283"/>
+        <location filename="../src/mainwindow.ui" line="284"/>
         <source>&amp;Help</source>
         <translation>帮助(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="290"/>
+        <location filename="../src/mainwindow.ui" line="291"/>
         <source>&amp;View</source>
         <translation>查看(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="294"/>
+        <location filename="../src/mainwindow.ui" line="295"/>
         <source>&amp;Theme</source>
         <translation>主题(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="167"/>
+        <location filename="../src/mainwindow.ui" line="337"/>
+        <source>&amp;Install Certificate</source>
+        <translation>安装证书(&amp;I)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="192"/>
         <source>&lt;h3&gt;About %1&lt;/h3&gt;&lt;p&gt;Version %2&lt;/p&gt;</source>
         <translation>&lt;h3&gt;关于 %1&lt;/h3&gt;&lt;p&gt;版本 %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
+        <location filename="../src/mainwindow.cpp" line="198"/>
         <source>&lt;p&gt;A desktop client for UnblockNeteaseMusic, made with Qt.&lt;/p&gt;&lt;p&gt;Copyright 2023 %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;适用于 UnblockNeteaseMusic 的桌面应用，使用 Qt 制作。&lt;/p&gt;&lt;p&gt;版权所有 2023 %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="120"/>
+        <location filename="../src/mainwindow.cpp" line="123"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="122"/>
+        <location filename="../src/mainwindow.cpp" line="125"/>
         <source>Failed to set system proxy.
 Please check the server port and address, and try again.</source>
         <translation>无法设置系统代理。
@@ -179,23 +184,23 @@ Please check the server port and address, and try again.</source>
     <message>
         <location filename="../src/server.cpp" line="65"/>
         <source>Node.js is not installed.</source>
-        <translation type="unfinished">未安装 Node.js。</translation>
+        <translation>未安装 Node.js。</translation>
     </message>
     <message>
         <location filename="../src/server.cpp" line="117"/>
         <source>Server not found.</source>
-        <translation type="unfinished">未找到服务器。</translation>
+        <translation>未找到服务器。</translation>
     </message>
     <message>
         <location filename="../src/server.cpp" line="135"/>
         <source>Server error</source>
-        <translation type="unfinished">服务器错误</translation>
+        <translation>服务器错误</translation>
     </message>
     <message>
         <location filename="../src/server.cpp" line="137"/>
         <source>The UnblockNeteaseMusic server ran into an error.
 Please change the arguments or check port usage and try again.</source>
-        <translation type="unfinished">UnblockNeteaseMusic 服务器出现错误。
+        <translation>UnblockNeteaseMusic 服务器出现错误。
 请修改服务器参数或检查端口占用，然后重试。</translation>
     </message>
 </context>

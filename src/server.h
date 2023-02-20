@@ -10,6 +10,8 @@
 
 class Server : public QProcess
 {
+    Q_OBJECT
+
 public:
     Server(QTextEdit *output, Config *config);
     ~Server();

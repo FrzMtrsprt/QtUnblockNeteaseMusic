@@ -39,6 +39,7 @@ private:
     void updateSettings();
 
 private slots:
+    void on_installCA();
     void on_startup(const bool &enable);
     void on_about();
     void on_aboutQt();

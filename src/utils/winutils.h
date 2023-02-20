@@ -16,6 +16,7 @@ public:
     static void setWindowFrame(const WId &winId, const QStyle *style);
     static bool setSystemProxy(const bool &enable, const QString &address, const QString &port);
     static bool isSystemProxy(const QString &address, const QString &port);
+    static QString installCA(const QString &caPath);
 
 private:
     static bool setVisualStyleToWindow(const HWND &hWnd, const bool &enable);

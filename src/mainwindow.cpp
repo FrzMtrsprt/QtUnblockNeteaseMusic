@@ -4,6 +4,7 @@
 #include <QCloseEvent>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QFile>
 #include <QFontDatabase>
 #include <QMessageBox>
 #include <QRegularExpression>
@@ -29,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->outText->setFont(font);
 
     // connect MainWindow signals
+    connect(ui->actionInstallCA, &QAction::triggered,
+            this, &MainWindow::on_installCA);
     connect(ui->actionExit, &QAction::triggered,
             this, &MainWindow::exit);
     connect(ui->actionAbout, &QAction::triggered,
@@ -153,6 +156,28 @@ void MainWindow::exit()
     server->close();
     updateSettings();
     QApplication::exit();
+}
+
+void MainWindow::on_installCA()
+{
+    const QString caPath = u"./ca.crt"_s;
+
+    QString ret;
+
+    QFile::copy(u":/res/ca.crt"_s, caPath);
+#ifdef Q_OS_WIN
+    ret = WinUtils::installCA(caPath);
+#endif
+    QFile::setPermissions(caPath, QFileDevice::WriteOwner);
+    QFile::remove(caPath);
+
+    QMessageBox *dlg = new QMessageBox(this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setText(ret);
+#ifdef Q_OS_WIN
+    WinUtils::setWindowFrame(dlg->winId(), dlg->style());
+#endif
+    dlg->exec();
 }
 
 void MainWindow::on_about()
