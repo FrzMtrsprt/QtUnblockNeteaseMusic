@@ -15,7 +15,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
 
 # SingleApplication
 set(QAPPLICATION_CLASS QApplication)
-add_subdirectory(src/third-party/SingleApplication)
+add_subdirectory(third-party/SingleApplication)
 
 set(TS_FILES
     locale/QtUnblockNeteaseMusic_en.ts
@@ -58,7 +58,7 @@ qt_add_executable(QtUnblockNeteaseMusic
 
 qt_add_resources(QtUnblockNeteaseMusic res
     PREFIX /
-    FILES src/third-party/server/ca.crt res/icon.png
+    FILES third-party/server/ca.crt res/icon.png
 )
 
 qt_add_translations(QtUnblockNeteaseMusic
