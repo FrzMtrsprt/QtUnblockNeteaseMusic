@@ -19,6 +19,7 @@ public:
     bool strict;
     bool startup;
     QString theme;
+    QStringList env;
 
     void readSettings();
     void writeSettings();

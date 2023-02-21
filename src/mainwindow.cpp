@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "envdialog.h"
 
 #include <QCloseEvent>
 #include <QDebug>
@@ -32,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
     // connect MainWindow signals
     connect(ui->actionInstallCA, &QAction::triggered,
             this, &MainWindow::on_installCA);
+    connect(ui->actionEnv, &QAction::triggered,
+            this, &MainWindow::on_env);
     connect(ui->actionExit, &QAction::triggered,
             this, &MainWindow::exit);
     connect(ui->actionAbout, &QAction::triggered,
@@ -178,6 +181,20 @@ void MainWindow::on_installCA()
     WinUtils::setWindowFrame(dlg->winId(), dlg->style());
 #endif
     dlg->exec();
+}
+
+void MainWindow::on_env()
+{
+    EnvDialog *envDlg = new EnvDialog(config, this);
+    envDlg->setAttribute(Qt::WA_DeleteOnClose);
+#ifdef Q_OS_WIN
+    WinUtils::setWindowFrame(envDlg->winId(), envDlg->style());
+#endif
+    if (envDlg->exec() == QDialog::Accepted)
+    {
+        updateSettings();
+        server->restart();
+    }
 }
 
 void MainWindow::on_about()

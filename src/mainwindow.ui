@@ -6,7 +6,7 @@
    <string notr="true">QtUnblockNeteaseMusic</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_3">
+   <layout class="QGridLayout">
     <item row="9" column="0" colspan="4">
      <layout class="QHBoxLayout" name="buttonBox">
       <item>
@@ -33,14 +33,14 @@
       <item>
        <widget class="QPushButton" name="applyBtn">
         <property name="text">
-         <string>&amp;Apply</string>
+         <string>Apply</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="exitBtn">
         <property name="text">
-         <string>E&amp;xit</string>
+         <string>Exit</string>
         </property>
        </widget>
       </item>
@@ -53,7 +53,7 @@
         <property name="title">
          <string>Arguments</string>
         </property>
-        <layout class="QGridLayout" name="gridLayout">
+        <layout class="QGridLayout">
          <item row="1" column="0">
           <widget class="QLabel" name="httpsLabel">
            <property name="statusTip">
@@ -219,7 +219,7 @@
           </widget>
          </item>
          <item row="7" column="0">
-          <spacer name="sourceSpacer">
+          <spacer>
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
@@ -250,7 +250,7 @@
         <property name="title">
          <string>Output</string>
         </property>
-        <layout class="QGridLayout" name="gridLayout_2">
+        <layout class="QGridLayout">
          <item row="0" column="0">
           <widget class="QTextBrowser" name="outText">
            <property name="sizePolicy">
@@ -276,7 +276,6 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionInstallCA"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -301,14 +300,23 @@
     </widget>
     <addaction name="menuTheme"/>
    </widget>
+   <widget class="QMenu" name="menuAdvanced">
+    <property name="title">
+     <string>&amp;Advanced</string>
+    </property>
+    <addaction name="actionInstallCA"/>
+    <addaction name="actionEnv"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
+   <addaction name="menuAdvanced"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
    <property name="icon">
-    <iconset theme="application-exit"/>
+    <iconset theme="application-exit">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>E&amp;xit</string>
@@ -335,6 +343,11 @@
   <action name="actionInstallCA">
    <property name="text">
     <string>&amp;Install Certificate</string>
+   </property>
+  </action>
+  <action name="actionEnv">
+   <property name="text">
+    <string>&amp;Environment Variables</string>
    </property>
   </action>
  </widget>

@@ -98,6 +98,16 @@ void Server::loadArgs()
     {
         arguments << u"-s"_s;
     }
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    for (const QString &entry : config->env)
+    {
+        const QStringList pair = entry.split('=');
+        if (pair.size() == 2)
+        {
+            env.insert(pair[0], pair[1]);
+        }
+    }
+    setProcessEnvironment(env);
 }
 
 void Server::start()

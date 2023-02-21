@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EnvDialog</class>
+ <widget class="QDialog" name="EnvDialog">
+  <layout class="QVBoxLayout">
+   <item>
+    <widget class="QGroupBox" name="envBox">
+     <property name="title">
+      <string>Edit Environment Variables</string>
+     </property>
+     <layout class="QVBoxLayout">
+      <item>
+       <widget class="QPlainTextEdit" name="envEdit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -2,12 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
+    <name>EnvDialog</name>
+    <message>
+        <location filename="../src/envdialog.ui" line="9"/>
+        <source>Edit Environment Variables</source>
+        <translation>编辑环境变量</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="43"/>
-        <location filename="../src/mainwindow.ui" line="314"/>
-        <source>E&amp;xit</source>
-        <translation>退出(&amp;X)</translation>
+        <source>Exit</source>
+        <translation>退出</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="54"/>
@@ -85,13 +92,13 @@
         <translation>输出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="323"/>
-        <location filename="../src/mainwindow.cpp" line="205"/>
+        <location filename="../src/mainwindow.ui" line="331"/>
+        <location filename="../src/mainwindow.cpp" line="222"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="332"/>
+        <location filename="../src/mainwindow.ui" line="340"/>
         <source>About Qt</source>
         <translation>关于 Qt</translation>
     </message>
@@ -107,8 +114,8 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="36"/>
-        <source>&amp;Apply</source>
-        <translation>应用(&amp;A)</translation>
+        <source>Apply</source>
+        <translation>应用</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="60"/>
@@ -137,42 +144,57 @@
         <translation>文件(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="284"/>
+        <location filename="../src/mainwindow.ui" line="283"/>
         <source>&amp;Help</source>
         <translation>帮助(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="291"/>
+        <location filename="../src/mainwindow.ui" line="290"/>
         <source>&amp;View</source>
         <translation>查看(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="295"/>
+        <location filename="../src/mainwindow.ui" line="294"/>
         <source>&amp;Theme</source>
         <translation>主题(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="337"/>
+        <location filename="../src/mainwindow.ui" line="305"/>
+        <source>&amp;Advanced</source>
+        <translation>高级(&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="322"/>
+        <source>E&amp;xit</source>
+        <translation>退出(&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="345"/>
         <source>&amp;Install Certificate</source>
         <translation>安装证书(&amp;I)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="192"/>
+        <location filename="../src/mainwindow.ui" line="350"/>
+        <source>&amp;Environment Variables</source>
+        <translation>环境变量(&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="209"/>
         <source>&lt;h3&gt;About %1&lt;/h3&gt;&lt;p&gt;Version %2&lt;/p&gt;</source>
         <translation>&lt;h3&gt;关于 %1&lt;/h3&gt;&lt;p&gt;版本 %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="198"/>
+        <location filename="../src/mainwindow.cpp" line="215"/>
         <source>&lt;p&gt;A desktop client for UnblockNeteaseMusic, made with Qt.&lt;/p&gt;&lt;p&gt;Copyright 2023 %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;适用于 UnblockNeteaseMusic 的桌面应用，使用 Qt 制作。&lt;/p&gt;&lt;p&gt;版权所有 2023 %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="123"/>
+        <location filename="../src/mainwindow.cpp" line="126"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="125"/>
+        <location filename="../src/mainwindow.cpp" line="128"/>
         <source>Failed to set system proxy.
 Please check the server port and address, and try again.</source>
         <translation>无法设置系统代理。
@@ -187,17 +209,17 @@ Please check the server port and address, and try again.</source>
         <translation>未安装 Node.js。</translation>
     </message>
     <message>
-        <location filename="../src/server.cpp" line="117"/>
+        <location filename="../src/server.cpp" line="125"/>
         <source>Server not found.</source>
         <translation>未找到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/server.cpp" line="135"/>
+        <location filename="../src/server.cpp" line="143"/>
         <source>Server error</source>
         <translation>服务器错误</translation>
     </message>
     <message>
-        <location filename="../src/server.cpp" line="137"/>
+        <location filename="../src/server.cpp" line="145"/>
         <source>The UnblockNeteaseMusic server ran into an error.
 Please change the arguments or check port usage and try again.</source>
         <translation>UnblockNeteaseMusic 服务器出现错误。

@@ -25,6 +25,9 @@ set(TS_FILES
 set(APP_SOURCES
     src/config.cpp
     src/config.h
+    src/envdialog.cpp
+    src/envdialog.h
+    src/envdialog.ui
     src/main.cpp
     src/mainwindow.cpp
     src/mainwindow.h
