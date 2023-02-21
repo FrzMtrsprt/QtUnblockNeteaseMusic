@@ -164,7 +164,7 @@ void MainWindow::on_installCA()
 
     QString ret;
 
-    QFile::copy(u":/res/ca.crt"_s, caPath);
+    QFile::copy(u":/certs/ca.crt"_s, caPath);
 #ifdef Q_OS_WIN
     ret = WinUtils::installCA(caPath);
 #endif
