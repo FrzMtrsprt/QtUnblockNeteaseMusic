@@ -284,6 +284,7 @@ void MainWindow::loadSettings()
     ui->sourceEdit->append(config->sources.join(u", "_s));
     ui->strictCheckBox->setChecked(config->strict);
     ui->startupCheckBox->setChecked(config->startup);
+    ui->debugCheckBox->setChecked(config->debugInfo);
     setTheme(config->theme);
 
     qDebug("Load settings done");
@@ -306,6 +307,7 @@ void MainWindow::updateSettings()
                           .split(sep, Qt::SkipEmptyParts);
     config->strict = ui->strictCheckBox->isChecked();
     config->startup = ui->startupCheckBox->isChecked();
+    config->debugInfo = ui->debugCheckBox->isChecked();
     config->theme = QApplication::style()->name();
 
     // write settings from variables into file

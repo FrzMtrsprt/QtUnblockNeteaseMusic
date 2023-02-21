@@ -92,13 +92,13 @@
         <translation>输出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="331"/>
+        <location filename="../src/mainwindow.ui" line="338"/>
         <location filename="../src/mainwindow.cpp" line="222"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="340"/>
+        <location filename="../src/mainwindow.ui" line="347"/>
         <source>About Qt</source>
         <translation>关于 Qt</translation>
     </message>
@@ -139,42 +139,47 @@
         <translation>指定服务器 HTTPS 端口</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="277"/>
+        <location filename="../src/mainwindow.ui" line="270"/>
+        <source>Show debug information</source>
+        <translation>显示调试信息</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="284"/>
         <source>&amp;File</source>
         <translation>文件(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="283"/>
+        <location filename="../src/mainwindow.ui" line="290"/>
         <source>&amp;Help</source>
         <translation>帮助(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="290"/>
+        <location filename="../src/mainwindow.ui" line="297"/>
         <source>&amp;View</source>
         <translation>查看(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="294"/>
+        <location filename="../src/mainwindow.ui" line="301"/>
         <source>&amp;Theme</source>
         <translation>主题(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="305"/>
+        <location filename="../src/mainwindow.ui" line="312"/>
         <source>&amp;Advanced</source>
         <translation>高级(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="322"/>
+        <location filename="../src/mainwindow.ui" line="329"/>
         <source>E&amp;xit</source>
         <translation>退出(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="345"/>
+        <location filename="../src/mainwindow.ui" line="352"/>
         <source>&amp;Install Certificate</source>
         <translation>安装证书(&amp;I)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="350"/>
+        <location filename="../src/mainwindow.ui" line="357"/>
         <source>&amp;Environment Variables</source>
         <translation>环境变量(&amp;E)</translation>
     </message>
@@ -209,17 +214,17 @@ Please check the server port and address, and try again.</source>
         <translation>未安装 Node.js。</translation>
     </message>
     <message>
-        <location filename="../src/server.cpp" line="125"/>
+        <location filename="../src/server.cpp" line="130"/>
         <source>Server not found.</source>
         <translation>未找到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/server.cpp" line="143"/>
+        <location filename="../src/server.cpp" line="148"/>
         <source>Server error</source>
         <translation>服务器错误</translation>
     </message>
     <message>
-        <location filename="../src/server.cpp" line="145"/>
+        <location filename="../src/server.cpp" line="150"/>
         <source>The UnblockNeteaseMusic server ran into an error.
 Please change the arguments or check port usage and try again.</source>
         <translation>UnblockNeteaseMusic 服务器出现错误。

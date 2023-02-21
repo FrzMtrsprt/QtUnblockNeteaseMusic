@@ -107,6 +107,10 @@ void Server::loadArgs()
             env.insert(pair[0], pair[1]);
         }
     }
+    if (config->debugInfo && !env.contains(u"LOG_LEVEL"_s))
+    {
+        env.insert(u"LOG_LEVEL"_s, u"debug"_s);
+    }
     setProcessEnvironment(env);
 }
 

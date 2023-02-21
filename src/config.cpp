@@ -26,6 +26,7 @@ void Config::readSettings()
     strict = value("strict").toBool();
     startup = value("startup").toBool();
     theme = value("theme").toString();
+    debugInfo = value("debugInfo").toBool();
     env = value("env").toStringList();
 }
 
@@ -41,5 +42,6 @@ void Config::writeSettings()
     setValue("strict", strict);
     setValue("startup", startup);
     setValue("theme", theme);
+    setValue("debugInfo", debugInfo);
     setValue("env", env);
 }
