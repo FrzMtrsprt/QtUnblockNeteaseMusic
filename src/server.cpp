@@ -152,7 +152,7 @@ void Server::on_stderr()
            "Please change the arguments or "
            "check port usage and try again.");
 
-    QMessageBox *errorDlg = new QMessageBox();
+    QMessageBox *errorDlg = new QMessageBox(output);
     errorDlg->setAttribute(Qt::WA_DeleteOnClose);
     errorDlg->setWindowTitle(title);
     errorDlg->setText(text);

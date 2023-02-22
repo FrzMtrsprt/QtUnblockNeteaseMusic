@@ -129,7 +129,7 @@ bool MainWindow::setProxy(const bool &enable)
                "Please check the server port "
                "and address, and try again.");
 
-        QMessageBox *errorDlg = new QMessageBox();
+        QMessageBox *errorDlg = new QMessageBox(this);
         errorDlg->setAttribute(Qt::WA_DeleteOnClose);
         errorDlg->setWindowTitle(title);
         errorDlg->setText(text);
