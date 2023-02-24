@@ -46,7 +46,14 @@ void Tray::on_activated(ActivationReason reason)
         proxy->setChecked(w->isProxy());
         break;
     case Trigger:
-        w->show(w->isHidden());
+        if (w->isVisible())
+        {
+            w->close();
+        }
+        else
+        {
+            w->show();
+        }
         break;
     default:
         break;
@@ -55,7 +62,7 @@ void Tray::on_activated(ActivationReason reason)
 
 void Tray::on_show()
 {
-    w->show(true);
+    w->show();
 }
 
 void Tray::on_proxy(const bool &checked)

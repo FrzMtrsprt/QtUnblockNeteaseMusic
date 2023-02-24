@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
     // Open existing instance
     QObject::connect(&a, &SingleApplication::receivedMessage, &w, [&w]
-                     { w.show(true); });
+                     { w.show(); w.activateWindow(); });
 
     // Disable proxy before quit or shutdown
     QObject::connect(&a, &QApplication::aboutToQuit, &w, [&w]
@@ -82,7 +82,10 @@ int main(int argc, char *argv[])
             silent = true;
         }
     }
-    w.show(!silent);
+    if (!silent)
+    {
+        w.show();
+    }
 
     return a.exec();
 }

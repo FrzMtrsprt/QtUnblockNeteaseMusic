@@ -95,22 +95,6 @@ void MainWindow::setTheme(const QString &theme)
     }
 }
 
-// Reload QWidget::show()
-void MainWindow::show(const bool &show)
-{
-    setVisible(show);
-    if (show)
-    {
-        setWindowState(windowState() & ~Qt::WindowMinimized);
-        raise();
-        activateWindow();
-    }
-
-#ifdef Q_OS_WIN
-    WinUtils::setThrottle(!show);
-#endif
-}
-
 bool MainWindow::setProxy(const bool &enable)
 {
     const QString address = config->address;
@@ -322,28 +306,27 @@ bool MainWindow::event(QEvent *e)
     switch (e->type())
     {
     case QEvent::KeyPress:
-    {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
-        if (keyEvent->key() == Qt::Key_Escape)
+        if (static_cast<QKeyEvent *>(e)->key() == Qt::Key_Escape)
         {
             hide();
         }
         break;
-    }
+    case QEvent::Show:
+#ifdef Q_OS_WIN
+        WinUtils::setWindowFrame(winId(), style());
+        WinUtils::setThrottle(false);
+#endif
+        break;
     case QEvent::Close:
-    {
-        hide();
-        e->ignore();
-        return true;
-    }
+#ifdef Q_OS_WIN
+        WinUtils::setThrottle(true);
+#endif
+        break;
     case QEvent::WindowActivate:
-    {
         ui->proxyCheckBox->setChecked(isProxy());
         break;
-    }
     default:
-    {
-    }
+        break;
     };
     return QMainWindow::event(e);
 }

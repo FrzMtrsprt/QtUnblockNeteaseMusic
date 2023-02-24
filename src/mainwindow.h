@@ -25,7 +25,6 @@ public:
     bool isProxy();
 
 public slots:
-    void show(const bool &show);
     void exit();
 
 private:
