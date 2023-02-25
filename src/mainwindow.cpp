@@ -171,6 +171,7 @@ void MainWindow::on_env()
 {
     EnvDialog *envDlg = new EnvDialog(config, this);
     envDlg->setAttribute(Qt::WA_DeleteOnClose);
+    envDlg->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
 #ifdef Q_OS_WIN
     WinUtils::setWindowFrame(envDlg->winId(), envDlg->style());
 #endif

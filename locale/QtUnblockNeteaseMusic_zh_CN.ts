@@ -8,6 +8,13 @@
         <source>Edit Environment Variables</source>
         <translation>编辑环境变量</translation>
     </message>
+    <message>
+        <location filename="../src/envdialog.ui" line="15"/>
+        <source>VARIABLE_NAME_1=variable_value_1
+VARIABLE_NAME_2=variable_value_2</source>
+        <translation>变量名称_1=变量值_1
+变量名称_2=变量值_2</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -93,7 +100,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="338"/>
-        <location filename="../src/mainwindow.cpp" line="222"/>
+        <location filename="../src/mainwindow.cpp" line="207"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -184,22 +191,22 @@
         <translation>环境变量(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="209"/>
+        <location filename="../src/mainwindow.cpp" line="194"/>
         <source>&lt;h3&gt;About %1&lt;/h3&gt;&lt;p&gt;Version %2&lt;/p&gt;</source>
         <translation>&lt;h3&gt;关于 %1&lt;/h3&gt;&lt;p&gt;版本 %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="215"/>
+        <location filename="../src/mainwindow.cpp" line="200"/>
         <source>&lt;p&gt;A desktop client for UnblockNeteaseMusic, made with Qt.&lt;/p&gt;&lt;p&gt;Copyright 2023 %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;适用于 UnblockNeteaseMusic 的桌面应用，使用 Qt 制作。&lt;/p&gt;&lt;p&gt;版权所有 2023 %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="126"/>
+        <location filename="../src/mainwindow.cpp" line="110"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="128"/>
+        <location filename="../src/mainwindow.cpp" line="112"/>
         <source>Failed to set system proxy.
 Please check the server port and address, and try again.</source>
         <translation>无法设置系统代理。
