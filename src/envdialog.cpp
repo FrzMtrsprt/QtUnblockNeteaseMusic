@@ -25,7 +25,7 @@ EnvDialog::~EnvDialog()
 
 void EnvDialog::accept()
 {
-    config->env = ui->envEdit->toPlainText().split('\n');
+    config->env = ui->envEdit->toPlainText().split('\n', Qt::SkipEmptyParts);
     QDialog::accept();
 }
 

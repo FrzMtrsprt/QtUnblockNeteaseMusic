@@ -101,10 +101,10 @@ void Server::loadArgs()
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     for (const QString &entry : config->env)
     {
-        const QStringList pair = entry.split('=');
-        if (pair.size() == 2)
+        const int pos = entry.indexOf('=');
+        if (pos > 0)
         {
-            env.insert(pair[0], pair[1]);
+            env.insert(entry.sliced(0, pos), entry.sliced(pos + 1));
         }
     }
     if (config->debugInfo && !env.contains(u"LOG_LEVEL"_s))
