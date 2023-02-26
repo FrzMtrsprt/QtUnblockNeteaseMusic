@@ -28,44 +28,47 @@ Server::~Server()
 
 bool Server::findProgram()
 {
-    const QFileInfoList entries =
-        QDir::current().entryInfoList({u"unblock*"_s, u"server*"_s});
+    QDir appDir = QDir::current();
 
-    for (const QFileInfo &entry : entries)
+    // Check if node.js installed
+    QProcess::start(u"node"_s, {u"-v"_s}, ReadOnly);
+    const bool hasNode = waitForStarted();
+    close();
+
+    // Find server script
+    appDir.setFilter(QDir::Dirs);
+    appDir.setNameFilters({u"unblock*"_s, u"server*"_s});
+    for (const QString &entry : appDir.entryList())
     {
-        const QString entryPath = entry.filePath();
-
-        // server is packaged execuable
-        if (entry.isFile())
+        QDir serverDir(entry);
+        if (serverDir.exists(u"app.js"_s))
         {
-            program = entryPath;
-            return true;
-        }
-
-        // server is node script
-        if (entry.isDir())
-        {
-            const QString scriptPath = entryPath + u"/app.js"_s;
-
-            if (QFileInfo::exists(scriptPath))
+            if (hasNode)
             {
-                // Check if node.js installed
-                QProcess::start(u"node"_s, {u"-v"_s}, ReadOnly);
-                const bool exists = waitForStarted();
-                close();
-
-                if (exists)
-                {
-                    program = u"node"_s;
-                    arguments = {scriptPath};
-                    return true;
-                }
-                else
-                {
-                    output->append(tr("Node.js is not installed."));
-                }
+                program = u"node"_s;
+                arguments = {serverDir.filePath(u"app.js"_s)};
+                return true;
+            }
+            else
+            {
+                output->append(tr("Node.js is not installed."));
+                break;
             }
         }
+    }
+
+    // Find server binary
+    appDir.setFilter(QDir::Files);
+#ifdef Q_OS_WIN
+    appDir.setNameFilters({u"unblock*.exe"_s});
+#else
+    appDir.setNameFilters({u"unblock*"_s});
+#endif
+    for (const QString &entry : appDir.entryList())
+    {
+        program = entry;
+        arguments = {};
+        return true;
     }
     return false;
 }
