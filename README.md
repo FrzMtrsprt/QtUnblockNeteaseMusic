@@ -23,7 +23,7 @@ And the enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseM
 
 ## Usage
 1. Download the latest version from [releases](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/releases)
-2. Install [Node.js Runtime](https://nodejs.org/en/download/current/) if you wish to use node server instead of packaged executable
+2. Install [Node.js Runtime](https://nodejs.org/en/download/current/) if you wish to use script server instead of packaged executable
 3. Download the server from [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) or [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server),  
 and place it in the same directory with `QtUnblockNeteaseMusic.exe`
 ```
@@ -50,7 +50,6 @@ QtUnblockNeteaseMusic
 2. Clone the repository
 3. Open the project in Qt Creator / VSCode (extra extensions needed)
 4. Compile & Run
-- When compiling on Windows, MSVC v143 + Windows 11 SDK (10.0.22621.0) is recommended, to support Windows specific features like EcoQoS.
 - If you want to generate a complete package with libraries,  
   copy `QtUnblockNeteaseMusic.exe` to a new directory and run `windeployqt.exe .\QtUnblockNeteaseMusic.exe`
 
