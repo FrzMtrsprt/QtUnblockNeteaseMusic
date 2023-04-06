@@ -17,22 +17,11 @@ using namespace Qt::Literals::StringLiterals;
 
 int main(int argc, char *argv[])
 {
-    SingleApplication a(argc, argv, true);
+    SingleApplication a(argc, argv);
     a.setApplicationName(u"QtUnblockNeteaseMusic"_s);
     a.setApplicationVersion(u"1.4.1"_s);
     a.setOrganizationName(u"FrzMtrsprt"_s);
     a.setOrganizationDomain(u"https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic"_s);
-
-    if (a.isSecondary())
-    {
-#ifdef Q_OS_WIN
-        AllowSetForegroundWindow(DWORD(a.primaryPid()));
-#endif
-        if (a.sendMessage(" "_qba))
-        {
-            return -1;
-        }
-    }
 
     QDir::setCurrent(QApplication::applicationDirPath());
 
@@ -60,9 +49,14 @@ int main(int argc, char *argv[])
 
     Tray tray(&w);
 
-    // Open existing instance
-    QObject::connect(&a, &SingleApplication::receivedMessage, &w, [&w]
-                     { w.show(); w.activateWindow(); });
+    // Open when second instance started
+    QObject::connect(&a, &SingleApplication::instanceStarted, &w, [&w]
+                     {
+#ifdef Q_OS_WIN
+                         ShowWindow((HWND)w.winId(), SW_RESTORE);
+#endif
+                         w.show();
+                         w.activateWindow(); });
 
     // Disable proxy before quit or shutdown
     QObject::connect(&a, &QApplication::aboutToQuit, &w, [&w]
