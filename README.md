@@ -24,7 +24,7 @@ And the enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseM
 ## Usage
 1. Download the latest version from [releases](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/releases)
 2. Install [Node.js Runtime](https://nodejs.org/en/download/current/) if you wish to use script server instead of packaged executable
-3. Download the server from [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) or [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server),  
+3. Download the server from [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) or [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server),
 and place it in the same directory with `QtUnblockNeteaseMusic.exe`
 ```
 QtUnblockNeteaseMusic  
@@ -41,12 +41,14 @@ QtUnblockNeteaseMusic
 ├─ QtUnblockNeteaseMusic.exe  
 └─ unblockneteasemusic.exe
 ```
-3. Run `QtUnblockNeteaseMusic.exe` and set the necessary arguments  
-(127.0.0.1 and a custom port other than 8080 is recommended for personal use)
-5. Set the proxy in the Netease Cloud Music client accordingly & enjoy!
+3. Run `QtUnblockNeteaseMusic.exe` and set the necessary arguments
+4. Set the proxy in the Netease Cloud Music client accordingly & enjoy!
+- When used on your personal devices, avoid using the default `8080` port, and change the host address to `127.0.0.1` to avoid unwanted access from others.
+- Newer client versions have stricter SSL verification, so if you encountered the "connection failed" issue, enable the HTTPS port and install UnblockNeteaseMusic CA certificate.
+- To install the certificate, right click on `QtUnblockNeteaseMusic.exe`, select `Run as administrator`, and click `Install certificate` in the `Advance` menu.
 
 ## Build
-1. Set up the Qt development environment (Qt 6.4.2)
+1. Set up the Qt development environment (Qt 6.5.0)
 2. Clone the repository
 3. Open the project in Qt Creator / VSCode (extra extensions needed)
 4. Compile & Run
