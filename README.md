@@ -4,28 +4,28 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/FrzMtrsprt/QtUnblockNeteaseMusic)
 ![GitHub all releases](https://img.shields.io/github/downloads/FrzMtrsprt/QtUnblockNeteaseMusic/total)
 
-A desktop client for UnblockNeteaseMusic, made with Qt.
+适用于 UnblockNeteaseMusic 的桌面应用，使用 Qt 制作。
 
-## Features
-- Choose the UNM server's starting arguments
-- Remembers the options from the last run in a config file
-- View real time log output from the server
-- Auto detects the server's file, node or packaged executable
-- Dark theme support
+English version: [README_en.md](README_en.md)
 
-## Supports
-The original [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)
+## 特性
+- 指定 UnblockNeteaseMusic 服务器的启动参数
+- 保存上次运行选项
+- 显示服务器的实时日志输出
+- 支持暗色主题
 
-And the enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server)
+## 支持
+原始版本：[nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)
 
-## Screenshot
-![Screenshot](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/raw/main/screenshot.png)
+增强版本：[UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server)
 
-## Usage
-1. Download the latest version from [releases](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/releases)
-2. Install [Node.js Runtime](https://nodejs.org/en/download/current/) if you wish to use script server instead of packaged executable
-3. Download the server from [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) or [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server),
-and place it in the same directory with `QtUnblockNeteaseMusic.exe`
+## 截图
+![截图](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/raw/main/screenshot.png)
+
+## 使用方法
+1. 从 [releases](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/releases) 下载最新版本
+2. 如果你想使用脚本服务器而不是打包的可执行文件，请先安装 [Node.js Runtime](https://nodejs.org/zh-cn/download)
+3. 从 [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) 或 [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server) 下载 UnblockNeteaseMusic 服务器，并放置于 `QtUnblockNeteaseMusic.exe` 所在目录
 ```
 QtUnblockNeteaseMusic  
 ├─ ...  
@@ -34,36 +34,35 @@ QtUnblockNeteaseMusic
    ├─ ...  
    └─ app.js
 ```
-or
+或
 ```
 QtUnblockNeteaseMusic  
 ├─ ...  
 ├─ QtUnblockNeteaseMusic.exe  
 └─ unblockneteasemusic.exe
 ```
-3. Run `QtUnblockNeteaseMusic.exe` and set the necessary arguments
-4. Set the proxy in the Netease Cloud Music client accordingly & enjoy!
-- When used on your personal devices, avoid using the default `8080` port, and change the host address to `127.0.0.1` to avoid unwanted access from others.
-- Newer client versions have stricter SSL verification, so if you encountered the "connection failed" issue, enable the HTTPS port and install UnblockNeteaseMusic CA certificate.
-- To install the certificate, right click on `QtUnblockNeteaseMusic.exe`, select `Run as administrator`, and click `Install certificate` in the `Advance` menu.
+4. 运行 `QtUnblockNeteaseMusic.exe` 并设置启动参数
+5. 在网易云客户端中设置相应的代理，享受音乐吧！
+- 在个人设备上使用时，尽量避免使用默认的 `8080` 端口。为避免来自其他设备的访问，可以将主机地址设为 `127.0.0.1`。
+- 新版网易云客户端有更严格的 SSL 验证，如果碰到了连接失败的问题，可以启用 HTTPS 端口并安装 UnblockNeteaseMusic CA 证书。
+- 要安装 UnblockNeteaseMusic CA 证书，右键点击 `QtUnblockNeteaseMusic.exe`，选择 `以管理员身份运行`，然后点击`高级`菜单中的`安装证书`。
 
-## Build
-1. Set up the Qt development environment (Qt 6.5.0)
-2. Clone the repository
-3. Open the project in Qt Creator / VSCode (extra extensions needed)
-4. Compile & Run
-- If you want to generate a complete package with libraries,  
-  copy `QtUnblockNeteaseMusic.exe` to a new directory and run `windeployqt.exe .\QtUnblockNeteaseMusic.exe`
+## 构建
+1. 安装 Qt 开发环境（Qt 6.5.0）
+2. 克隆仓库
+3. 在 Qt Creator 或 VS Code（需要额外插件）中打开项目
+4. 编译并运行
+- 如果要生成带有依赖库的完整应用，请将 `QtUnblockNeteaseMusic.exe` 复制到新目录下并运行 `windeployqt.exe .\QtUnblockNeteaseMusic.exe`
 
-## Thanks
-This little tool wouldn't have been made possible without these incredible projects:
-- [Qt](https://github.com/qt): Providing a powerful but easy-to-use development framework
-- [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic): The project that started everything
-- [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server): Maintaining and enhancing the UNM server
+## 感谢
+这个小工具的诞生离不开以下项目：
+- [Qt](https://github.com/qt): 强大而易用的开发框架
+- [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)：一切始于这个项目
+- [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server)：维护并增强 UNM 服务器
 
-## To be solved
-- ~~The log output from the enhanced server is messy ([#791](https://github.com/UnblockNeteaseMusic/server/issues/791))~~ Fixed in upstream ([#798](https://github.com/UnblockNeteaseMusic/server/pull/798))
-- Build everything with cmake ~~Done~~  
-  There's a bug in Qt 6 preventing lupdate from working with CMake, thus we have to lupdate manually
-- Untested/unsupported on macOS, Linux, and Windows 8 or lower
-- I'm a newbie
+## 待解决
+- ~~增强版服务器的日志输出乱码（[#791](https://github.com/UnblockNeteaseMusic/server/issues/791)）~~已在上游修复（[#798](https://github.com/UnblockNeteaseMusic/server/pull/798)）
+- 使用 CMake 完成所有构建 ~~已完成~~  
+  Qt 6 中的 lupdate 无法与 CMake 配合使用，因此仍然需要手动运行 lupdate
+- 未测试 / 未支持 macOS、Linux 、 Windows 8 及以下等平台
+- 我是菜鸡
