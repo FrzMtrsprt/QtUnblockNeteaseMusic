@@ -25,7 +25,7 @@ English version: [README_en.md](README_en.md)
 ## 使用方法
 1. 从 [releases](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/releases) 下载最新版本
 2. 如果你想使用脚本服务器而不是打包的可执行文件，请先安装 [Node.js Runtime](https://nodejs.org/zh-cn/download)
-3. 从 [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) 或 [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server) 下载 UnblockNeteaseMusic 服务器，并放置于 `QtUnblockNeteaseMusic.exe` 所在目录
+3. 从 [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) 或 [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server) 下载 UnblockNeteaseMusic 服务器，并置于 `QtUnblockNeteaseMusic.exe` 所在目录
 ```
 QtUnblockNeteaseMusic  
 ├─ ...  
@@ -45,7 +45,7 @@ QtUnblockNeteaseMusic
 5. 在网易云客户端中设置相应的代理，享受音乐吧！
 - 在个人设备上使用时，尽量避免使用默认的 `8080` 端口。为避免来自其他设备的访问，可以将主机地址设为 `127.0.0.1`。
 - 新版网易云客户端有更严格的 SSL 验证，如果碰到了连接失败的问题，可以启用 HTTPS 端口并安装 UnblockNeteaseMusic CA 证书。
-- 要安装 UnblockNeteaseMusic CA 证书，右键点击 `QtUnblockNeteaseMusic.exe`，选择 `以管理员身份运行`，然后点击`高级`菜单中的`安装证书`。
+- 如果要安装证书，右键点击 `QtUnblockNeteaseMusic.exe`，选择 `以管理员身份运行`，然后点击 `高级` 菜单中的 `安装证书`。
 
 ## 构建
 1. 安装 Qt 开发环境（Qt 6.5.0）
@@ -58,10 +58,10 @@ QtUnblockNeteaseMusic
 这个小工具的诞生离不开以下项目：
 - [Qt](https://github.com/qt): 强大而易用的开发框架
 - [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)：一切始于这个项目
-- [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server)：维护并增强 UNM 服务器
+- [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server)：维护并改进了 UnblockNeteaseMusic
 
 ## 待解决
-- ~~增强版服务器的日志输出乱码（[#791](https://github.com/UnblockNeteaseMusic/server/issues/791)）~~已在上游修复（[#798](https://github.com/UnblockNeteaseMusic/server/pull/798)）
+- ~~增强版服务器的日志输出乱码（[#791](https://github.com/UnblockNeteaseMusic/server/issues/791)）~~ 已在上游修复（[#798](https://github.com/UnblockNeteaseMusic/server/pull/798)）
 - 使用 CMake 完成所有构建 ~~已完成~~  
   Qt 6 中的 lupdate 无法与 CMake 配合使用，因此仍然需要手动运行 lupdate
 - 未测试 / 未支持 macOS、Linux 、 Windows 8 及以下等平台
