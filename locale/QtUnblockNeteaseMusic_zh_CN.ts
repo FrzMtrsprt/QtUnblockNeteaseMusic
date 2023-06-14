@@ -4,14 +4,40 @@
 <context>
     <name>EnvDialog</name>
     <message>
-        <source>Edit Environment Variables</source>
-        <translation>编辑环境变量</translation>
-    </message>
-    <message>
         <source>VARIABLE_NAME_1=variable_value_1
 VARIABLE_NAME_2=variable_value_2</source>
         <translation>变量名称_1=变量值_1
 变量名称_2=变量值_2</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <translation>参数</translation>
+    </message>
+    <message>
+        <source>-option1 parameter1
+-option2 parameter2</source>
+        <translation>-选项1 参数1
+-选项2 参数2</translation>
+    </message>
+    <message>
+        <source>Endpoint</source>
+        <translation>接入点</translation>
+    </message>
+    <message>
+        <source>Token</source>
+        <translation>令牌</translation>
+    </message>
+    <message>
+        <source>CNRelay</source>
+        <translation>国内代理</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>其他</translation>
+    </message>
+    <message>
+        <source>Environment Variables</source>
+        <translation>环境变量</translation>
     </message>
 </context>
 <context>
