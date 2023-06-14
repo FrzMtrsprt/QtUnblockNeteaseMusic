@@ -118,9 +118,6 @@ bool MainWindow::setProxy(const bool &enable)
         errorDlg->setWindowTitle(title);
         errorDlg->setText(text);
         errorDlg->setIcon(QMessageBox::Warning);
-#ifdef Q_OS_WIN
-        WinUtils::setWindowFrame(errorDlg->winId(), errorDlg->style());
-#endif
         errorDlg->exec();
     }
     return ok;
@@ -161,9 +158,6 @@ void MainWindow::on_installCA()
     QMessageBox *dlg = new QMessageBox(this);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setText(ret);
-#ifdef Q_OS_WIN
-    WinUtils::setWindowFrame(dlg->winId(), dlg->style());
-#endif
     dlg->exec();
 }
 
@@ -172,9 +166,6 @@ void MainWindow::on_env()
     EnvDialog *envDlg = new EnvDialog(config, this);
     envDlg->setAttribute(Qt::WA_DeleteOnClose);
     envDlg->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
-#ifdef Q_OS_WIN
-    WinUtils::setWindowFrame(envDlg->winId(), envDlg->style());
-#endif
     if (envDlg->exec() == QDialog::Accepted)
     {
         updateSettings();
@@ -211,9 +202,6 @@ void MainWindow::on_about()
     aboutDlg->setStandardButtons(QMessageBox::Ok);
     aboutDlg->setEscapeButton(QMessageBox::Ok);
     aboutDlg->addButton(QMessageBox::Help)->setText(u"GitHub"_s);
-#ifdef Q_OS_WIN
-    WinUtils::setWindowFrame(aboutDlg->winId(), aboutDlg->style());
-#endif
 
     if (aboutDlg->exec() == QMessageBox::Help)
     {
@@ -330,6 +318,21 @@ bool MainWindow::event(QEvent *e)
     case QEvent::WindowActivate:
         ui->proxyCheckBox->setChecked(isProxy());
         break;
+    case QEvent::ChildAdded:
+#ifdef Q_OS_WIN
+    {
+        QObject *object = static_cast<QChildEvent *>(e)->child();
+        // Set window border for child dialogs
+        if (object->isWidgetType())
+        {
+            QWidget *widget = static_cast<QWidget *>(object);
+            if (widget->isWindow())
+            {
+                WinUtils::setWindowFrame(widget->winId(), widget->style());
+            }
+        }
+    }
+#endif
     default:
         break;
     };
