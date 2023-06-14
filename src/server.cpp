@@ -77,7 +77,7 @@ void Server::loadArgs()
 {
     if (!config->httpPort.isEmpty())
     {
-        config->useHttps
+        config->useHttps && !config->httpsPort.isEmpty()
             ? arguments << u"-p"_s << config->httpPort + ':' + config->httpsPort
             : arguments << u"-p"_s << config->httpPort;
     }
