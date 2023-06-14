@@ -39,6 +39,15 @@ void EnvDialog::accept()
 
 void EnvDialog::help()
 {
-    QDesktopServices::openUrl(QUrl(
-        u"https://github.com/UnblockNeteaseMusic/server#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"_s));
+    switch (ui->tabWidget->currentIndex())
+    {
+    case 0:
+        QDesktopServices::openUrl(QUrl(
+            u"https://github.com/UnblockNeteaseMusic/server#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0"_s));
+        break;
+    case 1:
+        QDesktopServices::openUrl(QUrl(
+            u"https://github.com/UnblockNeteaseMusic/server#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"_s));
+        break;
+    }
 }
