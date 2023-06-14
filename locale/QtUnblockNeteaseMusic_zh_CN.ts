@@ -198,6 +198,19 @@ Please check the server port and address, and try again.</source>
     </message>
 </context>
 <context>
+    <name>QObject</name>
+    <message>
+        <source>CA installed.</source>
+        <translation>证书安装成功。</translation>
+    </message>
+    <message>
+        <source>Access denied.
+Please run QtUnblockNeteaseMusic as Administrator from context menu.</source>
+        <translation>拒绝访问。
+请从右键菜单以管理员身份运行 QtUnblockNeteaseMusic。</translation>
+    </message>
+</context>
+<context>
     <name>Server</name>
     <message>
         <source>Node.js is not installed.</source>

@@ -183,5 +183,14 @@ QString WinUtils::installCA(const QString &caPath)
     QProcess process;
     process.start(u"certutil"_s, {u"-addstore"_s, u"-f"_s, u"root"_s, caPath});
     process.waitForFinished();
-    return QString::fromLocal8Bit(process.readAllStandardOutput());
+    switch (LOWORD(process.exitCode()))
+    {
+    case ERROR_SUCCESS:
+        return QObject::tr("CA installed.");
+    case ERROR_ACCESS_DENIED:
+        return QObject::tr("Access denied.\n"
+                           "Please run QtUnblockNeteaseMusic as Administrator from context menu.");
+    default:
+        return QString::fromLocal8Bit(process.readAllStandardError());
+    }
 }
