@@ -354,7 +354,7 @@
   </action>
   <action name="actionEnv">
    <property name="text">
-    <string>&amp;Environment Variables</string>
+    <string>&amp;Advance Options</string>
    </property>
   </action>
  </widget>

@@ -39,6 +39,10 @@ VARIABLE_NAME_2=variable_value_2</source>
         <source>Environment Variables</source>
         <translation>环境变量</translation>
     </message>
+    <message>
+        <source>Advance Options</source>
+        <translation>高级选项</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -171,10 +175,6 @@ VARIABLE_NAME_2=variable_value_2</source>
         <translation>安装证书(&amp;I)</translation>
     </message>
     <message>
-        <source>&amp;Environment Variables</source>
-        <translation>环境变量(&amp;E)</translation>
-    </message>
-    <message>
         <source>&lt;h3&gt;About %1&lt;/h3&gt;&lt;p&gt;Version %2&lt;/p&gt;</source>
         <translation>&lt;h3&gt;关于 %1&lt;/h3&gt;&lt;p&gt;版本 %2&lt;/p&gt;</translation>
     </message>
@@ -191,6 +191,10 @@ VARIABLE_NAME_2=variable_value_2</source>
 Please check the server port and address, and try again.</source>
         <translation>无法设置系统代理。
 请检查服务器端口和地址并重试。</translation>
+    </message>
+    <message>
+        <source>&amp;Advance Options</source>
+        <translation>高级选项(&amp;A)</translation>
     </message>
 </context>
 <context>

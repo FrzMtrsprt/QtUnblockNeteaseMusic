@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>EnvDialog</class>
  <widget class="QDialog" name="EnvDialog">
+  <property name="windowTitle">
+   <string>Advance Options</string>
+  </property>
   <layout class="QVBoxLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
