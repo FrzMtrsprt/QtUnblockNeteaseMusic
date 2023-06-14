@@ -122,6 +122,10 @@ void Server::start()
     if (findProgram())
     {
         loadArgs();
+        if (config->debugInfo)
+        {
+            output->append(program + u' ' + arguments.join(u' '));
+        }
         QProcess::start(program, arguments, QIODeviceBase::ReadOnly);
         if (!waitForStarted())
         {
