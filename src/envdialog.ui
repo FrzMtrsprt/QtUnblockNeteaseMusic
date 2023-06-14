@@ -4,20 +4,102 @@
  <widget class="QDialog" name="EnvDialog">
   <layout class="QVBoxLayout">
    <item>
-    <widget class="QGroupBox" name="envBox">
-     <property name="title">
-      <string>Edit Environment Variables</string>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <layout class="QVBoxLayout">
-      <item>
-       <widget class="QPlainTextEdit" name="envEdit">
-        <property name="placeholderText">
-         <string>VARIABLE_NAME_1=variable_value_1
+     <widget class="QWidget" name="paramTab">
+      <attribute name="title">
+       <string>Parameters</string>
+      </attribute>
+      <layout class="QGridLayout">
+       <item row="4" column="2" rowspan="2">
+        <widget class="QPlainTextEdit" name="otherEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="placeholderText">
+          <string>-option1 parameter1
+-option2 parameter2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="tokenEdit"/>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QLabel" name="endpointLabel">
+         <property name="text">
+          <string>Endpoint</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLineEdit" name="cnrelayEdit"/>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="endpointEdit"/>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QLabel" name="tokenLabel">
+         <property name="text">
+          <string>Token</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QLabel" name="cnrelayLabel">
+         <property name="text">
+          <string>CNRelay</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QLabel" name="otherLabel">
+         <property name="text">
+          <string>Other</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="envTab">
+      <attribute name="title">
+       <string>Environment Variables</string>
+      </attribute>
+      <layout class="QHBoxLayout">
+       <item>
+        <widget class="QPlainTextEdit" name="envEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="placeholderText">
+          <string>VARIABLE_NAME_1=variable_value_1
 VARIABLE_NAME_2=variable_value_2</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>

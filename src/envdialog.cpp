@@ -9,6 +9,10 @@ EnvDialog::EnvDialog(Config *config, QWidget *parent)
     : QDialog(parent), ui(new Ui::EnvDialog)
 {
     ui->setupUi(this);
+    ui->tokenEdit->setText(config->token);
+    ui->endpointEdit->setText(config->endpoint);
+    ui->cnrelayEdit->setText(config->cnrelay);
+    ui->otherEdit->setPlainText(config->other.join("\n"));
     ui->envEdit->setPlainText(config->env.join("\n"));
 
     this->config = config;
@@ -25,6 +29,10 @@ EnvDialog::~EnvDialog()
 
 void EnvDialog::accept()
 {
+    config->token = ui->tokenEdit->text();
+    config->endpoint = ui->endpointEdit->text();
+    config->cnrelay = ui->cnrelayEdit->text();
+    config->other = ui->otherEdit->toPlainText().split('\n', Qt::SkipEmptyParts);
     config->env = ui->envEdit->toPlainText().split('\n', Qt::SkipEmptyParts);
     QDialog::accept();
 }

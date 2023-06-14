@@ -20,6 +20,12 @@ public:
     bool startup;
     QString theme;
     bool debugInfo;
+
+    QString token;
+    QString endpoint;
+    QString cnrelay;
+    QStringList other;
+
     QStringList env;
 
     void readSettings();

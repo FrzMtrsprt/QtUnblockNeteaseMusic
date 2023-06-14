@@ -101,6 +101,27 @@ void Server::loadArgs()
     {
         arguments << u"-s"_s;
     }
+
+    if (!config->token.isEmpty())
+    {
+        arguments << u"-t"_s << config->token;
+    }
+    if (!config->endpoint.isEmpty())
+    {
+        arguments << u"-e"_s << config->endpoint;
+    }
+    if (!config->cnrelay.isEmpty())
+    {
+        arguments << u"-c"_s << config->cnrelay;
+    }
+    if (!config->other.isEmpty())
+    {
+        for (const QString &entry : config->other)
+        {
+            arguments << entry.split(u' ');
+        }
+    }
+
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     for (const QString &entry : config->env)
     {

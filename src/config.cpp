@@ -27,6 +27,12 @@ void Config::readSettings()
     startup = value("startup").toBool();
     theme = value("theme").toString();
     debugInfo = value("debugInfo").toBool();
+
+    token = value("token").toString();
+    endpoint = value("endpoint").toString();
+    cnrelay = value("cnrelay").toString();
+    other = value("other").toStringList();
+
     env = value("env").toStringList();
 }
 
@@ -43,5 +49,11 @@ void Config::writeSettings()
     setValue("startup", startup);
     setValue("theme", theme);
     setValue("debugInfo", debugInfo);
+
+    setValue("token", token);
+    setValue("endpoint", endpoint);
+    setValue("cnrelay", cnrelay);
+    setValue("other", other);
+
     setValue("env", env);
 }
