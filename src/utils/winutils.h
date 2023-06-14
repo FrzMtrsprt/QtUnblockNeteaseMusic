@@ -4,8 +4,6 @@
 #include <QStyle>
 #include <QWindow>
 
-#include <Windows.h>
-
 class WinUtils
 {
 public:

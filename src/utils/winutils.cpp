@@ -6,8 +6,6 @@
 #include <QWindow>
 
 #include <Windows.h>
-#include <dwmapi.h>
-#include <shlwapi.h>
 #include <uxtheme.h>
 #include <wininet.h>
 
@@ -31,8 +29,8 @@ void WinUtils::setStartup(const bool &enable)
     LPCSTR lpStartupKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
     // Find app file name and remove name extension
-    LPSTR lpValueName = PathFindFileNameA(__argv[0]);
-    PathRemoveExtensionA(lpValueName);
+    char *lpFileName = strrchr(__argv[0], '\\') + 1;
+    LPCSTR lpValueName = strtok_s(lpFileName, ".", NULL);
 
     if (enable)
     {
