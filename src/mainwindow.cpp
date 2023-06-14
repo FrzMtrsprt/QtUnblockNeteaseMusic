@@ -319,6 +319,10 @@ bool MainWindow::event(QEvent *e)
 #endif
         break;
     case QEvent::Close:
+        for (QDialog *dialog : findChildren<QDialog *>())
+        {
+            dialog->close();
+        }
 #ifdef Q_OS_WIN
         WinUtils::setThrottle(true);
 #endif
