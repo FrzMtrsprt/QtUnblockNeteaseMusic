@@ -41,8 +41,6 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::on_about);
     connect(ui->actionAboutQt, &QAction::triggered,
             this, &MainWindow::on_aboutQt);
-    connect(ui->httpsCheckBox, &QCheckBox::clicked,
-            this, &MainWindow::on_https);
     connect(ui->startupCheckBox, &QCheckBox::clicked,
             this, &MainWindow::on_startup);
     connect(ui->proxyCheckBox, &QCheckBox::clicked,
