@@ -5,13 +5,13 @@
 
 #include <QSettings>
 
-class Config : public QSettings
+class Config : QSettings
 {
 public:
     Config();
     ~Config();
 
-    QHash<const char *, Param> params;
+    Params params;
 
     bool startup;
     QString theme;

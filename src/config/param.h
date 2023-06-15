@@ -1,12 +1,15 @@
 #ifndef PARAM_H
 #define PARAM_H
 
+#include <QMessageBox>
 #include <QVariant>
+
+using namespace Qt::Literals::StringLiterals;
 
 class Param : public QVariant
 {
 public:
-      Param(){};
+      Param() : QVariant(){};
       Param(const QString &prefix,
             const QMetaType::Type &typeId,
             const QVariant &value = QVariant())
@@ -19,6 +22,31 @@ public:
 
       QString prefix;
       QMetaType::Type typeId;
+};
+
+class Params : public QHash<const char *, Param>
+{
+public:
+      Params() : QHash<const char *, Param>(){};
+      ~Params(){};
+
+      Param &operator[](const char *key)
+      {
+            // Check if key is valid for type safety
+            if (!keys.contains(key))
+            {
+                  QMessageBox::critical(
+                      nullptr, u"Error"_s,
+                      u"Invalid key: %1\n"_s
+                      u"Please report this issue to the developer"_s
+                          .arg(key));
+            }
+            return QHash<const char *, Param>::operator[](key);
+      };
+
+      const QList<const char *> keys{
+          "port", "address", "url", "host", "sources",
+          "strict", "token", "endpoint", "cnrelay"};
 };
 
 #endif // PARAM_H
