@@ -48,7 +48,7 @@ QtUnblockNeteaseMusic
 - 如果要安装证书，右键点击 `QtUnblockNeteaseMusic.exe`，选择 `以管理员身份运行`，然后点击 `高级` 菜单中的 `安装证书`。
 
 ## 构建
-1. 安装 Qt 开发环境（Qt 6.5.0）
+1. 安装 Qt 开发环境（Qt 6.4+）
 2. 克隆仓库
 3. 在 Qt Creator 或 VS Code（需要额外插件）中打开项目
 4. 编译并运行

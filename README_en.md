@@ -46,7 +46,7 @@ QtUnblockNeteaseMusic
 - To install the certificate, right click on `QtUnblockNeteaseMusic.exe`, select `Run as administrator`, and click `Install certificate` in the `Advance` menu.
 
 ## Build
-1. Set up the Qt development environment (Qt 6.5.0)
+1. Set up the Qt development environment (Qt 6.4+)
 2. Clone the repository
 3. Open the project in Qt Creator / VS Code (extra extensions needed)
 4. Compile & Run
