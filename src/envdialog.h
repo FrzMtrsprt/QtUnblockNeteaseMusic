@@ -1,7 +1,7 @@
 #ifndef ENVWINDOW_H
 #define ENVWINDOW_H
 
-#include "config.h"
+#include "config/config.h"
 
 #include <QDialog>
 

@@ -1,7 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include "config.h"
+#include "config/config.h"
 
 #include <QProcess>
 #include <QString>

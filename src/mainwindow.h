@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "config.h"
+#include "config/config.h"
 #include "server.h"
 
 #include <QCloseEvent>
