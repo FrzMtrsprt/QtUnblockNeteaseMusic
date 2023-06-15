@@ -1,6 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include "param.h"
+
 #include <QSettings>
 
 class Config : public QSettings
@@ -9,21 +11,12 @@ public:
     Config();
     ~Config();
 
-    QString httpPort;
-    QString httpsPort;
-    bool useHttps;
-    QString address;
-    QString url;
-    QString host;
-    QStringList sources;
-    bool strict;
+    QHash<const char *, Param> params;
+
     bool startup;
     QString theme;
     bool debugInfo;
 
-    QString token;
-    QString endpoint;
-    QString cnrelay;
     QStringList other;
 
     QStringList env;

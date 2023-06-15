@@ -75,44 +75,29 @@ bool Server::findProgram()
 
 void Server::loadArgs()
 {
-    if (!config->httpPort.isEmpty())
+    for (const Param &param : config->params)
     {
-        config->useHttps && !config->httpsPort.isEmpty()
-            ? arguments << u"-p"_s << config->httpPort + ':' + config->httpsPort
-            : arguments << u"-p"_s << config->httpPort;
-    }
-    if (!config->address.isEmpty())
-    {
-        arguments << u"-a"_s << config->address;
-    }
-    if (!config->url.isEmpty())
-    {
-        arguments << u"-u"_s << config->url;
-    }
-    if (!config->host.isEmpty())
-    {
-        arguments << u"-f"_s << config->host;
-    }
-    if (!config->sources.isEmpty())
-    {
-        arguments << u"-o"_s << config->sources;
-    }
-    if (config->strict)
-    {
-        arguments << u"-s"_s;
-    }
-
-    if (!config->token.isEmpty())
-    {
-        arguments << u"-t"_s << config->token;
-    }
-    if (!config->endpoint.isEmpty())
-    {
-        arguments << u"-e"_s << config->endpoint;
-    }
-    if (!config->cnrelay.isEmpty())
-    {
-        arguments << u"-c"_s << config->cnrelay;
+        switch (param.typeId)
+        {
+        case QMetaType::Bool:
+            if (param.toBool())
+            {
+                arguments << param.prefix;
+            }
+            break;
+        case QMetaType::QString:
+            if (param.toString().size())
+            {
+                arguments << param.prefix << param.toString();
+            }
+            break;
+        case QMetaType::QStringList:
+            if (param.toStringList().size())
+            {
+                arguments << param.prefix << param.toStringList();
+            }
+            break;
+        }
     }
     if (!config->other.isEmpty())
     {

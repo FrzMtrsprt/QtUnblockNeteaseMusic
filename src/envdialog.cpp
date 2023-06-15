@@ -9,9 +9,9 @@ EnvDialog::EnvDialog(Config *config, QWidget *parent)
     : QDialog(parent), ui(new Ui::EnvDialog)
 {
     ui->setupUi(this);
-    ui->tokenEdit->setText(config->token);
-    ui->endpointEdit->setText(config->endpoint);
-    ui->cnrelayEdit->setText(config->cnrelay);
+    ui->tokenEdit->setText(config->params["token"].toString());
+    ui->endpointEdit->setText(config->params["endpoint"].toString());
+    ui->cnrelayEdit->setText(config->params["cnrelay"].toString());
     ui->otherEdit->setPlainText(config->other.join("\n"));
     ui->envEdit->setPlainText(config->env.join("\n"));
 
@@ -29,9 +29,9 @@ EnvDialog::~EnvDialog()
 
 void EnvDialog::accept()
 {
-    config->token = ui->tokenEdit->text();
-    config->endpoint = ui->endpointEdit->text();
-    config->cnrelay = ui->cnrelayEdit->text();
+    config->params["token"].setValue(ui->tokenEdit->text());
+    config->params["endpoint"].setValue(ui->endpointEdit->text());
+    config->params["cnrelay"].setValue(ui->cnrelayEdit->text());
     config->other = ui->otherEdit->toPlainText().split('\n', Qt::SkipEmptyParts);
     config->env = ui->envEdit->toPlainText().split('\n', Qt::SkipEmptyParts);
     QDialog::accept();
