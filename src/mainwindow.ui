@@ -54,30 +54,44 @@
          <string>Arguments</string>
         </property>
         <layout class="QGridLayout">
-         <item row="1" column="0">
-          <widget class="QLabel" name="httpsLabel">
+         <item row="2" column="0">
+          <widget class="QLabel" name="addressLabel">
            <property name="statusTip">
-            <string>Enable HTTPS proxy</string>
+            <string>Specify server host</string>
            </property>
            <property name="text">
-            <string>HTTPS</string>
+            <string>Address</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1" colspan="2">
-          <widget class="QLineEdit" name="urlEdit">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+         <item row="5" column="0">
+          <widget class="QLabel" name="sourceLabel">
+           <property name="statusTip">
+            <string>Set priority of sources</string>
            </property>
+           <property name="text">
+            <string>Sources</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </spacer>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="urlLabel">
            <property name="statusTip">
             <string>Request through upstream proxy</string>
            </property>
+           <property name="text">
+            <string>Proxy URL</string>
+           </property>
           </widget>
          </item>
-         <item row="3" column="1" colspan="2">
+         <item row="2" column="1" colspan="2">
           <widget class="QLineEdit" name="addressEdit">
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -93,13 +107,16 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="sourceLabel">
-           <property name="statusTip">
-            <string>Set priority of sources</string>
+         <item row="4" column="1" colspan="2">
+          <widget class="QLineEdit" name="hostEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="text">
-            <string>Sources</string>
+           <property name="statusTip">
+            <string>Force the Netease server IP</string>
            </property>
           </widget>
          </item>
@@ -110,6 +127,78 @@
            </property>
            <property name="text">
             <string>Port</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="strictLabel">
+           <property name="statusTip">
+            <string>Enable proxy limitation</string>
+           </property>
+           <property name="text">
+            <string>Strict Mode</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1" rowspan="2" colspan="2">
+          <widget class="QTextEdit" name="sourceEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="statusTip">
+            <string>Set priority of sources</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="httpsEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="statusTip">
+            <string>Specify server HTTPS port</string>
+           </property>
+           <property name="placeholderText">
+            <string notr="true">HTTPS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1" colspan="2">
+          <widget class="QLineEdit" name="urlEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="statusTip">
+            <string>Request through upstream proxy</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="hostLabel">
+           <property name="statusTip">
+            <string>Force the Netease server IP</string>
+           </property>
+           <property name="text">
+            <string>Force Host</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1" colspan="2">
+          <widget class="QCheckBox" name="strictCheckBox">
+           <property name="statusTip">
+            <string>Enable proxy limitation</string>
+           </property>
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </item>
@@ -127,111 +216,8 @@
            <property name="text">
             <string/>
            </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="urlLabel">
-           <property name="statusTip">
-            <string>Request through upstream proxy</string>
-           </property>
-           <property name="text">
-            <string>Proxy URL</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLineEdit" name="httpsEdit">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="statusTip">
-            <string>Specify server HTTPS port</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1" colspan="2">
-          <widget class="QLineEdit" name="hostEdit">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="statusTip">
-            <string>Force the Netease server IP</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1" rowspan="2" colspan="2">
-          <widget class="QTextEdit" name="sourceEdit">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="statusTip">
-            <string>Set priority of sources</string>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="0">
-          <widget class="QLabel" name="strictLabel">
-           <property name="statusTip">
-            <string>Enable proxy limitation</string>
-           </property>
-           <property name="text">
-            <string>Strict Mode</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="hostLabel">
-           <property name="statusTip">
-            <string>Force the Netease server IP</string>
-           </property>
-           <property name="text">
-            <string>Force Host</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="addressLabel">
-           <property name="statusTip">
-            <string>Specify server host</string>
-           </property>
-           <property name="text">
-            <string>Address</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" colspan="2">
-          <widget class="QCheckBox" name="httpsCheckBox">
-           <property name="statusTip">
-            <string>Enable HTTPS proxy</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="0">
-          <spacer>
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-          </spacer>
-         </item>
-         <item row="8" column="1" colspan="2">
-          <widget class="QCheckBox" name="strictCheckBox">
-           <property name="statusTip">
-            <string>Enable proxy limitation</string>
-           </property>
-           <property name="text">
-            <string/>
+           <property name="placeholderText">
+            <string notr="true">HTTP</string>
            </property>
           </widget>
          </item>

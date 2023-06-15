@@ -215,11 +215,6 @@ void MainWindow::on_aboutQt()
     QMessageBox::aboutQt(this);
 }
 
-void MainWindow::on_https(const bool &enable)
-{
-    ui->httpsEdit->setEnabled(enable);
-}
-
 void MainWindow::on_startup(const bool &enable)
 {
 #ifdef Q_OS_WIN
@@ -249,7 +244,6 @@ void MainWindow::loadSettings()
     // load settings from variables into ui
     ui->httpEdit->setText(config->httpPort);
     ui->httpsEdit->setText(config->httpsPort);
-    ui->httpsCheckBox->setChecked(config->useHttps);
     ui->httpsEdit->setEnabled(config->useHttps);
     ui->addressEdit->setText(config->address);
     ui->urlEdit->setText(config->url);

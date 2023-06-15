@@ -43,7 +43,6 @@ private slots:
     void on_startup(const bool &enable);
     void on_about();
     void on_aboutQt();
-    void on_https(const bool &enable);
     void on_apply();
 };
 #endif // MAINWINDOW_H
