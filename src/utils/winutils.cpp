@@ -30,7 +30,8 @@ void WinUtils::setStartup(const bool &enable)
 
     // Find app file name and remove name extension
     char *lpFileName = strrchr(__argv[0], '\\') + 1;
-    LPCSTR lpValueName = strtok_s(lpFileName, ".", NULL);
+    char *context = NULL;
+    LPCSTR lpValueName = strtok_s(lpFileName, ".", &context);
 
     if (enable)
     {
