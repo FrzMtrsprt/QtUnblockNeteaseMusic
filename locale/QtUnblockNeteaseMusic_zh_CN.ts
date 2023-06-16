@@ -127,14 +127,6 @@ VARIABLE_NAME_2=variable_value_2</source>
         <translation>应用</translation>
     </message>
     <message>
-        <source>Enable HTTPS proxy</source>
-        <translation>启用 HTTPS 代理</translation>
-    </message>
-    <message>
-        <source>HTTPS</source>
-        <translation>HTTPS</translation>
-    </message>
-    <message>
         <source>Specify server HTTP port</source>
         <translation>指定服务器 HTTP 端口</translation>
     </message>
@@ -200,14 +192,20 @@ Please check the server port and address, and try again.</source>
 <context>
     <name>QObject</name>
     <message>
-        <source>CA installed.</source>
-        <translation>证书安装成功。</translation>
-    </message>
-    <message>
         <source>Access denied.
 Please run QtUnblockNeteaseMusic as Administrator from context menu.</source>
         <translation>拒绝访问。
 请从右键菜单以管理员身份运行 QtUnblockNeteaseMusic。</translation>
+    </message>
+    <message>
+        <source>Unknown error occured.
+Please see details below.</source>
+        <translation>发生未知错误。
+请参考以下详细信息。</translation>
+    </message>
+    <message>
+        <source>UnblockNeteaseMusic CA is installed.</source>
+        <translation>UnblockNeteaseMusic 证书安装成功。</translation>
     </message>
 </context>
 <context>

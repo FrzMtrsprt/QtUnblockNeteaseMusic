@@ -144,18 +144,23 @@ void MainWindow::on_installCA()
 {
     const QString caPath = u"./ca.crt"_s;
 
-    QString ret;
+    bool succeed = false;
+    QString error;
+    QString detail;
 
     QFile::copy(u":/certs/ca.crt"_s, caPath);
 #ifdef Q_OS_WIN
-    ret = WinUtils::installCA(caPath);
+    succeed = WinUtils::installCA(caPath, error, detail);
 #endif
     QFile::setPermissions(caPath, QFileDevice::WriteOwner);
     QFile::remove(caPath);
 
     QMessageBox *dlg = new QMessageBox(this);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->setText(ret);
+    dlg->setIcon(succeed ? QMessageBox::Information
+                         : QMessageBox::Warning);
+    dlg->setText(error);
+    dlg->setDetailedText(detail);
     dlg->exec();
 }
 

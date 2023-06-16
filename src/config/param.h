@@ -1,7 +1,6 @@
 #ifndef PARAM_H
 #define PARAM_H
 
-#include <QMessageBox>
 #include <QVariant>
 
 using namespace Qt::Literals::StringLiterals;
@@ -35,11 +34,7 @@ public:
             // Check if key is valid for type safety
             if (!keys.contains(key))
             {
-                  QMessageBox::critical(
-                      nullptr, u"Error"_s,
-                      u"Invalid key: %1\n"_s
-                      u"Please report this issue to the developer"_s
-                          .arg(key));
+                  qWarning("Invalid key: %s", key);
             }
             return QHash<const char *, Param>::operator[](key);
       };
