@@ -95,8 +95,8 @@ void MainWindow::setTheme(const QString &theme)
 
 bool MainWindow::setProxy(const bool &enable)
 {
-    const QString address = config->params["address"].toString();
-    const QString port = config->params["port"].toString().split(u':')[0];
+    const QString address = config->params[Param::Address].value<QString>();
+    const QString port = config->params[Param::Port].value<QString>().split(u':')[0];
     bool ok = false;
 #ifdef Q_OS_WIN
     ok = WinUtils::setSystemProxy(enable, address, port);
@@ -123,8 +123,8 @@ bool MainWindow::setProxy(const bool &enable)
 
 bool MainWindow::isProxy()
 {
-    const QString address = config->params["address"].toString();
-    const QString port = config->params["port"].toString().split(u':')[0];
+    const QString address = config->params[Param::Address].value<QString>();
+    const QString port = config->params[Param::Port].value<QString>().split(u':')[0];
     bool isProxy = false;
 #ifdef Q_OS_WIN
     isProxy = WinUtils::isSystemProxy(address, port);
@@ -245,14 +245,14 @@ void MainWindow::loadSettings()
     config->readSettings();
 
     // load settings from variables into ui
-    const QStringList split = config->params["port"].toString().split(u':');
+    const QStringList split = config->params[Param::Port].value<QString>().split(u':');
     ui->httpEdit->setText(split[0]);
     ui->httpsEdit->setText(split.length() > 1 ? split[1] : u""_s);
-    ui->addressEdit->setText(config->params["address"].toString());
-    ui->urlEdit->setText(config->params["url"].toString());
-    ui->hostEdit->setText(config->params["host"].toString());
-    ui->sourceEdit->append(config->params["sources"].toStringList().join(u", "_s));
-    ui->strictCheckBox->setChecked(config->params["strict"].toBool());
+    ui->addressEdit->setText(config->params[Param::Address].value<QString>());
+    ui->urlEdit->setText(config->params[Param::Url].value<QString>());
+    ui->hostEdit->setText(config->params[Param::Host].value<QString>());
+    ui->sourceEdit->append(config->params[Param::Sources].value<QStringList>().join(u", "_s));
+    ui->strictCheckBox->setChecked(config->params[Param::Strict].value<bool>());
     ui->startupCheckBox->setChecked(config->startup);
     ui->debugCheckBox->setChecked(config->debugInfo);
     setTheme(config->theme);
@@ -270,12 +270,12 @@ void MainWindow::updateSettings()
     const QString port = ui->httpsEdit->text().size()
                              ? ui->httpEdit->text() + u':' + ui->httpsEdit->text()
                              : ui->httpEdit->text();
-    config->params["port"].setValue(port);
-    config->params["address"].setValue(ui->addressEdit->text());
-    config->params["url"].setValue(ui->urlEdit->text());
-    config->params["host"].setValue(ui->hostEdit->text());
-    config->params["sources"].setValue(ui->sourceEdit->toPlainText().split(sep, Qt::SkipEmptyParts));
-    config->params["strict"].setValue(ui->strictCheckBox->isChecked());
+    config->params[Param::Port].setValue(port);
+    config->params[Param::Address].setValue(ui->addressEdit->text());
+    config->params[Param::Url].setValue(ui->urlEdit->text());
+    config->params[Param::Host].setValue(ui->hostEdit->text());
+    config->params[Param::Sources].setValue(ui->sourceEdit->toPlainText().split(sep, Qt::SkipEmptyParts));
+    config->params[Param::Strict].setValue(ui->strictCheckBox->isChecked());
     config->startup = ui->startupCheckBox->isChecked();
     config->debugInfo = ui->debugCheckBox->isChecked();
     config->theme = QApplication::style()->name();

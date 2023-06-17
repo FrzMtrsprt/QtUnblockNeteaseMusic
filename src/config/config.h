@@ -11,7 +11,7 @@ public:
     Config();
     ~Config();
 
-    Params params;
+    QList<Param> params;
 
     bool startup;
     QString theme;

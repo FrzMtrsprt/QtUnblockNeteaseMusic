@@ -80,21 +80,21 @@ void Server::loadArgs()
         switch (param.typeId)
         {
         case QMetaType::Bool:
-            if (param.toBool())
+            if (param.value<bool>())
             {
                 arguments << param.prefix;
             }
             break;
         case QMetaType::QString:
-            if (param.toString().size())
+            if (param.value<QString>().size())
             {
-                arguments << param.prefix << param.toString();
+                arguments << param.prefix << param.value<QString>();
             }
             break;
         case QMetaType::QStringList:
-            if (param.toStringList().size())
+            if (param.value<QStringList>().size())
             {
-                arguments << param.prefix << param.toStringList();
+                arguments << param.prefix << param.value<QStringList>();
             }
             break;
         }
