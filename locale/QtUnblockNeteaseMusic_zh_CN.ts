@@ -21,7 +21,7 @@ VARIABLE_NAME_2=variable_value_2</source>
     </message>
     <message>
         <source>Endpoint</source>
-        <translation>接入点</translation>
+        <translation>端点</translation>
     </message>
     <message>
         <source>Token</source>
@@ -76,7 +76,7 @@ VARIABLE_NAME_2=variable_value_2</source>
     </message>
     <message>
         <source>Specify server host</source>
-        <translation>指定主机地址</translation>
+        <translation>指定服务主机</translation>
     </message>
     <message>
         <source>Address</source>
@@ -92,7 +92,7 @@ VARIABLE_NAME_2=variable_value_2</source>
     </message>
     <message>
         <source>Specify server port</source>
-        <translation>指定服务器端口</translation>
+        <translation>指定服务端口</translation>
     </message>
     <message>
         <source>Port</source>
@@ -128,11 +128,11 @@ VARIABLE_NAME_2=variable_value_2</source>
     </message>
     <message>
         <source>Specify server HTTP port</source>
-        <translation>指定服务器 HTTP 端口</translation>
+        <translation>指定服务 HTTP 端口</translation>
     </message>
     <message>
         <source>Specify server HTTPS port</source>
-        <translation>指定服务器 HTTPS 端口</translation>
+        <translation>指定服务 HTTPS 端口</translation>
     </message>
     <message>
         <source>Show debug information</source>
