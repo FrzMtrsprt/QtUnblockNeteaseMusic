@@ -3,7 +3,6 @@
 #include "envdialog.h"
 
 #include <QCloseEvent>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QFile>
 #include <QFontDatabase>
@@ -11,6 +10,7 @@
 #include <QRegularExpression>
 #include <QStyle>
 #include <QStyleFactory>
+#include <QTimer>
 
 #ifdef Q_OS_WIN
 #include "utils/winutils.h"

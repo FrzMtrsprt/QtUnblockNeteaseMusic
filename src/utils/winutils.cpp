@@ -1,9 +1,6 @@
 #include "winutils.h"
 
-#include <QString>
-#include <QStyle>
 #include <QProcess>
-#include <QWindow>
 
 #include <Windows.h>
 #include <uxtheme.h>

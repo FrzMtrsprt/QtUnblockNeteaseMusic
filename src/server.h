@@ -4,8 +4,6 @@
 #include "config/config.h"
 
 #include <QProcess>
-#include <QString>
-#include <QStringList>
 #include <QTextEdit>
 
 class Server : public QProcess

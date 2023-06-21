@@ -3,7 +3,6 @@
 
 #include "mainwindow.h"
 
-#include <QMenu>
 #include <QSystemTrayIcon>
 
 class Tray : public QSystemTrayIcon

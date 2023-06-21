@@ -1,8 +1,6 @@
-#include <QApplication>
 #include <QDir>
 #include <QLibraryInfo>
 #include <QMessageBox>
-#include <QSharedMemory>
 #include <QTranslator>
 #include <SingleApplication>
 

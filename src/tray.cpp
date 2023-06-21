@@ -1,5 +1,7 @@
 #include "tray.h"
 
+#include <QMenu>
+
 using namespace Qt::Literals::StringLiterals;
 
 Tray::Tray(MainWindow *w) : QSystemTrayIcon(w)

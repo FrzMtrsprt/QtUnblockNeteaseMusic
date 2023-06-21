@@ -4,7 +4,6 @@
 #include "config/config.h"
 #include "server.h"
 
-#include <QCloseEvent>
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE

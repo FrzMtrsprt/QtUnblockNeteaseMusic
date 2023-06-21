@@ -1,8 +1,6 @@
 #include "server.h"
 
 #include <QDir>
-#include <QFileInfo>
-#include <QFileInfoList>
 #include <QMessageBox>
 
 #ifdef Q_OS_WIN
