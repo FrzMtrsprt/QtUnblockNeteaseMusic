@@ -177,26 +177,29 @@ bool WinUtils::isSystemProxy(const QString &address, const QString &port)
 }
 
 // Install CA certificate and return the output
-bool WinUtils::installCA(const QString &caPath, QString &error, QString &detail)
+std::tuple<bool, QString, QString> WinUtils::installCA(const QString &caPath)
 {
     QProcess process;
     process.start(u"certutil"_s, {u"-addstore"_s, u"-f"_s, u"root"_s, caPath},
                   QProcess::ReadOnly);
     process.waitForFinished();
-    detail = QString::fromLocal8Bit(process.readAllStandardOutput());
+    const QString detail = QString::fromLocal8Bit(process.readAllStandardOutput());
     switch (LOWORD(process.exitCode()))
     {
     case ERROR_SUCCESS:
-        error = QObject::tr("UnblockNeteaseMusic CA is installed.");
-        return true;
+        return {true,
+                QObject::tr("UnblockNeteaseMusic CA is installed."),
+                detail};
     case ERROR_ACCESS_DENIED:
-        error = QObject::tr("Access denied.\n"
+        return {false,
+                QObject::tr("Access denied.\n"
                             "Please run QtUnblockNeteaseMusic as "
-                            "Administrator from context menu.");
-        return false;
+                            "Administrator from context menu."),
+                detail};
     default:
-        error = QObject::tr("Unknown error occured.\n"
-                            "Please see details below.");
-        return false;
+        return {false,
+                QObject::tr("Unknown error occured.\n"
+                            "Please see details below."),
+                detail};
     }
 }

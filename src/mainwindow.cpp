@@ -143,14 +143,11 @@ void MainWindow::exit()
 void MainWindow::on_installCA()
 {
     const QString caPath = u"./ca.crt"_s;
-
-    bool succeed = false;
-    QString error;
-    QString detail;
-
     QFile::copy(u":/certs/ca.crt"_s, caPath);
 #ifdef Q_OS_WIN
-    succeed = WinUtils::installCA(caPath, error, detail);
+    const auto [succeed, error, detail] = WinUtils::installCA(caPath);
+#else
+    const auto [succeed, error, detail] = std::make_tuple(false, u"Unsupported"_s, QString());
 #endif
     QFile::setPermissions(caPath, QFileDevice::WriteOwner);
     QFile::remove(caPath);
