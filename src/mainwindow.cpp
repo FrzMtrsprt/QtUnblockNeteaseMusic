@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 #ifdef Q_OS_WIN
     QFont font = QFont(u"Consolas"_s);
-    font.setStyleHint(QFont::Monospace);
+    font.setStyleHint(QFont::TypeWriter);
 #else
     QFont font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
 #endif
@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent)
     // setup & start server
     qDebug("---Starting server---");
     server = new Server(ui->outText, config);
-    server->start();
+    QTimer::singleShot(0, server, &Server::start);
 }
 
 MainWindow::~MainWindow()

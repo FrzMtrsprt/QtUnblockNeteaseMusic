@@ -87,10 +87,10 @@ void WinUtils::setWindowFrame(const WId &winId, const QStyle *style)
     const QByteArray szTheme = style->name().toUtf8();
     const bool bClassic = lstrcmpiA(szTheme, "Windows") == 0;
 
-    qDebug("Setting theme \"%s\" %s",
-           szTheme.data(),
-           bClassic ? "with classic border"
-                    : "");
+    qDebug("Setting %s window frame for theme \"%s\"",
+           bClassic ? "classic"
+                    : "normal",
+           szTheme.data());
 
     setVisualStyleToWindow(hWnd, !bClassic);
 }

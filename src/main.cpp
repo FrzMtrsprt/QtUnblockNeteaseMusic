@@ -49,7 +49,8 @@ int main(int argc, char *argv[])
     // load Qt base translations
     QTranslator baseTranslator;
     // look up e.g. {current_path}/translations/qt_en.qm
-    if (baseTranslator.load(locale, u"qt"_s, u"_"_s, translationsPath))
+    if (baseTranslator.load(locale, u"qt"_s, u"_"_s, translationsPath) ||
+        baseTranslator.load(locale, u"qt"_s, u"_"_s, u":/translations"_s))
     {
         a.installTranslator(&baseTranslator);
     }
