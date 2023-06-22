@@ -76,6 +76,36 @@ qt_add_translations(QtUnblockNeteaseMusic
     TS_FILES ${TS_FILES}
 )
 
+# Copy qtbase translations manually
+add_custom_command(TARGET QtUnblockNeteaseMusic POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E echo
+    "Copying qtbase translations to ${TRANSLATION_TARGET_DIR}"
+)
+
+file(GLOB QTBASE_TRANSLATIONS
+    LIST_DIRECTORIES false
+    ${Qt6Core_DIR}/../../../translations/qtbase_*.qm
+)
+
+if(MSVC)
+    set(BUILD_TYPE
+        $<$<CONFIG:Debug>:Debug>$<$<CONFIG:Release>:Release>$<$<CONFIG:RelWithDebInfo>:RelWithDebInfo>$<$<CONFIG:MinSizeRel>:MinSizeRel>
+    )
+    set(TRANSLATION_TARGET_DIR ${CMAKE_CURRENT_BINARY_DIR}/${BUILD_TYPE}/translations)
+else()
+    set(TRANSLATION_TARGET_DIR ${CMAKE_CURRENT_BINARY_DIR}/translations)
+endif()
+
+foreach(QTBASE_TRANSLATION ${QTBASE_TRANSLATIONS})
+    get_filename_component(QTBASE_TRANSLATION_NAME ${QTBASE_TRANSLATION} NAME)
+    string(REPLACE "qtbase_" "qt_" QT_TRANSLATION_NAME ${QTBASE_TRANSLATION_NAME})
+
+    add_custom_command(TARGET QtUnblockNeteaseMusic POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${QTBASE_TRANSLATION} ${TRANSLATION_TARGET_DIR}/${QT_TRANSLATION_NAME}
+    )
+endforeach()
+
 target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt6::Widgets)
 target_link_libraries(QtUnblockNeteaseMusic PRIVATE SingleApplication::SingleApplication)
 
