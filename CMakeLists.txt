@@ -79,7 +79,7 @@ qt_add_translations(QtUnblockNeteaseMusic
 # Copy qtbase translations manually
 add_custom_command(TARGET QtUnblockNeteaseMusic POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E echo
-    "Copying qtbase translations to ${TRANSLATION_TARGET_DIR}"
+    "Copying qtbase translations"
 )
 
 file(GLOB QTBASE_TRANSLATIONS
