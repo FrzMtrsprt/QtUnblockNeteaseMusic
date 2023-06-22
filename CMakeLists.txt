@@ -110,7 +110,7 @@ target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt6::Widgets)
 target_link_libraries(QtUnblockNeteaseMusic PRIVATE SingleApplication::SingleApplication)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    target_link_libraries(QtUnblockNeteaseMusic PRIVATE uxtheme wininet)
+    target_link_libraries(QtUnblockNeteaseMusic PRIVATE crypt32 uxtheme wininet)
 endif()
 
 set_target_properties(QtUnblockNeteaseMusic PROPERTIES

@@ -198,14 +198,24 @@ Please run QtUnblockNeteaseMusic as Administrator from context menu.</source>
 请从右键菜单以管理员身份运行 QtUnblockNeteaseMusic。</translation>
     </message>
     <message>
-        <source>Unknown error occured.
-Please see details below.</source>
-        <translation>发生未知错误。
-请参考以下详细信息。</translation>
-    </message>
-    <message>
         <source>UnblockNeteaseMusic CA is installed.</source>
         <translation>UnblockNeteaseMusic 证书安装成功。</translation>
+    </message>
+    <message>
+        <source>Unable to convert CA certificate.</source>
+        <translation>无法转换证书。</translation>
+    </message>
+    <message>
+        <source>Unable to open CA certificate store.</source>
+        <translation>无法打开证书存储。</translation>
+    </message>
+    <message>
+        <source>Unable to add CA certificate to store.</source>
+        <translation>无法添加证书至存储。</translation>
+    </message>
+    <message>
+        <source>Error %1: %2</source>
+        <translation>错误 %1：%2</translation>
     </message>
 </context>
 <context>

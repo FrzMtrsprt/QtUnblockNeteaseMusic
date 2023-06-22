@@ -1,5 +1,6 @@
 #include "winutils.h"
 
+#include <QFile>
 #include <QProcess>
 
 #include <Windows.h>
@@ -176,27 +177,73 @@ bool WinUtils::isSystemProxy(const QString &address, const QString &port)
 // Install CA certificate and return the output
 std::tuple<bool, QString, QString> WinUtils::installCA(const QString &caPath)
 {
-    QProcess process;
-    process.start(u"certutil"_s, {u"-addstore"_s, u"-f"_s, u"root"_s, caPath},
-                  QProcess::ReadOnly);
-    process.waitForFinished();
-    const QString detail = QString::fromLocal8Bit(process.readAllStandardOutput());
-    switch (LOWORD(process.exitCode()))
+    QFile caFile(caPath);
+    caFile.open(QIODevice::ReadOnly);
+    const QByteArray caData = caFile.readAll();
+    caFile.close();
+
+    // Convert CA certificate to binary
+    // Reference: https://stackoverflow.com/a/34643021
+    BYTE pbCryptBuf[0x1000];
+    DWORD cbCryptBuf = sizeof(pbCryptBuf);
+    if (!CryptStringToBinaryA(
+            caData.constData(), caData.size(),
+            CRYPT_STRING_BASE64_ANY,
+            pbCryptBuf,
+            &cbCryptBuf,
+            NULL, NULL))
     {
-    case ERROR_SUCCESS:
-        return {true,
-                QObject::tr("UnblockNeteaseMusic CA is installed."),
-                detail};
-    case ERROR_ACCESS_DENIED:
-        return {false,
-                QObject::tr("Access denied.\n"
-                            "Please run QtUnblockNeteaseMusic as "
-                            "Administrator from context menu."),
-                detail};
-    default:
-        return {false,
-                QObject::tr("Unknown error occured.\n"
-                            "Please see details below."),
-                detail};
+        return {false, QObject::tr("Unable to convert CA certificate."),
+                getErrorMessage()};
     }
+
+    HCERTSTORE hStore = CertOpenStore(
+        CERT_STORE_PROV_SYSTEM,
+        NULL, NULL,
+        CERT_SYSTEM_STORE_LOCAL_MACHINE,
+        L"ROOT");
+    if (!hStore)
+    {
+        switch (LOWORD(GetLastError()))
+        {
+        case ERROR_ACCESS_DENIED:
+            return {false, QObject::tr("Access denied.\n"
+                                       "Please run QtUnblockNeteaseMusic as "
+                                       "Administrator from context menu."),
+                    getErrorMessage()};
+        default:
+            return {false, QObject::tr("Unable to open CA certificate store."),
+                    getErrorMessage()};
+        }
+    }
+
+    if (!CertAddEncodedCertificateToStore(
+            hStore,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            pbCryptBuf, cbCryptBuf,
+            CERT_STORE_ADD_REPLACE_EXISTING,
+            NULL))
+    {
+        CertCloseStore(hStore, 0);
+        return {false, QObject::tr("Unable to add CA certificate to store."),
+                getErrorMessage()};
+    }
+
+    CertCloseStore(hStore, 0);
+    return {true, QObject::tr("UnblockNeteaseMusic CA is installed."), QString()};
+}
+
+QString WinUtils::getErrorMessage()
+{
+    DWORD dwErr = GetLastError();
+    WCHAR lpMsgBuf[0x100];
+    FormatMessageW(
+        FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL, GetLastError(),
+        LANG_USER_DEFAULT,
+        lpMsgBuf, sizeof(lpMsgBuf),
+        NULL);
+    return QObject::tr("Error %1: %2")
+        .arg(QString::asprintf("0x%08x", dwErr))
+        .arg(QString::fromWCharArray(lpMsgBuf));
 }

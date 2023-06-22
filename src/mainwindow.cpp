@@ -4,7 +4,6 @@
 
 #include <QCloseEvent>
 #include <QDesktopServices>
-#include <QFile>
 #include <QFontDatabase>
 #include <QMessageBox>
 #include <QRegularExpression>
@@ -142,15 +141,11 @@ void MainWindow::exit()
 
 void MainWindow::on_installCA()
 {
-    const QString caPath = u"./ca.crt"_s;
-    QFile::copy(u":/certs/ca.crt"_s, caPath);
 #ifdef Q_OS_WIN
-    const auto [succeed, error, detail] = WinUtils::installCA(caPath);
+    const auto [succeed, error, detail] = WinUtils::installCA(u":/certs/ca.crt"_s);
 #else
     const auto [succeed, error, detail] = std::make_tuple(false, u"Unsupported"_s, QString());
 #endif
-    QFile::setPermissions(caPath, QFileDevice::WriteOwner);
-    QFile::remove(caPath);
 
     QMessageBox *dlg = new QMessageBox(this);
     dlg->setAttribute(Qt::WA_DeleteOnClose);

@@ -18,6 +18,7 @@ public:
 
 private:
     static bool setVisualStyleToWindow(const HWND &hWnd, const bool &enable);
+    static QString getErrorMessage();
 };
 
 #endif // WINUTILS_H
