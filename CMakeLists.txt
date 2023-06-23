@@ -23,6 +23,10 @@ set(TS_FILES
 )
 
 set(APP_SOURCES
+    src/cawizard.cpp
+    src/cawizard.h
+    src/cawizardpages.cpp
+    src/cawizardpages.h
     src/config/config.cpp
     src/config/config.h
     src/config/param.h

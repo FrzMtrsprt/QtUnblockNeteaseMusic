@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "cawizard.h"
 #include "envdialog.h"
 
 #include <QCloseEvent>
@@ -141,19 +142,9 @@ void MainWindow::exit()
 
 void MainWindow::on_installCA()
 {
-#ifdef Q_OS_WIN
-    const auto [succeed, error, detail] = WinUtils::installCA(u":/certs/ca.crt"_s);
-#else
-    const auto [succeed, error, detail] = std::make_tuple(false, u"Unsupported"_s, QString());
-#endif
-
-    QMessageBox *dlg = new QMessageBox(this);
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->setIcon(succeed ? QMessageBox::Information
-                         : QMessageBox::Warning);
-    dlg->setText(error);
-    dlg->setDetailedText(detail);
-    dlg->exec();
+    CaWizard *caWizard = new CaWizard(this);
+    caWizard->setAttribute(Qt::WA_DeleteOnClose);
+    caWizard->exec();
 }
 
 void MainWindow::on_env()

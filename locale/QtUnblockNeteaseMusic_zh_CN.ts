@@ -254,4 +254,57 @@ Please change the arguments or check port usage and try again.</source>
         <translation>退出</translation>
     </message>
 </context>
+<context>
+    <name>WizardPage1</name>
+    <message>
+        <source>UnblockNeteaseMusic CA certificate</source>
+        <translation>UnblockNeteaseMusic CA 证书</translation>
+    </message>
+    <message>
+        <source>Install the certificate from UnblockNeteaseMusic.</source>
+        <translation>安装来自 UnblockNeteaseMusic 的证书</translation>
+    </message>
+    <message>
+        <source>Other certificate</source>
+        <translation>其他证书</translation>
+    </message>
+    <message>
+        <source>Install the certificate from file.</source>
+        <translation>安装来自文件的证书</translation>
+    </message>
+    <message>
+        <source>Select certificate</source>
+        <translation>选择证书</translation>
+    </message>
+</context>
+<context>
+    <name>WizardPage2</name>
+    <message>
+        <source>Browse...</source>
+        <translation>浏览…</translation>
+    </message>
+    <message>
+        <source>Select certificate file</source>
+        <translation>选择证书文件</translation>
+    </message>
+    <message>
+        <source>Certificate files (*.crt)</source>
+        <translation>证书文件 (*.crt)</translation>
+    </message>
+    <message>
+        <source>The file does not exist.</source>
+        <translation>文件不存在。</translation>
+    </message>
+</context>
+<context>
+    <name>WizardPage3</name>
+    <message>
+        <source>Success</source>
+        <translation>成功</translation>
+    </message>
+    <message>
+        <source>Failed</source>
+        <translation>失败</translation>
+    </message>
+</context>
 </TS>
