@@ -23,10 +23,6 @@ set(TS_FILES
 )
 
 set(APP_SOURCES
-    src/cawizard.cpp
-    src/cawizard.h
-    src/cawizardpages.cpp
-    src/cawizardpages.h
     src/config/config.cpp
     src/config/config.h
     src/config/param.h
@@ -41,6 +37,8 @@ set(APP_SOURCES
     src/server.h
     src/tray.cpp
     src/tray.h
+    src/wizardpages.cpp
+    src/wizardpages.h
 )
 source_group("Source Files" FILES ${APP_SOURCES})
 

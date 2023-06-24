@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "cawizard.h"
 #include "envdialog.h"
+#include "wizardpages.h"
 
 #include <QCloseEvent>
 #include <QDesktopServices>
@@ -142,9 +142,17 @@ void MainWindow::exit()
 
 void MainWindow::on_installCA()
 {
-    CaWizard *caWizard = new CaWizard(this);
-    caWizard->setAttribute(Qt::WA_DeleteOnClose);
-    caWizard->exec();
+    QWizard *wizard = new QWizard(this);
+    wizard->addPage(new WizardPage1(wizard));
+    wizard->addPage(new WizardPage2(wizard));
+    wizard->addPage(new WizardPage3(wizard));
+
+    wizard->setAttribute(Qt::WA_DeleteOnClose);
+    wizard->setWindowTitle(tr("Install certificate"));
+    wizard->setWizardStyle(QWizard::ModernStyle);
+
+    wizard->exec();
+
 }
 
 void MainWindow::on_env()

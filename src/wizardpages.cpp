@@ -1,15 +1,14 @@
-#include "cawizardpages.h"
+#include "wizardpages.h"
 #include "utils/winutils.h"
 
 #include <QButtonGroup>
 #include <QCommandLinkButton>
 #include <QFileDialog>
-#include <QMessageBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
-#include <QTextBrowser>
-#include <QToolButton>
+#include <QMessageBox>
+#include <QPlainTextEdit>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -76,7 +75,8 @@ WizardPage2::WizardPage2(QWidget *parent)
     : QWizardPage(parent)
 {
     QLineEdit *lineEdit = new QLineEdit(this);
-    QToolButton *toolButton = new QToolButton(this);
+    lineEdit->setReadOnly(true);
+    QPushButton *toolButton = new QPushButton(this);
     toolButton->setText(tr("Browse..."));
 
     QHBoxLayout *hboxLayout = new QHBoxLayout(this);
@@ -86,7 +86,7 @@ WizardPage2::WizardPage2(QWidget *parent)
     setLayout(hboxLayout);
     setTitle(tr("Select certificate file"));
 
-    connect(toolButton, &QToolButton::clicked,
+    connect(toolButton, &QPushButton::clicked,
             this, &WizardPage2::on_browse);
     connect(lineEdit, &QLineEdit::textChanged,
             this, &QWizardPage::completeChanged);
@@ -119,25 +119,10 @@ void WizardPage2::on_browse()
     }
 }
 
-bool WizardPage2::validatePage()
-{
-    const QString fileName = findChild<QLineEdit *>()->text();
-    if (!fileName.isEmpty() && QFile(fileName).exists())
-    {
-        setField(u"fileName"_s, fileName);
-        return true;
-    }
-    else
-    {
-        QMessageBox::warning(this, QString(), tr("The file does not exist."));
-        return false;
-    }
-}
-
 WizardPage3::WizardPage3(QWidget *parent)
     : QWizardPage(parent)
 {
-    QTextEdit *detailsEdit = new QTextBrowser(this);
+    QPlainTextEdit *detailsEdit = new QPlainTextEdit(this);
     detailsEdit->setReadOnly(true);
     QLabel *errorLabel = new QLabel(this);
     QVBoxLayout *vboxLayout = new QVBoxLayout(this);
@@ -159,5 +144,5 @@ void WizardPage3::initializePage()
 #endif
     setTitle(succeed ? tr("Success") : tr("Failed"));
     findChild<QLabel *>()->setText(error);
-    findChild<QTextBrowser *>()->setText(detail);
+    findChild<QPlainTextEdit *>()->setPlainText(detail);
 }

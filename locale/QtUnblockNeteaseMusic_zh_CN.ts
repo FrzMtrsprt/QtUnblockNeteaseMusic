@@ -188,6 +188,10 @@ Please check the server port and address, and try again.</source>
         <source>&amp;Advance Options</source>
         <translation>高级选项(&amp;A)</translation>
     </message>
+    <message>
+        <source>Install certificate</source>
+        <translation>安装证书</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -196,10 +200,6 @@ Please check the server port and address, and try again.</source>
 Please run QtUnblockNeteaseMusic as Administrator from context menu.</source>
         <translation>拒绝访问。
 请从右键菜单以管理员身份运行 QtUnblockNeteaseMusic。</translation>
-    </message>
-    <message>
-        <source>UnblockNeteaseMusic CA is installed.</source>
-        <translation>UnblockNeteaseMusic 证书安装成功。</translation>
     </message>
     <message>
         <source>Unable to convert CA certificate.</source>
@@ -216,6 +216,10 @@ Please run QtUnblockNeteaseMusic as Administrator from context menu.</source>
     <message>
         <source>Error %1: %2</source>
         <translation>错误 %1：%2</translation>
+    </message>
+    <message>
+        <source>The certificate is installed.</source>
+        <translation>证书安装成功。</translation>
     </message>
 </context>
 <context>

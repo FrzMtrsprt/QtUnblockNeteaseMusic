@@ -230,7 +230,7 @@ std::tuple<bool, QString, QString> WinUtils::installCA(const QString &caPath)
     }
 
     CertCloseStore(hStore, 0);
-    return {true, QObject::tr("UnblockNeteaseMusic CA is installed."), QString()};
+    return {true, QObject::tr("The certificate is installed."), QString()};
 }
 
 QString WinUtils::getErrorMessage()

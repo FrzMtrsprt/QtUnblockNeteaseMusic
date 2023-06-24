@@ -1,7 +1,7 @@
 #ifndef CAWIZARDPAGES_H
 #define CAWIZARDPAGES_H
 
-#include <QWizardPage>
+#include <QWizard>
 
 class WizardPage1 : public QWizardPage
 {
@@ -26,7 +26,6 @@ public:
 private:
     int nextId() const;
     bool isComplete() const;
-    bool validatePage();
 private slots:
     void on_browse();
 };
