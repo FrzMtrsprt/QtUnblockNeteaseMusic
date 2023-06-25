@@ -280,6 +280,10 @@ Please change the arguments or check port usage and try again.</source>
         <source>Select certificate</source>
         <translation>选择证书</translation>
     </message>
+    <message>
+        <source>&amp;Install</source>
+        <translation>安装(&amp;I)</translation>
+    </message>
 </context>
 <context>
     <name>WizardPage2</name>
@@ -296,8 +300,8 @@ Please change the arguments or check port usage and try again.</source>
         <translation>证书文件 (*.crt)</translation>
     </message>
     <message>
-        <source>The file does not exist.</source>
-        <translation>文件不存在。</translation>
+        <source>&amp;Install</source>
+        <translation>安装(&amp;I)</translation>
     </message>
 </context>
 <context>

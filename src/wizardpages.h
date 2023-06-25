@@ -14,6 +14,8 @@ private:
     int nextId() const;
     bool isComplete() const;
     bool validatePage();
+private slots:
+    void on_clicked();
 };
 
 class WizardPage2 : public QWizardPage

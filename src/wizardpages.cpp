@@ -1,5 +1,8 @@
 #include "wizardpages.h"
+
+#ifdef Q_OS_WIN
 #include "utils/winutils.h"
+#endif
 
 #include <QButtonGroup>
 #include <QCommandLinkButton>
@@ -38,7 +41,7 @@ WizardPage1::WizardPage1(QWidget *parent)
     setTitle(tr("Select certificate"));
 
     connect(buttonGroup, &QButtonGroup::buttonClicked,
-            this, &QWizardPage::completeChanged);
+            this, &WizardPage1::on_clicked);
 }
 
 WizardPage1::~WizardPage1()
@@ -71,6 +74,19 @@ bool WizardPage1::validatePage()
     return true;
 }
 
+void WizardPage1::on_clicked()
+{
+    if (findChild<QButtonGroup *>()->checkedId() == 0)
+    {
+        setButtonText(QWizard::NextButton, tr("&Install"));
+    }
+    else
+    {
+        setButtonText(QWizard::NextButton, wizard()->buttonText(QWizard::NextButton));
+    }
+    completeChanged();
+}
+
 WizardPage2::WizardPage2(QWidget *parent)
     : QWizardPage(parent)
 {
@@ -85,6 +101,7 @@ WizardPage2::WizardPage2(QWidget *parent)
 
     setLayout(hboxLayout);
     setTitle(tr("Select certificate file"));
+    setButtonText(QWizard::NextButton, tr("&Install"));
 
     connect(toolButton, &QPushButton::clicked,
             this, &WizardPage2::on_browse);
