@@ -116,7 +116,7 @@ bool MainWindow::setProxy(const bool &enable)
         errorDlg->setWindowTitle(title);
         errorDlg->setText(text);
         errorDlg->setIcon(QMessageBox::Warning);
-        errorDlg->exec();
+        errorDlg->open();
     }
     return ok;
 }
@@ -151,15 +151,14 @@ void MainWindow::on_installCA()
     wizard->setWindowTitle(tr("Install certificate"));
     wizard->setWizardStyle(QWizard::ModernStyle);
 
-    wizard->exec();
-
+    wizard->open();
 }
 
 void MainWindow::on_env()
 {
     EnvDialog *envDlg = new EnvDialog(config, this);
     envDlg->setAttribute(Qt::WA_DeleteOnClose);
-    envDlg->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+    envDlg->setFixedSize(envDlg->sizeHint());
     if (envDlg->exec() == QDialog::Accepted)
     {
         updateSettings();

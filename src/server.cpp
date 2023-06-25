@@ -9,10 +9,11 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-Server::Server(QTextEdit *output, Config *config) : QProcess()
+Server::Server(QPlainTextEdit *output, Config *config)
+    : QProcess(),
+      output(output),
+      config(config)
 {
-    this->output = output;
-    this->config = config;
     connect(this, &Server::readyReadStandardOutput,
             this, &Server::on_stdout);
     connect(this, &Server::readyReadStandardError,
@@ -49,7 +50,7 @@ bool Server::findProgram()
             }
             else
             {
-                output->append(tr("Node.js is not installed."));
+                output->appendPlainText(tr("Node.js is not installed."));
                 break;
             }
         }
@@ -128,17 +129,17 @@ void Server::start()
         loadArgs();
         if (config->debugInfo)
         {
-            output->append(program + u' ' + arguments.join(u' '));
+            output->appendPlainText(program + u' ' + arguments.join(u' '));
         }
         QProcess::start(program, arguments, QIODeviceBase::ReadOnly);
         if (!waitForStarted())
         {
-            output->append(errorString());
+            output->appendPlainText(errorString());
         }
     }
     else
     {
-        output->append(tr("Server not found."));
+        output->appendPlainText(tr("Server not found."));
     }
 }
 
@@ -151,7 +152,7 @@ void Server::restart()
 
 void Server::on_stdout()
 {
-    output->append(readAllStandardOutput());
+    output->appendPlainText(readAllStandardOutput());
 }
 
 void Server::on_stderr()

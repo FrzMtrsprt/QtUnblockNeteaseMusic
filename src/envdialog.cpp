@@ -6,7 +6,9 @@
 using namespace Qt::Literals::StringLiterals;
 
 EnvDialog::EnvDialog(Config *config, QWidget *parent)
-    : QDialog(parent), ui(new Ui::EnvDialog)
+    : QDialog(parent),
+      ui(new Ui::EnvDialog),
+      config(config)
 {
     ui->setupUi(this);
     ui->tokenEdit->setText(config->params[Param::Token].value<QString>());
@@ -14,8 +16,6 @@ EnvDialog::EnvDialog(Config *config, QWidget *parent)
     ui->cnrelayEdit->setText(config->params[Param::Cnrelay].value<QString>());
     ui->otherEdit->setPlainText(config->other.join("\n"));
     ui->envEdit->setPlainText(config->env.join("\n"));
-
-    this->config = config;
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &EnvDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::helpRequested, this, &EnvDialog::help);

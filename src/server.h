@@ -3,22 +3,22 @@
 
 #include "config/config.h"
 
+#include <QPlainTextEdit>
 #include <QProcess>
-#include <QTextEdit>
 
 class Server : public QProcess
 {
     Q_OBJECT
 
 public:
-    Server(QTextEdit *output, Config *config);
+    Server(QPlainTextEdit *output, Config *config);
     ~Server();
 
     void start();
     void restart();
 
 private:
-    QTextEdit *output;
+    QPlainTextEdit *output;
     Config *config;
     QString program;
     QStringList arguments;

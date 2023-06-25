@@ -4,9 +4,10 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-Tray::Tray(MainWindow *w) : QSystemTrayIcon(w)
+Tray::Tray(MainWindow *w)
+    : QSystemTrayIcon(w),
+      w(w)
 {
-    this->w = w;
 
     menu = new QMenu();
     show = new QAction();
