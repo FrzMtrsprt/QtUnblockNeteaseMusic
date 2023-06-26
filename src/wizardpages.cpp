@@ -4,10 +4,11 @@
 #include "utils/winutils.h"
 #endif
 
+#include <QBoxLayout>
 #include <QButtonGroup>
 #include <QCommandLinkButton>
 #include <QFileDialog>
-#include <QHBoxLayout>
+#include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
@@ -39,6 +40,7 @@ WizardPage1::WizardPage1(QWidget *parent)
 
     setLayout(vboxLayout);
     setTitle(tr("Select certificate"));
+    setSubTitle(tr("Please select the certificate to install."));
 
     connect(buttonGroup, &QButtonGroup::buttonClicked,
             this, &WizardPage1::on_clicked);
@@ -92,18 +94,19 @@ WizardPage2::WizardPage2(QWidget *parent)
 {
     QLineEdit *lineEdit = new QLineEdit(this);
     lineEdit->setReadOnly(true);
-    QPushButton *toolButton = new QPushButton(this);
-    toolButton->setText(tr("Browse..."));
+    QPushButton *browseButton = new QPushButton(this);
+    browseButton->setText(tr("Browse..."));
 
     QHBoxLayout *hboxLayout = new QHBoxLayout(this);
     hboxLayout->addWidget(lineEdit);
-    hboxLayout->addWidget(toolButton);
+    hboxLayout->addWidget(browseButton);
 
     setLayout(hboxLayout);
-    setTitle(tr("Select certificate file"));
+    setTitle(tr("Select file"));
+    setSubTitle(tr("Please select the certificate file to install."));
     setButtonText(QWizard::NextButton, tr("&Install"));
 
-    connect(toolButton, &QPushButton::clicked,
+    connect(browseButton, &QPushButton::clicked,
             this, &WizardPage2::on_browse);
     connect(lineEdit, &QLineEdit::textChanged,
             this, &QWizardPage::completeChanged);
@@ -139,12 +142,27 @@ void WizardPage2::on_browse()
 WizardPage3::WizardPage3(QWidget *parent)
     : QWizardPage(parent)
 {
-    QPlainTextEdit *detailsEdit = new QPlainTextEdit(this);
-    detailsEdit->setReadOnly(true);
     QLabel *errorLabel = new QLabel(this);
+    errorLabel->setObjectName(u"errorLabel"_s);
+
+    QLabel *detailsEdit = new QLabel(this);
+    detailsEdit->setObjectName(u"detailsEdit"_s);
+    detailsEdit->setAlignment(Qt::AlignTop);
+    detailsEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    detailsEdit->setTextInteractionFlags(Qt::TextSelectableByMouse);
+
+    QVBoxLayout *detailsLayout = new QVBoxLayout(this);
+    detailsLayout->addWidget(detailsEdit);
+
+    QGroupBox *detailsBox = new QGroupBox(this);
+    detailsBox->setTitle(tr("Details"));
+    detailsBox->setLayout(detailsLayout);
+
     QVBoxLayout *vboxLayout = new QVBoxLayout(this);
     vboxLayout->addWidget(errorLabel);
-    vboxLayout->addWidget(detailsEdit);
+    vboxLayout->addWidget(detailsBox);
+
+    setLayout(vboxLayout);
 }
 
 WizardPage3::~WizardPage3()
@@ -159,7 +177,9 @@ void WizardPage3::initializePage()
 #else
     const auto [succeed, error, detail] = std::make_tuple(false, u"Unsupported"_s, QString());
 #endif
-    setTitle(succeed ? tr("Success") : tr("Failed"));
-    findChild<QLabel *>()->setText(error);
-    findChild<QPlainTextEdit *>()->setPlainText(detail);
+    setTitle(succeed ? tr("Install succeeded") : tr("Install failed"));
+    setSubTitle(succeed ? tr("The certificate has been added to the root certificate store.")
+                        : tr("The certificate could not be added to the root certificate store."));
+    findChild<QLabel *>(u"errorLabel"_s)->setText(error);
+    findChild<QLabel *>(u"detailsEdit"_s)->setText(detail);
 }

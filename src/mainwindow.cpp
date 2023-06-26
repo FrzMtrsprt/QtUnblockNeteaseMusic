@@ -148,6 +148,8 @@ void MainWindow::on_installCA()
     wizard->addPage(new WizardPage3(wizard));
 
     wizard->setAttribute(Qt::WA_DeleteOnClose);
+    wizard->setPixmap(QWizard::LogoPixmap,
+                      style()->standardIcon(QStyle::SP_FileIcon).pixmap(64, 64));
     wizard->setWindowTitle(tr("Install certificate"));
     wizard->setWizardStyle(QWizard::ModernStyle);
 

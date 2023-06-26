@@ -202,6 +202,18 @@ Please run QtUnblockNeteaseMusic as Administrator from context menu.</source>
 请从右键菜单以管理员身份运行 QtUnblockNeteaseMusic。</translation>
     </message>
     <message>
+        <source>Error %1: %2</source>
+        <translation>错误 %1：%2</translation>
+    </message>
+    <message>
+        <source>The certificate is installed.</source>
+        <translation>证书安装成功。</translation>
+    </message>
+    <message>
+        <source>Unable to add CA certificate to store.</source>
+        <translation>无法添加证书至存储。</translation>
+    </message>
+    <message>
         <source>Unable to convert CA certificate.</source>
         <translation>无法转换证书。</translation>
     </message>
@@ -210,16 +222,8 @@ Please run QtUnblockNeteaseMusic as Administrator from context menu.</source>
         <translation>无法打开证书存储。</translation>
     </message>
     <message>
-        <source>Unable to add CA certificate to store.</source>
-        <translation>无法添加证书至存储。</translation>
-    </message>
-    <message>
-        <source>Error %1: %2</source>
-        <translation>错误 %1：%2</translation>
-    </message>
-    <message>
-        <source>The certificate is installed.</source>
-        <translation>证书安装成功。</translation>
+        <source>Unable to read CA certificate.</source>
+        <translation>无法读取证书。</translation>
     </message>
 </context>
 <context>
@@ -284,16 +288,16 @@ Please change the arguments or check port usage and try again.</source>
         <source>&amp;Install</source>
         <translation>安装(&amp;I)</translation>
     </message>
+    <message>
+        <source>Please select the certificate to install.</source>
+        <translation>请选择要安装的证书。</translation>
+    </message>
 </context>
 <context>
     <name>WizardPage2</name>
     <message>
         <source>Browse...</source>
         <translation>浏览…</translation>
-    </message>
-    <message>
-        <source>Select certificate file</source>
-        <translation>选择证书文件</translation>
     </message>
     <message>
         <source>Certificate files (*.crt)</source>
@@ -303,16 +307,36 @@ Please change the arguments or check port usage and try again.</source>
         <source>&amp;Install</source>
         <translation>安装(&amp;I)</translation>
     </message>
+    <message>
+        <source>Please select the certificate file to install.</source>
+        <translation>请选择要安装的证书文件。</translation>
+    </message>
+    <message>
+        <source>Select file</source>
+        <translation>选择文件</translation>
+    </message>
 </context>
 <context>
     <name>WizardPage3</name>
     <message>
-        <source>Success</source>
-        <translation>成功</translation>
+        <source>Details</source>
+        <translation>详细信息</translation>
     </message>
     <message>
-        <source>Failed</source>
-        <translation>失败</translation>
+        <source>Install failed</source>
+        <translation>安装失败</translation>
+    </message>
+    <message>
+        <source>Install succeeded</source>
+        <translation>安装成功</translation>
+    </message>
+    <message>
+        <source>The certificate has been added to the root certificate store.</source>
+        <translation>证书已被添加至根证书存储中。</translation>
+    </message>
+    <message>
+        <source>The certificate could not be added to the root certificate store.</source>
+        <translation>证书无法被添加至根证书存储中。</translation>
     </message>
 </context>
 </TS>

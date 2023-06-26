@@ -30,14 +30,10 @@
            <property name="text">
             <string>Sources</string>
            </property>
-          </widget>
-         </item>
-         <item row="6" column="0">
-          <spacer>
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
            </property>
-          </spacer>
+          </widget>
          </item>
          <item row="3" column="0">
           <widget class="QLabel" name="urlLabel">
@@ -88,26 +84,13 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
+         <item row="6" column="0">
           <widget class="QLabel" name="strictLabel">
            <property name="statusTip">
             <string>Enable proxy limitation</string>
            </property>
            <property name="text">
             <string>Strict Mode</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1" rowspan="2" colspan="2">
-          <widget class="QTextEdit" name="sourceEdit">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="statusTip">
-            <string>Set priority of sources</string>
            </property>
           </widget>
          </item>
@@ -121,9 +104,6 @@
            </property>
            <property name="statusTip">
             <string>Specify server HTTPS port</string>
-           </property>
-           <property name="placeholderText">
-            <string notr="true">HTTPS</string>
            </property>
           </widget>
          </item>
@@ -150,7 +130,7 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="1" colspan="2">
+         <item row="6" column="1" colspan="2">
           <widget class="QCheckBox" name="strictCheckBox">
            <property name="statusTip">
             <string>Enable proxy limitation</string>
@@ -174,8 +154,18 @@
            <property name="text">
             <string/>
            </property>
-           <property name="placeholderText">
-            <string notr="true">HTTP</string>
+          </widget>
+         </item>
+         <item row="5" column="1" colspan="2">
+          <widget class="QTextEdit" name="sourceEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="statusTip">
+            <string>Set priority of sources</string>
            </property>
           </widget>
          </item>

@@ -181,6 +181,10 @@ std::tuple<bool, QString, QString> WinUtils::installCA(const QString &caPath)
     caFile.open(QIODevice::ReadOnly);
     const QByteArray caData = caFile.readAll();
     caFile.close();
+    if(caData.isEmpty())
+    {
+        return {false, QObject::tr("Unable to read CA certificate."), QString()};
+    }
 
     // Convert CA certificate to binary
     // Reference: https://stackoverflow.com/a/34643021
