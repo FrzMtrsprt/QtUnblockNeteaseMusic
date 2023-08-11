@@ -8,7 +8,6 @@ Tray::Tray(MainWindow *w)
     : QSystemTrayIcon(w),
       w(w)
 {
-
     menu = new QMenu();
     show = new QAction();
     proxy = new QAction();
