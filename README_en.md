@@ -24,21 +24,21 @@ The enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic
 1. Download the latest version from [releases](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/releases)
 2. Install [Node.js Runtime](https://nodejs.org/en/download) if you wish to use script server instead of packaged executable
 3. Download the server from [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) or [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server), and place it in the same directory with `QtUnblockNeteaseMusic.exe`
-```
-QtUnblockNeteaseMusic  
-├─ ...  
-├─ QtUnblockNeteaseMusic.exe  
-└─ server  
-   ├─ ...  
-   └─ app.js
-```
-or
-```
-QtUnblockNeteaseMusic  
-├─ ...  
-├─ QtUnblockNeteaseMusic.exe  
-└─ unblockneteasemusic.exe
-```
+    ```
+    QtUnblockNeteaseMusic  
+    ├─ ...  
+    ├─ QtUnblockNeteaseMusic.exe  
+    └─ server  
+       ├─ ...  
+       └─ app.js
+    ```
+    or
+    ```
+    QtUnblockNeteaseMusic  
+    ├─ ...  
+    ├─ QtUnblockNeteaseMusic.exe  
+    └─ unblockneteasemusic.exe
+    ```
 4. Run `QtUnblockNeteaseMusic.exe` and set the necessary arguments
 5. Set the proxy in the Netease Cloud Music client accordingly & enjoy!
 - When used on your personal devices, avoid using the default `8080` port, and change the host address to `127.0.0.1` to avoid unwanted access from others.

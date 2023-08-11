@@ -26,21 +26,21 @@ English version: [README_en.md](README_en.md)
 1. 从 [releases](https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/releases) 下载最新版本
 2. 如果你想使用脚本服务器而不是打包的可执行文件，请先安装 [Node.js Runtime](https://nodejs.org/zh-cn/download)
 3. 从 [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) 或 [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic/server) 下载 UnblockNeteaseMusic 服务器，并置于 `QtUnblockNeteaseMusic.exe` 所在目录
-```
-QtUnblockNeteaseMusic  
-├─ ...  
-├─ QtUnblockNeteaseMusic.exe  
-└─ server  
-   ├─ ...  
-   └─ app.js
-```
-或
-```
-QtUnblockNeteaseMusic  
-├─ ...  
-├─ QtUnblockNeteaseMusic.exe  
-└─ unblockneteasemusic.exe
-```
+    ```
+    QtUnblockNeteaseMusic  
+    ├─ ...  
+    ├─ QtUnblockNeteaseMusic.exe  
+    └─ server  
+       ├─ ...  
+       └─ app.js
+    ```
+    或
+    ```
+    QtUnblockNeteaseMusic  
+    ├─ ...  
+    ├─ QtUnblockNeteaseMusic.exe  
+    └─ unblockneteasemusic.exe
+    ```
 4. 运行 `QtUnblockNeteaseMusic.exe` 并设置启动参数
 5. 在网易云客户端中设置相应的代理，享受音乐吧！
 - 在个人设备上使用时，尽量避免使用默认的 `8080` 端口。为避免来自其他设备的访问，可以将主机地址设为 `127.0.0.1`。
