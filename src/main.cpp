@@ -98,7 +98,6 @@ int main(int argc, char *argv[])
             silent = true;
         }
     }
-    if (!silent)
     if (!silent && !config.startMinimized)
     {
         w.show();

@@ -38,6 +38,7 @@ void Config::readSettings()
     }
 
     startup = value("startup").value<bool>();
+    startMinimized = value("startMinimized").value<bool>();
     theme = value("theme").value<QString>();
     debugInfo = value("debugInfo").value<bool>();
 
@@ -53,6 +54,7 @@ void Config::writeSettings()
         setValue(param.name, param);
     }
     setValue("startup", startup);
+    setValue("startMinimized", startMinimized);
     setValue("theme", theme);
     setValue("debugInfo", debugInfo);
 

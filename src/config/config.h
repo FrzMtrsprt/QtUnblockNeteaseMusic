@@ -14,6 +14,7 @@ public:
     QList<Param> params;
 
     bool startup;
+    bool startMinimized;
     QString theme;
     bool debugInfo;
 
