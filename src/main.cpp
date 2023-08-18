@@ -1,6 +1,7 @@
 #include <QDir>
 #include <QLibraryInfo>
 #include <QMessageBox>
+#include <QTimer>
 #include <QTranslator>
 #include <SingleApplication>
 
@@ -56,10 +57,19 @@ int main(int argc, char *argv[])
     }
 
     Config config;
+    
+    Server server(&config);
 
-    MainWindow w(&config);
+    MainWindow w(&config, &server);
+
+    QObject::connect(&server, &Server::log, &w, &MainWindow::log);
+    QObject::connect(&server, &Server::logClear, &w, &MainWindow::logClear);
 
     Tray tray(&w);
+
+    // Start server in another thread
+    qDebug("---Starting server---");
+    QTimer::singleShot(0, &server, &Server::start);
 
     // Open when second instance started
     QObject::connect(&a, &SingleApplication::receivedMessage, &w, [&w]
@@ -89,6 +99,7 @@ int main(int argc, char *argv[])
         }
     }
     if (!silent)
+    if (!silent && !config.startMinimized)
     {
         w.show();
     }

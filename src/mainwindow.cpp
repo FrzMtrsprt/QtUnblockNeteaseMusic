@@ -10,7 +10,6 @@
 #include <QRegularExpression>
 #include <QStyle>
 #include <QStyleFactory>
-#include <QTimer>
 
 #ifdef Q_OS_WIN
 #include "utils/winutils.h"
@@ -18,8 +17,9 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-MainWindow::MainWindow(Config *config)
-    : QMainWindow(), ui(new Ui::MainWindow), config(config)
+MainWindow::MainWindow(Config *config, Server *server)
+    : QMainWindow(), ui(new Ui::MainWindow),
+      config(config), server(server)
 {
     ui->setupUi(this);
 #ifdef Q_OS_WIN
@@ -61,17 +61,11 @@ MainWindow::MainWindow(Config *config)
     }
 
     loadSettings();
-
-    // setup & start server
-    qDebug("---Starting server---");
-    server = new Server(ui->outText, config);
-    QTimer::singleShot(0, server, &Server::start);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    server->~Server();
 }
 
 void MainWindow::setTheme(const QString &theme)
@@ -135,6 +129,16 @@ void MainWindow::exit()
     server->close();
     updateSettings();
     QApplication::exit();
+}
+
+void MainWindow::log(const QString &message)
+{
+    ui->outText->appendPlainText(message);
+}
+
+void MainWindow::logClear()
+{
+    ui->outText->clear();
 }
 
 void MainWindow::on_installCA()

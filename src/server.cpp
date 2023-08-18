@@ -9,10 +9,8 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-Server::Server(QPlainTextEdit *output, Config *config)
-    : QProcess(),
-      output(output),
-      config(config)
+Server::Server(Config *config)
+    : QProcess(), config(config)
 {
     connect(this, &Server::readyReadStandardOutput,
             this, &Server::on_stdout);
@@ -50,7 +48,7 @@ bool Server::findProgram()
             }
             else
             {
-                output->appendPlainText(tr("Node.js is not installed."));
+                emit log(tr("Node.js is not installed."));
                 break;
             }
         }
@@ -129,30 +127,30 @@ void Server::start()
         loadArgs();
         if (config->debugInfo)
         {
-            output->appendPlainText(program + u' ' + arguments.join(u' '));
+            emit log(program + u' ' + arguments.join(u' '));
         }
         QProcess::start(program, arguments, QIODeviceBase::ReadOnly);
         if (!waitForStarted())
         {
-            output->appendPlainText(errorString());
+            emit log(errorString());
         }
     }
     else
     {
-        output->appendPlainText(tr("Server not found."));
+        emit log(tr("Server not found."));
     }
 }
 
 void Server::restart()
 {
     close();
-    output->clear();
+    emit logClear();
     start();
 }
 
 void Server::on_stdout()
 {
-    output->appendPlainText(readAllStandardOutput());
+    emit log(readAllStandardOutput());
 }
 
 void Server::on_stderr()
@@ -164,7 +162,7 @@ void Server::on_stderr()
            "Please change the arguments or "
            "check port usage and try again.");
 
-    QMessageBox *errorDlg = new QMessageBox(output);
+    QMessageBox *errorDlg = new QMessageBox();
     errorDlg->setAttribute(Qt::WA_DeleteOnClose);
     errorDlg->setWindowTitle(title);
     errorDlg->setText(text);

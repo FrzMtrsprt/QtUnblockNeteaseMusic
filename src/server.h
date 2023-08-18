@@ -3,7 +3,6 @@
 
 #include "config/config.h"
 
-#include <QPlainTextEdit>
 #include <QProcess>
 
 class Server : public QProcess
@@ -11,14 +10,17 @@ class Server : public QProcess
     Q_OBJECT
 
 public:
-    Server(QPlainTextEdit *output, Config *config);
+    Server(Config *config);
     ~Server();
 
     void start();
     void restart();
 
+signals:
+    void log(const QString &message);
+    void logClear();
+
 private:
-    QPlainTextEdit *output;
     Config *config;
     QString program;
     QStringList arguments;
