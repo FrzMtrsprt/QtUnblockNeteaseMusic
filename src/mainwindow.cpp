@@ -18,8 +18,8 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(Config *config)
+    : QMainWindow(), ui(new Ui::MainWindow), config(config)
 {
     ui->setupUi(this);
 #ifdef Q_OS_WIN
@@ -60,8 +60,6 @@ MainWindow::MainWindow(QWidget *parent)
                 { setTheme(style); });
     }
 
-    // setup & load config
-    config = new Config();
     loadSettings();
 
     // setup & start server
@@ -74,7 +72,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
     server->~Server();
-    config->~Config();
 }
 
 void MainWindow::setTheme(const QString &theme)

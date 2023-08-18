@@ -55,7 +55,9 @@ int main(int argc, char *argv[])
         a.installTranslator(&baseTranslator);
     }
 
-    MainWindow w;
+    Config config;
+
+    MainWindow w(&config);
 
     Tray tray(&w);
 

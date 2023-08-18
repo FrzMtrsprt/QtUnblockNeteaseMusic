@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(Config *config);
     ~MainWindow();
     bool setProxy(const bool &enable);
     bool isProxy();
