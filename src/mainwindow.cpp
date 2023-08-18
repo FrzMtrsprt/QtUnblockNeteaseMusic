@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "envdialog.h"
+#include "configdialog.h"
 #include "wizardpages.h"
 
 #include <QCloseEvent>
@@ -159,7 +159,7 @@ void MainWindow::on_installCA()
 
 void MainWindow::on_env()
 {
-    EnvDialog *envDlg = new EnvDialog(config, this);
+    ConfigDialog *envDlg = new ConfigDialog(config, this);
     envDlg->setAttribute(Qt::WA_DeleteOnClose);
     envDlg->setFixedSize(envDlg->sizeHint());
     if (envDlg->exec() == QDialog::Accepted)

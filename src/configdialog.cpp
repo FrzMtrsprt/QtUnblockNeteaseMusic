@@ -1,13 +1,13 @@
-#include "envdialog.h"
-#include "ui_envdialog.h"
+#include "configdialog.h"
+#include "ui_configdialog.h"
 
 #include <QDesktopServices>
 
 using namespace Qt::Literals::StringLiterals;
 
-EnvDialog::EnvDialog(Config *config, QWidget *parent)
+ConfigDialog::ConfigDialog(Config *config, QWidget *parent)
     : QDialog(parent),
-      ui(new Ui::EnvDialog),
+      ui(new Ui::ConfigDialog),
       config(config)
 {
     ui->setupUi(this);
@@ -17,17 +17,17 @@ EnvDialog::EnvDialog(Config *config, QWidget *parent)
     ui->otherEdit->setPlainText(config->other.join("\n"));
     ui->envEdit->setPlainText(config->env.join("\n"));
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &EnvDialog::accept);
-    connect(ui->buttonBox, &QDialogButtonBox::helpRequested, this, &EnvDialog::help);
-    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &EnvDialog::close);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
+    connect(ui->buttonBox, &QDialogButtonBox::helpRequested, this, &ConfigDialog::help);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::close);
 }
 
-EnvDialog::~EnvDialog()
+ConfigDialog::~ConfigDialog()
 {
     delete ui;
 }
 
-void EnvDialog::accept()
+void ConfigDialog::accept()
 {
     config->params[Param::Token].setValue(ui->tokenEdit->text());
     config->params[Param::Endpoint].setValue(ui->endpointEdit->text());
@@ -37,7 +37,7 @@ void EnvDialog::accept()
     QDialog::accept();
 }
 
-void EnvDialog::help()
+void ConfigDialog::help()
 {
     switch (ui->tabWidget->currentIndex())
     {

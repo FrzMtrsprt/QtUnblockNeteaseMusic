@@ -7,19 +7,19 @@
 
 namespace Ui
 {
-    class EnvDialog;
+    class ConfigDialog;
 }
 
-class EnvDialog : public QDialog
+class ConfigDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit EnvDialog(Config *config, QWidget *parent = nullptr);
-    ~EnvDialog();
+    explicit ConfigDialog(Config *config, QWidget *parent = nullptr);
+    ~ConfigDialog();
 
 private:
-    Ui::EnvDialog *ui;
+    Ui::ConfigDialog *ui;
     Config *config;
 
 private slots:

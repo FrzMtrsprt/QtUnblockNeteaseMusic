@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>EnvDialog</class>
- <widget class="QDialog" name="EnvDialog">
+ <class>ConfigDialog</class>
+ <widget class="QDialog" name="ConfigDialog">
   <property name="windowTitle">
    <string>Advance Options</string>
   </property>

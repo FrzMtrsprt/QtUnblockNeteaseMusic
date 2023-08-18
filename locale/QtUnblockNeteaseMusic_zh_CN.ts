@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>EnvDialog</name>
+    <name>ConfigDialog</name>
     <message>
         <source>VARIABLE_NAME_1=variable_value_1
 VARIABLE_NAME_2=variable_value_2</source>
