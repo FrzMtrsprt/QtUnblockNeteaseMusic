@@ -43,6 +43,22 @@ VARIABLE_NAME_2=variable_value_2</source>
         <source>Advance Options</source>
         <translation>高级选项</translation>
     </message>
+    <message>
+        <source>Settings</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <source>Program settings</source>
+        <translation>程序设置</translation>
+    </message>
+    <message>
+        <source>Run on startup</source>
+        <translation>开机启动</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>最小化启动</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -113,10 +129,6 @@ VARIABLE_NAME_2=variable_value_2</source>
     <message>
         <source>About Qt</source>
         <translation>关于 Qt</translation>
-    </message>
-    <message>
-        <source>Run on startup</source>
-        <translation>开机启动</translation>
     </message>
     <message>
         <source>System Proxy</source>

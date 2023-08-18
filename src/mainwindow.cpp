@@ -41,8 +41,6 @@ MainWindow::MainWindow(Config *config, Server *server)
             this, &MainWindow::on_about);
     connect(ui->actionAboutQt, &QAction::triggered,
             this, &MainWindow::on_aboutQt);
-    connect(ui->startupCheckBox, &QCheckBox::clicked,
-            this, &MainWindow::on_startup);
     connect(ui->proxyCheckBox, &QCheckBox::clicked,
             this, &MainWindow::setProxy);
     connect(ui->applyBtn, &QPushButton::clicked,
@@ -246,7 +244,6 @@ void MainWindow::loadSettings()
     ui->hostEdit->setText(config->params[Param::Host].value<QString>());
     ui->sourceEdit->append(config->params[Param::Sources].value<QStringList>().join(u", "_s));
     ui->strictCheckBox->setChecked(config->params[Param::Strict].value<bool>());
-    ui->startupCheckBox->setChecked(config->startup);
     ui->debugCheckBox->setChecked(config->debugInfo);
     setTheme(config->theme);
 
@@ -269,7 +266,6 @@ void MainWindow::updateSettings()
     config->params[Param::Host].setValue(ui->hostEdit->text());
     config->params[Param::Sources].setValue(ui->sourceEdit->toPlainText().split(sep, Qt::SkipEmptyParts));
     config->params[Param::Strict].setValue(ui->strictCheckBox->isChecked());
-    config->startup = ui->startupCheckBox->isChecked();
     config->debugInfo = ui->debugCheckBox->isChecked();
     config->theme = QApplication::style()->name();
 

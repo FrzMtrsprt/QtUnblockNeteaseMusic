@@ -213,13 +213,6 @@
     <item>
      <layout class="QHBoxLayout" name="buttonBox">
       <item>
-       <widget class="QCheckBox" name="startupCheckBox">
-        <property name="text">
-         <string>Run on startup</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="proxyCheckBox">
         <property name="text">
          <string>System Proxy</string>

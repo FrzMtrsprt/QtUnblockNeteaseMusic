@@ -11,6 +11,9 @@ ConfigDialog::ConfigDialog(Config *config, QWidget *parent)
       config(config)
 {
     ui->setupUi(this);
+    ui->startupCheckBox->setChecked(config->startup);
+    ui->minimizeCheckBox->setChecked(config->startMinimized);
+
     ui->tokenEdit->setText(config->params[Param::Token].value<QString>());
     ui->endpointEdit->setText(config->params[Param::Endpoint].value<QString>());
     ui->cnrelayEdit->setText(config->params[Param::Cnrelay].value<QString>());
@@ -29,6 +32,9 @@ ConfigDialog::~ConfigDialog()
 
 void ConfigDialog::accept()
 {
+    config->startup = ui->startupCheckBox->isChecked();
+    config->startMinimized = ui->minimizeCheckBox->isChecked();
+
     config->params[Param::Token].setValue(ui->tokenEdit->text());
     config->params[Param::Endpoint].setValue(ui->endpointEdit->text());
     config->params[Param::Cnrelay].setValue(ui->cnrelayEdit->text());
