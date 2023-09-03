@@ -204,6 +204,10 @@ Please check the server port and address, and try again.</source>
         <source>Install certificate</source>
         <translation>安装证书</translation>
     </message>
+    <message>
+        <source>Please run QtUnblockNeteaseMusic as Administrator from context menu.</source>
+        <translation>请从右键菜单以管理员身份运行 QtUnblockNeteaseMusic。</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>

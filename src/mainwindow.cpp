@@ -12,6 +12,7 @@
 #include <QStyleFactory>
 
 #ifdef Q_OS_WIN
+#include "ShlObj.h"
 #include "utils/winutils.h"
 #endif
 
@@ -141,6 +142,16 @@ void MainWindow::logClear()
 
 void MainWindow::on_installCA()
 {
+#ifdef Q_OS_WIN
+    if (!IsUserAnAdmin())
+    {
+        QMessageBox::warning(this, tr("Access denied"),
+                             tr("Please run QtUnblockNeteaseMusic as "
+                                "Administrator from context menu."));
+        return;
+    }
+#endif
+
     QWizard *wizard = new QWizard(this);
     wizard->addPage(new WizardPage1(wizard));
     wizard->addPage(new WizardPage2(wizard));
