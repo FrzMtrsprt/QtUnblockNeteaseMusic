@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
+
+include(FetchContent)
 
 project(QtUnblockNeteaseMusic)
 
@@ -15,26 +17,41 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
 
 # SingleApplication
 set(QAPPLICATION_CLASS QApplication)
-add_subdirectory(third-party/SingleApplication)
+FetchContent_Declare(
+    SingleApplication
+    GIT_REPOSITORY "https://github.com/itay-grudev/SingleApplication.git"
+    GIT_TAG "master"
+)
+FetchContent_MakeAvailable(SingleApplication)
+message(STATUS "SingleApplication_SOURCE_DIR: ${SingleApplication_SOURCE_DIR}")
+
+# server
+FetchContent_Declare(
+    server
+    GIT_REPOSITORY "https://github.com/UnblockNeteaseMusic/server.git"
+    GIT_TAG "enhanced"
+)
+FetchContent_MakeAvailable(server)
+message(STATUS "server_SOURCE_DIR: ${server_SOURCE_DIR}")
 
 file(GLOB TS_FILES
-    locale/*.ts
+    "locale/*.ts"
 )
 
 file(GLOB APP_SOURCES
-    src/*.cpp
-    src/config/*.cpp
+    "src/*.cpp"
+    "src/config/*.cpp"
 )
 source_group("Source Files" FILES ${APP_SOURCES})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(UTILS_SOURCES
-        src/utils/winutils.cpp
+        "src/utils/winutils.cpp"
     )
     source_group("Source Files" FILES ${UTILS_SOURCES})
 
     set(RESOURCES
-        res/QtUnblockNeteaseMusic.rc
+        "res/QtUnblockNeteaseMusic.rc"
     )
     source_group("Resources" FILES ${RESOURCES})
 endif()
@@ -47,26 +64,30 @@ qt_add_executable(QtUnblockNeteaseMusic
 )
 
 qt_add_resources(QtUnblockNeteaseMusic res
-    PREFIX /res
-    BASE res
-    FILES res/icon.png
+    PREFIX "/res"
+    BASE "res"
+    FILES "res/icon.png"
 )
 
 qt_add_resources(QtUnblockNeteaseMusic certs
-    PREFIX /certs
-    BASE third-party/server
-    FILES third-party/server/ca.crt
+    PREFIX "/certs"
+    BASE "${server_SOURCE_DIR}"
+    FILES "${server_SOURCE_DIR}/ca.crt"
 )
 
 qt_add_translations(QtUnblockNeteaseMusic
     TS_FILES ${TS_FILES}
 )
 
-target_link_libraries(QtUnblockNeteaseMusic PRIVATE Qt6::Widgets)
-target_link_libraries(QtUnblockNeteaseMusic PRIVATE SingleApplication::SingleApplication)
+target_link_libraries(QtUnblockNeteaseMusic PRIVATE
+    Qt6::Widgets
+    SingleApplication::SingleApplication
+)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    target_link_libraries(QtUnblockNeteaseMusic PRIVATE crypt32 uxtheme wininet)
+    target_link_libraries(QtUnblockNeteaseMusic PRIVATE
+        crypt32 uxtheme wininet
+    )
 endif()
 
 set_target_properties(QtUnblockNeteaseMusic PROPERTIES
