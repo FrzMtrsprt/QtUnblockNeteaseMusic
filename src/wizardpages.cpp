@@ -14,7 +14,7 @@
 #include <QMessageBox>
 #include <QPlainTextEdit>
 
-using namespace Qt::Literals::StringLiterals;
+using namespace Qt::StringLiterals;
 
 WizardPage1::WizardPage1(QWidget *parent)
     : QWizardPage(parent)

@@ -1,5 +1,4 @@
-#ifndef ENVWINDOW_H
-#define ENVWINDOW_H
+#pragma once
 
 #include "config/config.h"
 
@@ -26,5 +25,3 @@ private slots:
     void accept();
     void help();
 };
-
-#endif // ENVWINDOW_H

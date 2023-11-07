@@ -1,5 +1,4 @@
-#ifndef SERVER_H
-#define SERVER_H
+#pragma once
 
 #include "config/config.h"
 
@@ -30,5 +29,3 @@ private:
     void on_stdout();
     void on_stderr();
 };
-
-#endif // SERVER_H

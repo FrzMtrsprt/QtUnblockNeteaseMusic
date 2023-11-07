@@ -208,6 +208,10 @@ Please check the server port and address, and try again.</source>
         <source>Please run QtUnblockNeteaseMusic as Administrator from context menu.</source>
         <translation>请从右键菜单以管理员身份运行 QtUnblockNeteaseMusic。</translation>
     </message>
+    <message>
+        <source>Access denied</source>
+        <translation>拒绝访问</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>

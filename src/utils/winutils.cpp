@@ -4,10 +4,11 @@
 #include <QProcess>
 
 #include <Windows.h>
+#include <ShlObj.h>
 #include <uxtheme.h>
 #include <wininet.h>
 
-using namespace Qt::Literals::StringLiterals;
+using namespace Qt::StringLiterals;
 
 static PROCESS_POWER_THROTTLING_STATE Throttle{
     PROCESS_POWER_THROTTLING_CURRENT_VERSION,
@@ -142,7 +143,7 @@ bool WinUtils::setSystemProxy(const bool &enable, const QString &address, const 
     return false;
 }
 
-bool WinUtils::isSystemProxy(const QString &address, const QString &port)
+bool WinUtils::isSystemProxy(const QString &address)
 {
     INTERNET_PER_CONN_OPTION_LISTW optionList;
     INTERNET_PER_CONN_OPTIONW options[2];
@@ -158,8 +159,8 @@ bool WinUtils::isSystemProxy(const QString &address, const QString &port)
     if (InternetQueryOptionW(NULL, INTERNET_OPTION_PER_CONNECTION_OPTION,
                              &optionList, &optionList.dwSize))
     {
-        WCHAR proxy_server[32];
-        (address + ":" + port).toWCharArray(proxy_server);
+        WCHAR proxy_server[0x100];
+        address.toWCharArray(proxy_server);
 
         if (options[0].Value.dwValue & PROXY_TYPE_PROXY &&
             lstrcmpW(options[1].Value.pszValue, proxy_server) == 0)
@@ -172,6 +173,12 @@ bool WinUtils::isSystemProxy(const QString &address, const QString &port)
         qWarning("%s: Unable to get system proxy.", __FUNCTION__);
     }
     return false;
+}
+
+// Check if current user is administrator
+bool WinUtils::isAdmin()
+{
+    return IsUserAnAdmin();
 }
 
 // Install CA certificate and return the output

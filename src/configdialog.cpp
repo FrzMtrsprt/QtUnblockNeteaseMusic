@@ -2,8 +2,9 @@
 #include "ui_configdialog.h"
 
 #include <QDesktopServices>
+#include <QLocale>
 
-using namespace Qt::Literals::StringLiterals;
+using namespace Qt::StringLiterals;
 
 ConfigDialog::ConfigDialog(Config *config, QWidget *parent)
     : QDialog(parent),
@@ -38,22 +39,27 @@ void ConfigDialog::accept()
     config->params[Param::Token].setValue(ui->tokenEdit->text());
     config->params[Param::Endpoint].setValue(ui->endpointEdit->text());
     config->params[Param::Cnrelay].setValue(ui->cnrelayEdit->text());
-    config->other = ui->otherEdit->toPlainText().split('\n', Qt::SkipEmptyParts);
-    config->env = ui->envEdit->toPlainText().split('\n', Qt::SkipEmptyParts);
+    config->other = ui->otherEdit->toPlainText().split(u'\n', Qt::SkipEmptyParts);
+    config->env = ui->envEdit->toPlainText().split(u'\n', Qt::SkipEmptyParts);
     QDialog::accept();
 }
 
 void ConfigDialog::help()
 {
+    QUrl url;
     switch (ui->tabWidget->currentIndex())
     {
     case 0:
-        QDesktopServices::openUrl(QUrl(
-            u"https://github.com/UnblockNeteaseMusic/server#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0"_s));
+        url.setUrl(QLocale::system().language() == QLocale::Language::Chinese
+                       ? u"https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/blob/main/README.md"_s
+                       : u"https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/blob/main/README_en.md"_s);
         break;
     case 1:
-        QDesktopServices::openUrl(QUrl(
-            u"https://github.com/UnblockNeteaseMusic/server#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"_s));
+        url.setUrl(u"https://github.com/UnblockNeteaseMusic/server#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0"_s);
+        break;
+    case 2:
+        url.setUrl(u"https://github.com/UnblockNeteaseMusic/server#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"_s);
         break;
     }
+    QDesktopServices::openUrl(url);
 }

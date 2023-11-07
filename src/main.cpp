@@ -12,7 +12,7 @@
 #include "mainwindow.h"
 #include "tray.h"
 
-using namespace Qt::Literals::StringLiterals;
+using namespace Qt::StringLiterals;
 
 int main(int argc, char *argv[])
 {
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     }
 
     Config config;
-    
+
     Server server(&config);
 
     MainWindow w(&config, &server);

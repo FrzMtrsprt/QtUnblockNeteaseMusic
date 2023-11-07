@@ -1,5 +1,4 @@
-#ifndef TRAY_H
-#define TRAY_H
+#pragma once
 
 #include "mainwindow.h"
 
@@ -26,5 +25,3 @@ private slots:
     void on_proxy(const bool &checked);
     void on_exit();
 };
-
-#endif // TRAY_H

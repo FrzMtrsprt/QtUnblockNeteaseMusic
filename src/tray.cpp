@@ -2,7 +2,7 @@
 
 #include <QMenu>
 
-using namespace Qt::Literals::StringLiterals;
+using namespace Qt::StringLiterals;
 
 Tray::Tray(MainWindow *w)
     : QSystemTrayIcon(w),

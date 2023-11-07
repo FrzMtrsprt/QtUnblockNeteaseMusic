@@ -7,7 +7,7 @@
 #include "utils/winutils.h"
 #endif
 
-using namespace Qt::Literals::StringLiterals;
+using namespace Qt::StringLiterals;
 
 Server::Server(Config *config)
     : QProcess(), config(config)
@@ -96,19 +96,16 @@ void Server::loadArgs()
             break;
         }
     }
-    if (!config->other.isEmpty())
+    for (const QString &entry : config->other)
     {
-        for (const QString &entry : config->other)
-        {
-            arguments << entry.split(u' ');
-        }
+        arguments << entry.split(u' ');
     }
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     for (const QString &entry : config->env)
     {
-        const int pos = entry.indexOf('=');
-        if (pos > 0)
+        const int pos = entry.indexOf(u'=');
+        if (pos > 0 && pos < entry.size() - 1)
         {
             env.insert(entry.sliced(0, pos), entry.sliced(pos + 1));
         }

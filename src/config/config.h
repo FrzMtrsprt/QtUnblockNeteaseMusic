@@ -1,5 +1,4 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#pragma once
 
 #include "param.h"
 
@@ -25,5 +24,3 @@ public:
     void readSettings();
     void writeSettings();
 };
-
-#endif // CONFIG_H

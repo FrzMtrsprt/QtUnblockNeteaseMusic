@@ -12,11 +12,10 @@
 #include <QStyleFactory>
 
 #ifdef Q_OS_WIN
-#include "ShlObj.h"
 #include "utils/winutils.h"
 #endif
 
-using namespace Qt::Literals::StringLiterals;
+using namespace Qt::StringLiterals;
 
 MainWindow::MainWindow(Config *config, Server *server)
     : QMainWindow(), ui(new Ui::MainWindow),
@@ -117,7 +116,7 @@ bool MainWindow::isProxy()
     const QString port = config->params[Param::Port].value<QString>().split(u':')[0];
     bool isProxy = false;
 #ifdef Q_OS_WIN
-    isProxy = WinUtils::isSystemProxy(address, port);
+    isProxy = WinUtils::isSystemProxy(address + u':' + port);
 #endif
     return isProxy;
 }
@@ -143,7 +142,7 @@ void MainWindow::logClear()
 void MainWindow::on_installCA()
 {
 #ifdef Q_OS_WIN
-    if (!IsUserAnAdmin())
+    if (!WinUtils::isAdmin())
     {
         QMessageBox::warning(this, tr("Access denied"),
                              tr("Please run QtUnblockNeteaseMusic as "
@@ -291,19 +290,29 @@ bool MainWindow::event(QEvent *e)
 {
     switch (e->type())
     {
+    // Hide window on escape key
     case QEvent::KeyPress:
+    {
         if (static_cast<QKeyEvent *>(e)->key() == Qt::Key_Escape)
         {
             hide();
         }
         break;
+    }
+
+    // Set window border on show
     case QEvent::Show:
+    {
 #ifdef Q_OS_WIN
         WinUtils::setWindowFrame(winId(), style());
         WinUtils::setThrottle(false);
 #endif
         break;
+    }
+
+    // Close all child dialogs on close
     case QEvent::Close:
+    {
         for (QDialog *dialog : findChildren<QDialog *>())
         {
             dialog->close();
@@ -312,14 +321,20 @@ bool MainWindow::event(QEvent *e)
         WinUtils::setThrottle(true);
 #endif
         break;
+    }
+
+    // Update proxy checkbox on window activation
     case QEvent::WindowActivate:
+    {
         ui->proxyCheckBox->setChecked(isProxy());
         break;
+    }
+
+    // Set window border for child dialogs
     case QEvent::ChildAdded:
-#ifdef Q_OS_WIN
     {
+#ifdef Q_OS_WIN
         QObject *object = static_cast<QChildEvent *>(e)->child();
-        // Set window border for child dialogs
         if (object->isWidgetType())
         {
             QWidget *widget = static_cast<QWidget *>(object);
@@ -328,8 +343,10 @@ bool MainWindow::event(QEvent *e)
                 WinUtils::setWindowFrame(widget->winId(), widget->style());
             }
         }
-    }
 #endif
+        break;
+    }
+
     default:
         break;
     };

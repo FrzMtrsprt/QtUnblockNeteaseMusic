@@ -1,5 +1,4 @@
-#ifndef CAWIZARDPAGES_H
-#define CAWIZARDPAGES_H
+#pragma once
 
 #include <QWizard>
 
@@ -42,5 +41,3 @@ public:
 private:
     void initializePage();
 };
-
-#endif // CAWIZARDPAGES_H

@@ -1,9 +1,8 @@
-#ifndef PARAM_H
-#define PARAM_H
+#pragma once
 
 #include <QVariant>
 
-using namespace Qt::Literals::StringLiterals;
+using namespace Qt::StringLiterals;
 
 class Param : public QVariant
 {
@@ -36,5 +35,3 @@ public:
             Cnrelay
       };
 };
-
-#endif // PARAM_H

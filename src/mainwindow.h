@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include "config/config.h"
 #include "server.h"
@@ -46,4 +45,3 @@ private slots:
     void on_aboutQt();
     void on_apply();
 };
-#endif // MAINWINDOW_H
