@@ -43,9 +43,11 @@ English version: [README_en.md](README_en.md)
     ```
 4. 运行 `QtUnblockNeteaseMusic.exe` 并设置启动参数
 5. 在网易云客户端中设置相应的代理，享受音乐吧！
-- 在个人设备上使用时，尽量避免使用默认的 `8080` 端口。为避免来自其他设备的访问，可以将主机地址设为 `127.0.0.1`。
-- 新版网易云客户端有更严格的 SSL 验证，如果碰到了连接失败的问题，可以启用 HTTPS 端口并安装 UnblockNeteaseMusic CA 证书。
-- 如果要安装证书，右键点击 `QtUnblockNeteaseMusic.exe`，选择 `以管理员身份运行`，然后点击 `高级` 菜单中的 `安装证书`。
+> [!IMPORTANT]
+> 在个人设备上使用时，尽量避免使用默认的 `8080` 端口。为避免来自其他设备的访问，可以将主机地址设为 `127.0.0.1`。
+
+> [!NOTE]
+> 新版网易云客户端有更严格的 SSL 验证，如果碰到了连接失败的问题，可以启用 HTTPS 端口并安装 UnblockNeteaseMusic CA 证书。右键点击 `QtUnblockNeteaseMusic.exe`，选择 `以管理员身份运行`，然后点击 `高级` 菜单中的 `安装证书`。
 
 ## 构建
 1. 安装 Qt 开发环境（Qt 6.4+）

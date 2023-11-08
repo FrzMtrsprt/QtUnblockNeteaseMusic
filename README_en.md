@@ -41,9 +41,11 @@ The enhanced [UnblockNeteaseMusic/server](https://github.com/UnblockNeteaseMusic
     ```
 4. Run `QtUnblockNeteaseMusic.exe` and set the necessary arguments
 5. Set the proxy in the Netease Cloud Music client accordingly & enjoy!
-- When used on your personal devices, avoid using the default `8080` port, and change the host address to `127.0.0.1` to avoid unwanted access from others.
-- Newer client versions have stricter SSL verification, so if you encountered the "connection failed" issue, enable the HTTPS port and install UnblockNeteaseMusic CA certificate.
-- To install the certificate, right click on `QtUnblockNeteaseMusic.exe`, select `Run as administrator`, and click `Install certificate` in the `Advance` menu.
+> [!IMPORTANT]
+> When used on your personal devices, avoid using the default `8080` port, and change the host address to `127.0.0.1` to avoid unwanted access from others.
+
+> [!NOTE]
+> Newer client versions have stricter SSL verification, so if you encountered the "connection failed" issue, enable the HTTPS port and install UnblockNeteaseMusic CA certificate. Right click on `QtUnblockNeteaseMusic.exe`, select `Run as administrator`, and click `Install certificate` in the `Advance` menu.
 
 ## Build
 1. Set up the Qt development environment (Qt 6.4+)
