@@ -36,11 +36,11 @@ private:
     bool event(QEvent *e);
     void loadSettings();
     void updateSettings();
+    void applySettings();
 
 private slots:
     void on_installCA();
     void on_env();
-    void on_startup(const bool &enable);
     void on_about();
     void on_aboutQt();
     void on_apply();

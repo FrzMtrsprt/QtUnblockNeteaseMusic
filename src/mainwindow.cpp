@@ -59,6 +59,7 @@ MainWindow::MainWindow(Config *config, Server *server)
     }
 
     loadSettings();
+    applySettings();
 }
 
 MainWindow::~MainWindow()
@@ -167,12 +168,13 @@ void MainWindow::on_installCA()
 
 void MainWindow::on_env()
 {
-    ConfigDialog *envDlg = new ConfigDialog(config, this);
-    envDlg->setAttribute(Qt::WA_DeleteOnClose);
-    envDlg->setFixedSize(envDlg->sizeHint());
-    if (envDlg->exec() == QDialog::Accepted)
+    ConfigDialog *configDlg = new ConfigDialog(config, this);
+    configDlg->setAttribute(Qt::WA_DeleteOnClose);
+    configDlg->setFixedSize(configDlg->sizeHint());
+    if (configDlg->exec() == QDialog::Accepted)
     {
         updateSettings();
+        applySettings();
         server->restart();
     }
 }
@@ -217,13 +219,6 @@ void MainWindow::on_about()
 void MainWindow::on_aboutQt()
 {
     QMessageBox::aboutQt(this);
-}
-
-void MainWindow::on_startup(const bool &enable)
-{
-#ifdef Q_OS_WIN
-    WinUtils::setStartup(enable);
-#endif
 }
 
 void MainWindow::on_apply()
@@ -283,6 +278,14 @@ void MainWindow::updateSettings()
     config->writeSettings();
 
     qDebug("Update settings done");
+}
+
+void MainWindow::applySettings()
+{
+#ifdef Q_OS_WIN
+    WinUtils::setStartup(config->startup,
+                         config->startMinimized);
+#endif
 }
 
 // Event reloads

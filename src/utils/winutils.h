@@ -8,7 +8,7 @@ class WinUtils
 public:
     WinUtils();
 
-    static void setStartup(const bool &enable);
+    static void setStartup(const bool &enable, const bool &silent);
     static void setThrottle(const bool &enable);
     static void setWindowFrame(const WId &winId, const QStyle *style);
     static bool setSystemProxy(const bool &enable, const QString &address, const QString &port);

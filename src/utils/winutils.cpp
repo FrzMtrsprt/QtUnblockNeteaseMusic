@@ -23,7 +23,7 @@ static PROCESS_POWER_THROTTLING_STATE Unthrottle{
 WinUtils::WinUtils() {}
 
 // Enable or disable startup
-void WinUtils::setStartup(const bool &enable)
+void WinUtils::setStartup(const bool &enable, const bool &silent)
 {
     LPCSTR lpStartupKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
@@ -34,18 +34,17 @@ void WinUtils::setStartup(const bool &enable)
 
     if (enable)
     {
-        // startup command: "{app path}" -silent
-        char lpData[MAX_PATH];
-
-        // format %s with app path
-        sprintf_s(lpData, MAX_PATH, "\"%s\" -silent", __argv[0]);
+        char lpValueData[MAX_PATH];
+        silent
+            ? sprintf_s(lpValueData, MAX_PATH, "\"%s\" -silent", __argv[0])
+            : sprintf_s(lpValueData, MAX_PATH, "\"%s\"", __argv[0]);
 
         const bool ok = SUCCEEDED(
             RegSetKeyValueA(
                 HKEY_CURRENT_USER,
                 lpStartupKey,
                 lpValueName,
-                REG_SZ, lpData, MAX_PATH));
+                REG_SZ, lpValueData, MAX_PATH));
 
         if (!ok)
         {
