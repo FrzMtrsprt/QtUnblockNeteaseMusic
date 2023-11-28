@@ -1,6 +1,5 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.16)
 
-include(FetchContent)
 
 project(QtUnblockNeteaseMusic)
 
@@ -17,22 +16,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
 
 # SingleApplication
 set(QAPPLICATION_CLASS QApplication)
-FetchContent_Declare(
-    SingleApplication
-    GIT_REPOSITORY "https://github.com/itay-grudev/SingleApplication.git"
-    GIT_TAG "master"
-)
-FetchContent_MakeAvailable(SingleApplication)
-message(STATUS "SingleApplication_SOURCE_DIR: ${SingleApplication_SOURCE_DIR}")
-
-# server
-FetchContent_Declare(
-    server
-    GIT_REPOSITORY "https://github.com/UnblockNeteaseMusic/server.git"
-    GIT_TAG "enhanced"
-)
-FetchContent_MakeAvailable(server)
-message(STATUS "server_SOURCE_DIR: ${server_SOURCE_DIR}")
+add_subdirectory("third-party/SingleApplication")
 
 file(GLOB TS_FILES
     "locale/*.ts"
@@ -71,8 +55,8 @@ qt_add_resources(QtUnblockNeteaseMusic res
 
 qt_add_resources(QtUnblockNeteaseMusic certs
     PREFIX "/certs"
-    BASE "${server_SOURCE_DIR}"
-    FILES "${server_SOURCE_DIR}/ca.crt"
+    BASE "third-party/server"
+    FILES "third-party/server/ca.crt"
 )
 
 qt_add_translations(QtUnblockNeteaseMusic
