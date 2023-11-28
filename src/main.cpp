@@ -11,16 +11,17 @@
 
 #include "mainwindow.h"
 #include "tray.h"
+#include "version.h"
 
 using namespace Qt::StringLiterals;
 
 int main(int argc, char *argv[])
 {
     SingleApplication a(argc, argv, true);
-    a.setApplicationName(u"QtUnblockNeteaseMusic"_s);
-    a.setApplicationVersion(u"1.5.0"_s);
-    a.setOrganizationName(u"FrzMtrsprt"_s);
-    a.setOrganizationDomain(u"https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic"_s);
+    a.setApplicationName(PROJECT_NAME);
+    a.setApplicationVersion(PROJECT_VERSION);
+    a.setOrganizationName(PROJECT_AUTHOR);
+    a.setOrganizationDomain(PROJECT_HOMEPAGE_URL);
 
     if (a.isSecondary())
     {
