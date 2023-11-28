@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(QtUnblockNeteaseMusic
-    VERSION 1.5.0
+    VERSION 1.5.1
     DESCRIPTION "A desktop client for UnblockNeteaseMusic, made with Qt."
     HOMEPAGE_URL "https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic"
     LANGUAGES CXX
