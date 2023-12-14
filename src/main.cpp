@@ -71,8 +71,10 @@ int main(int argc, char *argv[])
 
     UpdateChecker updateChecker;
     QObject::connect(&updateChecker, &UpdateChecker::ready,
-                     [&w](const bool &isNewVersion, const QString &version)
-                     { if (isNewVersion) w.showVersionStatus(version); });
+                     [&w, &updateChecker](const bool &isNewVersion, const QString &version)
+                     { if (isNewVersion) w.showVersionStatus(version);
+                       // Check again after 24 hours
+                       QTimer::singleShot(24*60*60*1000, &updateChecker, &UpdateChecker::checkUpdate); });
     QTimer::singleShot(1000, &updateChecker, &UpdateChecker::checkUpdate);
 
     // Start server in another thread

@@ -3,6 +3,7 @@
 #include "config/config.h"
 #include "server.h"
 
+#include <QLabel>
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -32,6 +33,7 @@ private:
     Ui::MainWindow *ui;
     Server *server;
     Config *config;
+    QLabel *statusLabel;
 
     void setTheme(const QString &theme);
     bool event(QEvent *e);

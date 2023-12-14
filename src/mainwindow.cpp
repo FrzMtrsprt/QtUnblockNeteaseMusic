@@ -20,7 +20,7 @@ using namespace Qt::StringLiterals;
 
 MainWindow::MainWindow(Config *config, Server *server)
     : QMainWindow(), ui(new Ui::MainWindow),
-      config(config), server(server)
+      config(config), server(server), statusLabel(new QLabel)
 {
     ui->setupUi(this);
 #ifdef Q_OS_WIN
@@ -125,11 +125,11 @@ bool MainWindow::isProxy()
 
 void MainWindow::showVersionStatus(const QString &version)
 {
-    QLabel *label = new QLabel(tr("<a href=\"%1\">New version %2 is available.</a>")
-                                   .arg(PROJECT_RELEASE_URL)
-                                   .arg(version));
-    label->setOpenExternalLinks(true);
-    ui->statusBar->addWidget(label);
+    statusLabel->setText(tr("<a href=\"%1\">New version %2 is available.</a>")
+                             .arg(PROJECT_RELEASE_URL)
+                             .arg(version));
+    statusLabel->setOpenExternalLinks(true);
+    ui->statusBar->addWidget(statusLabel);
 }
 
 void MainWindow::exit()

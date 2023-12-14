@@ -38,8 +38,8 @@ void UpdateChecker::parseReply(QNetworkReply *reply)
     const QString tagName = obj["tag_name"].toString();
     // Split the version string into three parts
     const QString version = tagName.sliced(1);
-    emit ready(isNewVersion(version, PROJECT_VERSION), version);
     qDebug() << "Latest version:" << version;
+    emit ready(isNewVersion(version, PROJECT_VERSION), version);
 }
 
 bool UpdateChecker::isNewVersion(const QString &target, const QString &current)
