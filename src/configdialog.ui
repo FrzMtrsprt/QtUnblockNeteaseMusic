@@ -21,18 +21,45 @@
          <property name="title">
           <string>Program settings</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QCheckBox" name="startupCheckBox">
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="2" column="0" colspan="2">
+           <widget class="QCheckBox" name="updateCheckBox">
             <property name="text">
-             <string>Run on startup</string>
+             <string>Check for Update</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="2" column="3">
+           <widget class="QPushButton" name="updateButton">
+            <property name="text">
+             <string>Check now</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="0" colspan="4">
            <widget class="QCheckBox" name="minimizeCheckBox">
             <property name="text">
              <string>Start minimized</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="4">
+           <widget class="QCheckBox" name="startupCheckBox">
+            <property name="text">
+             <string>Run on startup</string>
             </property>
            </widget>
           </item>

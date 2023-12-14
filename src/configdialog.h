@@ -1,6 +1,7 @@
 #pragma once
 
 #include "config/config.h"
+#include "updatechecker.h"
 
 #include <QDialog>
 
@@ -20,6 +21,8 @@ public:
 private:
     Ui::ConfigDialog *ui;
     Config *config;
+    UpdateChecker *updateChecker;
+    void showUpdateMessage(const bool &isNewVersion, const QString &version);
 
 private slots:
     void accept();

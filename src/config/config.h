@@ -14,6 +14,7 @@ public:
 
     bool startup;
     bool startMinimized;
+    bool checkUpdate;
     QString theme;
     bool debugInfo;
 

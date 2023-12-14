@@ -1,3 +1,5 @@
+#pragma once
+
 #include <QNetworkAccessManager>
 
 class UpdateChecker : public QObject

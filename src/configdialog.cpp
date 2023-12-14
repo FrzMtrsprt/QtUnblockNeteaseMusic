@@ -1,25 +1,33 @@
 #include "configdialog.h"
 #include "ui_configdialog.h"
 
+#include "version.h"
+
 #include <QDesktopServices>
 #include <QLocale>
+#include <QMessageBox>
 
 using namespace Qt::StringLiterals;
 
 ConfigDialog::ConfigDialog(Config *config, QWidget *parent)
     : QDialog(parent),
       ui(new Ui::ConfigDialog),
+      updateChecker(new UpdateChecker),
       config(config)
 {
     ui->setupUi(this);
     ui->startupCheckBox->setChecked(config->startup);
     ui->minimizeCheckBox->setChecked(config->startMinimized);
+    ui->updateCheckBox->setChecked(config->checkUpdate);
 
     ui->tokenEdit->setText(config->params[Param::Token].value<QString>());
     ui->endpointEdit->setText(config->params[Param::Endpoint].value<QString>());
     ui->cnrelayEdit->setText(config->params[Param::Cnrelay].value<QString>());
     ui->otherEdit->setPlainText(config->other.join("\n"));
     ui->envEdit->setPlainText(config->env.join("\n"));
+
+    connect(ui->updateButton, &QPushButton::clicked, updateChecker, &UpdateChecker::checkUpdate);
+    connect(updateChecker, &UpdateChecker::ready, this, &ConfigDialog::showUpdateMessage);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::helpRequested, this, &ConfigDialog::help);
@@ -28,13 +36,38 @@ ConfigDialog::ConfigDialog(Config *config, QWidget *parent)
 
 ConfigDialog::~ConfigDialog()
 {
+    delete updateChecker;
     delete ui;
+}
+
+void ConfigDialog::showUpdateMessage(const bool &isNewVersion, const QString &version)
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(tr("Update"));
+    msgBox.setIcon(QMessageBox::Icon::Information);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setEscapeButton(QMessageBox::Ok);
+    if (isNewVersion)
+    {
+        msgBox.setText(tr("New version %1 is available.").arg(version));
+        msgBox.addButton(QMessageBox::Help)->setText(u"View"_s);
+    }
+    else
+    {
+        msgBox.setText(tr("You are using the latest version."));
+    }
+
+    if (msgBox.exec() == QMessageBox::Help)
+    {
+        QDesktopServices::openUrl(QUrl(PROJECT_RELEASE_URL));
+    }
 }
 
 void ConfigDialog::accept()
 {
     config->startup = ui->startupCheckBox->isChecked();
     config->startMinimized = ui->minimizeCheckBox->isChecked();
+    config->checkUpdate = ui->updateCheckBox->isChecked();
 
     config->params[Param::Token].setValue(ui->tokenEdit->text());
     config->params[Param::Endpoint].setValue(ui->endpointEdit->text());
