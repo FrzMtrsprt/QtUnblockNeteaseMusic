@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "configdialog.h"
+#include "version.h"
 #include "wizardpages.h"
 
 #include <QCloseEvent>
@@ -120,6 +121,15 @@ bool MainWindow::isProxy()
     isProxy = WinUtils::isSystemProxy(address + u':' + port);
 #endif
     return isProxy;
+}
+
+void MainWindow::showVersionStatus(const QString &version)
+{
+    QLabel *label = new QLabel(tr("<a href=\"%1\">New version %2 is available.</a>")
+                                   .arg(PROJECT_RELEASE_URL)
+                                   .arg(version));
+    label->setOpenExternalLinks(true);
+    ui->statusBar->addWidget(label);
 }
 
 void MainWindow::exit()

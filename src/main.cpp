@@ -11,6 +11,7 @@
 
 #include "mainwindow.h"
 #include "tray.h"
+#include "updatechecker.h"
 #include "version.h"
 
 using namespace Qt::StringLiterals;
@@ -67,6 +68,12 @@ int main(int argc, char *argv[])
     QObject::connect(&server, &Server::logClear, &w, &MainWindow::logClear);
 
     Tray tray(&w);
+
+    UpdateChecker updateChecker;
+    QObject::connect(&updateChecker, &UpdateChecker::ready,
+                     [&w](const bool &isNewVersion, const QString &version)
+                     { if (isNewVersion) w.showVersionStatus(version); });
+    QTimer::singleShot(1000, &updateChecker, &UpdateChecker::checkUpdate);
 
     // Start server in another thread
     qDebug("---Starting server---");

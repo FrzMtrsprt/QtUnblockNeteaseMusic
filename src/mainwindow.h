@@ -21,6 +21,7 @@ public:
     ~MainWindow();
     bool setProxy(const bool &enable);
     bool isProxy();
+    void showVersionStatus(const QString &version);
 
 public slots:
     void exit();

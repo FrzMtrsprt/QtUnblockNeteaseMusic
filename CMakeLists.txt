@@ -18,7 +18,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools Network)
 
 # SingleApplication
 set(QAPPLICATION_CLASS QApplication)
@@ -71,6 +71,7 @@ qt_add_translations(QtUnblockNeteaseMusic
 
 target_link_libraries(QtUnblockNeteaseMusic PRIVATE
     Qt6::Widgets
+    Qt6::Network
     SingleApplication::SingleApplication
 )
 
