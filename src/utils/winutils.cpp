@@ -36,7 +36,7 @@ void WinUtils::setStartup(const bool &enable, const bool &silent)
     {
         char lpValueData[MAX_PATH];
         silent
-            ? sprintf_s(lpValueData, MAX_PATH, "\"%s\" -silent", __argv[0])
+            ? sprintf_s(lpValueData, MAX_PATH, "\"%s\" --silent", __argv[0])
             : sprintf_s(lpValueData, MAX_PATH, "\"%s\"", __argv[0]);
 
         const bool ok = SUCCEEDED(

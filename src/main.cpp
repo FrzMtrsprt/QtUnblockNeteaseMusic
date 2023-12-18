@@ -1,3 +1,4 @@
+#include <QCommandLineParser>
 #include <QDir>
 #include <QLibraryInfo>
 #include <QMessageBox>
@@ -23,6 +24,12 @@ int main(int argc, char *argv[])
     a.setApplicationVersion(PROJECT_VERSION);
     a.setOrganizationName(PROJECT_AUTHOR);
     a.setOrganizationDomain(PROJECT_HOMEPAGE_URL);
+
+    QCommandLineParser parser;
+    parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
+    const QCommandLineOption silentOption(u"silent"_s);
+    parser.addOption(silentOption);
+    parser.process(a);
 
     if (a.isSecondary())
     {
@@ -99,16 +106,8 @@ int main(int argc, char *argv[])
 
     tray.setVisible(true);
 
-    // don't show window if "-silent" in arguments
-    bool silent = false;
-    for (int i = 1; i < argc; i++)
-    {
-        if (strcmp(argv[i], "-silent") == 0)
-        {
-            silent = true;
-        }
-    }
-    if (!silent && !config.startMinimized)
+    // don't show window if "--silent" in arguments
+    if (!parser.isSet(silentOption) && !config.startMinimized)
     {
         w.show();
     }
