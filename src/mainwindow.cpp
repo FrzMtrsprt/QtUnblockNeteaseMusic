@@ -11,6 +11,7 @@
 #include <QRegularExpression>
 #include <QStyle>
 #include <QStyleFactory>
+#include <QTimer>
 
 #ifdef Q_OS_WIN
 #include "utils/winutils.h"
@@ -142,7 +143,9 @@ void MainWindow::exit()
 
 void MainWindow::log(const QString &message)
 {
-    ui->outText->appendPlainText(message);
+    // Copy message so that it can still be accessed
+    QTimer::singleShot(0, this, [this, message]
+                       { ui->outText->appendPlainText(message); });
 }
 
 void MainWindow::logClear()

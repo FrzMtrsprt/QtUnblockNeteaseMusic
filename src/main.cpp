@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QLibraryInfo>
 #include <QMessageBox>
+#include <QThread>
 #include <QTimer>
 #include <QTranslator>
 #include <SingleApplication>
@@ -67,16 +68,24 @@ int main(int argc, char *argv[])
 
     Config config;
 
-    Server server(&config);
-
     MainWindow w(&config);
 
+    Tray tray(&w);
+
+    Server server(&config);
     QObject::connect(&server, &Server::log, &w, &MainWindow::log);
     QObject::connect(&server, &Server::logClear, &w, &MainWindow::logClear);
     QObject::connect(&w, &MainWindow::serverClose, &server, &Server::close);
     QObject::connect(&w, &MainWindow::serverRestart, &server, &Server::restart);
 
-    Tray tray(&w);
+    // Start server in another thread
+    QThread serverThread;
+    server.moveToThread(&serverThread);
+    QObject::connect(&serverThread, &QThread::started, &server, &Server::start);
+    QObject::connect(&a, &QApplication::aboutToQuit, [&serverThread]
+                     { serverThread.quit(); 
+                       serverThread.wait(); });
+    serverThread.start();
 
     UpdateChecker updateChecker;
     QObject::connect(&updateChecker, &UpdateChecker::ready,
@@ -84,11 +93,15 @@ int main(int argc, char *argv[])
                      { if (isNewVersion) w.showVersionStatus(version);
                        // Check again after 24 hours
                        QTimer::singleShot(24*60*60*1000, &updateChecker, &UpdateChecker::checkUpdate); });
-    QTimer::singleShot(1000, &updateChecker, &UpdateChecker::checkUpdate);
 
-    // Start server in another thread
-    qDebug("---Starting server---");
-    QTimer::singleShot(0, &server, &Server::start);
+    // Check update in another thread
+    QThread updateCheckerThread;
+    updateChecker.moveToThread(&updateCheckerThread);
+    QObject::connect(&updateCheckerThread, &QThread::started, &updateChecker, &UpdateChecker::checkUpdate);
+    QObject::connect(&a, &QApplication::aboutToQuit, [&updateCheckerThread]
+                     { updateCheckerThread.quit(); 
+                       updateCheckerThread.wait(); });
+    updateCheckerThread.start();
 
     // Open when second instance started
     QObject::connect(&a, &SingleApplication::receivedMessage, &w, [&w]
