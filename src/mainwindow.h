@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(Config *config, Server *server);
+    MainWindow(Config *config);
     ~MainWindow();
     bool setProxy(const bool &enable);
     bool isProxy();
@@ -28,6 +28,10 @@ public slots:
     void exit();
     void log(const QString &message);
     void logClear();
+
+signals:
+    void serverRestart();
+    void serverClose();
 
 private:
     Ui::MainWindow *ui;

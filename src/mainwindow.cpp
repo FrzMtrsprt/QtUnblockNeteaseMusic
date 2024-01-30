@@ -18,9 +18,9 @@
 
 using namespace Qt::StringLiterals;
 
-MainWindow::MainWindow(Config *config, Server *server)
+MainWindow::MainWindow(Config *config)
     : QMainWindow(), ui(new Ui::MainWindow),
-      config(config), server(server), statusLabel(new QLabel)
+      config(config), statusLabel(new QLabel)
 {
     ui->setupUi(this);
 #ifdef Q_OS_WIN
@@ -135,7 +135,7 @@ void MainWindow::showVersionStatus(const QString &version)
 void MainWindow::exit()
 {
     qDebug("---Shutting down---");
-    server->close();
+    emit serverClose();
     updateSettings();
     QApplication::exit();
 }
@@ -185,7 +185,7 @@ void MainWindow::on_env()
     {
         updateSettings();
         applySettings();
-        server->restart();
+        emit serverRestart();
     }
 }
 
@@ -236,7 +236,7 @@ void MainWindow::on_apply()
     qDebug("---Restarting server---");
     const bool wasProxy = isProxy();
     updateSettings();
-    server->restart();
+    emit serverRestart();
     if (wasProxy)
     {
         setProxy(true);

@@ -69,10 +69,12 @@ int main(int argc, char *argv[])
 
     Server server(&config);
 
-    MainWindow w(&config, &server);
+    MainWindow w(&config);
 
     QObject::connect(&server, &Server::log, &w, &MainWindow::log);
     QObject::connect(&server, &Server::logClear, &w, &MainWindow::logClear);
+    QObject::connect(&w, &MainWindow::serverClose, &server, &Server::close);
+    QObject::connect(&w, &MainWindow::serverRestart, &server, &Server::restart);
 
     Tray tray(&w);
 
