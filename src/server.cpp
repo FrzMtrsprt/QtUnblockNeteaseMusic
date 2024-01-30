@@ -16,6 +16,8 @@ Server::Server(Config *config)
             this, &Server::on_stdout);
     connect(this, &Server::readyReadStandardError,
             this, &Server::on_stderr);
+    connect(this, &Server::finished,
+            this, &Server::on_finished);
 }
 
 Server::~Server()
@@ -27,10 +29,9 @@ bool Server::findProgram()
 {
     QDir appDir = QDir::current();
 
-    // Check if node.js installed
-    QProcess::start(u"node"_s, {u"-v"_s}, ReadOnly);
-    const bool hasNode = waitForStarted();
-    close();
+    QProcess node;
+    node.start(u"node"_s, {u"-v"_s}, ReadOnly);
+    const bool hasNode = node.waitForFinished() && node.exitCode() == 0;
 
     // Find server script
     appDir.setFilter(QDir::Dirs);
@@ -119,6 +120,10 @@ void Server::loadArgs()
 
 void Server::start()
 {
+    if (state() != NotRunning)
+    {
+        return;
+    }
     if (findProgram())
     {
         loadArgs();
@@ -169,4 +174,14 @@ void Server::on_stderr()
     WinUtils::setWindowFrame(errorDlg->winId(), errorDlg->style());
 #endif
     errorDlg->exec();
+}
+
+void Server::on_finished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    if (exitCode != 0)
+    {
+        emit log(tr("Process exited with code %1.\n"
+                    "Please click \"Apply\" to restart the server.")
+                     .arg(exitCode));
+    }
 }

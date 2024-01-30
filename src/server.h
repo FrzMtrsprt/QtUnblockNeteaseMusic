@@ -28,4 +28,5 @@ private:
     void loadArgs();
     void on_stdout();
     void on_stderr();
+    void on_finished(int exitCode, QProcess::ExitStatus exitStatus);
 };
