@@ -3,7 +3,6 @@
 #include <QLibraryInfo>
 #include <QMessageBox>
 #include <QThread>
-#include <QTimer>
 #include <QTranslator>
 #include <SingleApplication>
 
@@ -74,7 +73,6 @@ int main(int argc, char *argv[])
 
     Server server(&config);
     QObject::connect(&server, &Server::log, &w, &MainWindow::log);
-    QObject::connect(&server, &Server::logClear, &w, &MainWindow::logClear);
     QObject::connect(&w, &MainWindow::serverClose, &server, &Server::close);
     QObject::connect(&w, &MainWindow::serverRestart, &server, &Server::restart);
 
@@ -88,11 +86,7 @@ int main(int argc, char *argv[])
     serverThread.start();
 
     UpdateChecker updateChecker;
-    QObject::connect(&updateChecker, &UpdateChecker::ready,
-                     [&w, &updateChecker](const bool &isNewVersion, const QString &version)
-                     { if (isNewVersion) w.showVersionStatus(version);
-                       // Check again after 24 hours
-                       QTimer::singleShot(24*60*60*1000, &updateChecker, &UpdateChecker::checkUpdate); });
+    QObject::connect(&updateChecker, &UpdateChecker::ready, &w, &MainWindow::gotUpdateStatus);
 
     // Check update in another thread
     QThread updateCheckerThread;

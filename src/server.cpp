@@ -146,7 +146,6 @@ void Server::start()
 void Server::restart()
 {
     close();
-    emit logClear();
     start();
 }
 

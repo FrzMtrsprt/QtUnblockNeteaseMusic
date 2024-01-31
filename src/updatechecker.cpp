@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkReply>
+#include <QTimer>
 
 UpdateChecker::UpdateChecker()
 {
@@ -21,6 +22,9 @@ void UpdateChecker::checkUpdate()
 {
     const QNetworkRequest request(QUrl(PROJECT_API_URL));
     manager->get(request);
+
+    // Check again in 24 hours
+    QTimer::singleShot(24 * 60 * 60 * 1000, this, &UpdateChecker::checkUpdate);
 }
 
 void UpdateChecker::parseReply(QNetworkReply *reply)

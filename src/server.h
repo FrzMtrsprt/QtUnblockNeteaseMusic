@@ -17,7 +17,6 @@ public:
 
 signals:
     void log(const QString &message);
-    void logClear();
 
 private:
     Config *config;

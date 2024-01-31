@@ -124,13 +124,16 @@ bool MainWindow::isProxy()
     return isProxy;
 }
 
-void MainWindow::showVersionStatus(const QString &version)
+void MainWindow::gotUpdateStatus(const bool &isNewVersion, const QString &version)
 {
-    statusLabel->setText(tr("<a href=\"%1\">New version %2 is available.</a>")
-                             .arg(PROJECT_RELEASE_URL)
-                             .arg(version));
-    statusLabel->setOpenExternalLinks(true);
-    ui->statusBar->addWidget(statusLabel);
+    if (isNewVersion)
+    {
+        statusLabel->setText(tr("<a href=\"%1\">New version %2 is available.</a>")
+                                 .arg(PROJECT_RELEASE_URL)
+                                 .arg(version));
+        statusLabel->setOpenExternalLinks(true);
+        ui->statusBar->addWidget(statusLabel);
+    }
 }
 
 void MainWindow::exit()
@@ -146,11 +149,6 @@ void MainWindow::log(const QString &message)
     // Copy message so that it can still be accessed
     QTimer::singleShot(0, this, [this, message]
                        { ui->outText->appendPlainText(message); });
-}
-
-void MainWindow::logClear()
-{
-    ui->outText->clear();
 }
 
 void MainWindow::on_installCA()
@@ -188,6 +186,7 @@ void MainWindow::on_env()
     {
         updateSettings();
         applySettings();
+        ui->outText->clear();
         emit serverRestart();
     }
 }
@@ -239,6 +238,7 @@ void MainWindow::on_apply()
     qDebug("---Restarting server---");
     const bool wasProxy = isProxy();
     updateSettings();
+    ui->outText->clear();
     emit serverRestart();
     if (wasProxy)
     {
