@@ -72,7 +72,8 @@ int main(int argc, char *argv[])
     Tray tray(&w);
 
     Server server(&config);
-    QObject::connect(&server, &Server::log, &w, &MainWindow::log);
+    QObject::connect(&server, &Server::out, &w, &MainWindow::on_serverOut);
+    QObject::connect(&server, &Server::err, &w, &MainWindow::on_serverErr);
     QObject::connect(&w, &MainWindow::serverClose, &server, &Server::close);
     QObject::connect(&w, &MainWindow::serverRestart, &server, &Server::restart);
 

@@ -26,7 +26,8 @@ public:
 
 public slots:
     void exit();
-    void log(const QString &message);
+    void on_serverOut(const QString &message);
+    void on_serverErr(const QString &message);
 
 signals:
     void serverRestart();

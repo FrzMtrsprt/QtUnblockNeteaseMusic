@@ -144,11 +144,32 @@ void MainWindow::exit()
     QApplication::exit();
 }
 
-void MainWindow::log(const QString &message)
+void MainWindow::on_serverOut(const QString &message)
 {
     // Copy message so that it can still be accessed
     QTimer::singleShot(0, this, [this, message]
                        { ui->outText->appendPlainText(message); });
+}
+
+void MainWindow::on_serverErr(const QString &message)
+{
+    const QString title = tr("Server error");
+    const QString text =
+        tr("The UnblockNeteaseMusic server "
+           "ran into an error.\n"
+           "Please change the arguments or "
+           "check port usage and try again.");
+
+    QMessageBox *errorDlg = new QMessageBox();
+    errorDlg->setAttribute(Qt::WA_DeleteOnClose);
+    errorDlg->setWindowTitle(title);
+    errorDlg->setText(text);
+    errorDlg->setDetailedText(message);
+    errorDlg->setIcon(QMessageBox::Warning);
+#ifdef Q_OS_WIN
+    WinUtils::setWindowFrame(errorDlg->winId(), errorDlg->style());
+#endif
+    errorDlg->exec();
 }
 
 void MainWindow::on_installCA()

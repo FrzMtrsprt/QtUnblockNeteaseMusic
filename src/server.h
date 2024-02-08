@@ -16,7 +16,8 @@ public:
     void restart();
 
 signals:
-    void log(const QString &message);
+    void out(const QString &message);
+    void err(const QString &message);
 
 private:
     Config *config;
@@ -25,7 +26,5 @@ private:
 
     bool findProgram();
     void loadArgs();
-    void on_stdout();
-    void on_stderr();
     void on_finished(int exitCode, QProcess::ExitStatus exitStatus);
 };

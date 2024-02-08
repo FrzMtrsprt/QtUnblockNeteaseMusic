@@ -13,9 +13,11 @@ Server::Server(Config *config)
     : QProcess(), config(config)
 {
     connect(this, &Server::readyReadStandardOutput,
-            this, &Server::on_stdout);
+            [this]
+            { emit out(readAllStandardOutput()); });
     connect(this, &Server::readyReadStandardError,
-            this, &Server::on_stderr);
+            [this]
+            { emit err(readAllStandardError()); });
     connect(this, &Server::finished,
             this, &Server::on_finished);
 }
@@ -49,7 +51,7 @@ bool Server::findProgram()
             }
             else
             {
-                emit log(tr("Node.js is not installed."));
+                emit out(tr("Node.js is not installed."));
                 break;
             }
         }
@@ -129,17 +131,17 @@ void Server::start()
         loadArgs();
         if (config->debugInfo)
         {
-            emit log(program + u' ' + arguments.join(u' '));
+            emit out(program + u' ' + arguments.join(u' '));
         }
         QProcess::start(program, arguments, QIODeviceBase::ReadOnly);
         if (!waitForStarted())
         {
-            emit log(errorString());
+            emit out(errorString());
         }
     }
     else
     {
-        emit log(tr("Server not found."));
+        emit out(tr("Server not found."));
     }
 }
 
@@ -149,37 +151,11 @@ void Server::restart()
     start();
 }
 
-void Server::on_stdout()
-{
-    emit log(readAllStandardOutput());
-}
-
-void Server::on_stderr()
-{
-    const QString title = tr("Server error");
-    const QString text =
-        tr("The UnblockNeteaseMusic server "
-           "ran into an error.\n"
-           "Please change the arguments or "
-           "check port usage and try again.");
-
-    QMessageBox *errorDlg = new QMessageBox();
-    errorDlg->setAttribute(Qt::WA_DeleteOnClose);
-    errorDlg->setWindowTitle(title);
-    errorDlg->setText(text);
-    errorDlg->setDetailedText(readAllStandardError());
-    errorDlg->setIcon(QMessageBox::Warning);
-#ifdef Q_OS_WIN
-    WinUtils::setWindowFrame(errorDlg->winId(), errorDlg->style());
-#endif
-    errorDlg->exec();
-}
-
 void Server::on_finished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     if (exitCode != 0)
     {
-        emit log(tr("Process exited with code %1.\n"
+        emit out(tr("Process exited with code %1.\n"
                     "Please click \"Apply\" to restart the server.")
                      .arg(exitCode));
     }
