@@ -147,16 +147,23 @@ void Server::start()
 
 void Server::restart()
 {
+    disconnect(this, &Server::finished,
+               this, &Server::on_finished);
     close();
+    connect(this, &Server::finished,
+            this, &Server::on_finished);
     start();
 }
 
 void Server::on_finished(int exitCode, QProcess::ExitStatus exitStatus)
 {
+    qDebug() << "Server finished with code" << exitCode;
+    qDebug() << "Exit status" << exitStatus;
     if (exitCode != 0)
     {
         emit out(tr("Process exited with code %1.\n"
-                    "Please click \"Apply\" to restart the server.")
+                    "Please change the arguments or "
+                    "check port usage and try again.")
                      .arg(exitCode));
     }
 }
