@@ -67,4 +67,5 @@ English version: [README_en.md](README_en.md)
 - 使用 CMake 完成所有构建 ~~已完成~~  
   Qt 6 中的 lupdate 无法与 CMake 配合使用，因此仍然需要手动运行 lupdate
 - 未测试 / 未支持 macOS、Linux 、 Windows 8 及以下等平台
+- 更好的更新检测 / 自动更新
 - 我是菜鸡

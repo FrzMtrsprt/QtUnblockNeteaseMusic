@@ -66,4 +66,5 @@ This little tool wouldn't have been made possible without these incredible proje
 - Build everything with cmake ~~Done~~  
   There's a bug in Qt 6 preventing lupdate from working with CMake, thus we have to lupdate manually
 - Untested/unsupported on macOS, Linux, and Windows 8 or lower
+- Better update checking / auto update
 - I'm a newbie
