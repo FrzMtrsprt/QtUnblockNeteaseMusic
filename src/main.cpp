@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_WIN
         AllowSetForegroundWindow((DWORD)a.primaryPid());
 #endif
-        if (a.sendMessage(" "_qba))
+        if (a.sendMessage(" "_ba))
         {
             return -1;
         }
