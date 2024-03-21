@@ -128,11 +128,17 @@ void MainWindow::gotUpdateStatus(const bool &isNewVersion, const QString &versio
 {
     if (isNewVersion)
     {
-        statusLabel->setText(tr("<a href=\"%1\">New version %2 is available.</a>")
+        statusLabel->setText(tr("[New version %2 is available.](%1)")
                                  .arg(PROJECT_RELEASE_URL)
                                  .arg(version));
+        statusLabel->setTextFormat(Qt::MarkdownText);
         statusLabel->setOpenExternalLinks(true);
         ui->statusBar->addWidget(statusLabel);
+        statusLabel->show();
+    }
+    else
+    {
+        ui->statusBar->removeWidget(statusLabel);
     }
 }
 
