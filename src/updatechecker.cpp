@@ -6,6 +6,7 @@
 #include <QJsonObject>
 #include <QNetworkReply>
 #include <QTimer>
+#include <QVersionNumber>
 
 UpdateChecker::UpdateChecker()
 {
@@ -40,26 +41,8 @@ void UpdateChecker::parseReply(QNetworkReply *reply)
     const QJsonDocument doc = QJsonDocument::fromJson(data);
     const QJsonObject obj = doc.object();
     const QString tagName = obj["tag_name"].toString();
-    // Split the version string into three parts
     const QString version = tagName.sliced(1);
     qDebug() << "Latest version:" << version;
-    emit ready(isNewVersion(version, PROJECT_VERSION), version);
-}
-
-bool UpdateChecker::isNewVersion(const QString &target, const QString &current)
-{
-    const QStringList targetParts = target.split(".");
-    const QStringList currentParts = current.split(".");
-    for (int i = 0; i < targetParts.size() && i < currentParts.size(); i++)
-    {
-        if (targetParts[i].toInt() > currentParts[i].toInt())
-        {
-            return true;
-        }
-        if (targetParts[i].toInt() < currentParts[i].toInt())
-        {
-            return false;
-        }
-    }
-    return false;
+    const bool isNewVersion = QVersionNumber::fromString(version) > QVersionNumber::fromString(PROJECT_VERSION);
+    emit ready(isNewVersion, version);
 }

@@ -15,5 +15,4 @@ signals:
 private:
     QNetworkAccessManager *manager;
     void parseReply(QNetworkReply *reply);
-    static bool isNewVersion(const QString &target, const QString &current);
 };
