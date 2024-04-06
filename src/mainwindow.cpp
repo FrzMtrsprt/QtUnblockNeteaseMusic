@@ -33,30 +33,24 @@ MainWindow::MainWindow(Config *config)
     ui->outText->setFont(font);
 
     // connect MainWindow signals
-    connect(ui->actionInstallCA, &QAction::triggered,
-            this, &MainWindow::on_installCA);
-    connect(ui->actionEnv, &QAction::triggered,
-            this, &MainWindow::on_env);
-    connect(ui->actionExit, &QAction::triggered,
-            this, &MainWindow::exit);
-    connect(ui->actionAbout, &QAction::triggered,
-            this, &MainWindow::on_about);
-    connect(ui->actionAboutQt, &QAction::triggered,
-            this, &MainWindow::on_aboutQt);
-    connect(ui->proxyCheckBox, &QCheckBox::clicked,
-            this, &MainWindow::setProxy);
-    connect(ui->applyBtn, &QPushButton::clicked,
-            this, &MainWindow::on_apply);
-    connect(ui->exitBtn, &QPushButton::clicked,
-            this, &MainWindow::exit);
+    connect(ui->actionInstallCA, &QAction::triggered, this, &MainWindow::on_installCA);
+    connect(ui->actionEnv, &QAction::triggered, this, &MainWindow::on_env);
+    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exit);
+    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::on_about);
+    connect(ui->actionAboutQt, &QAction::triggered, this, &MainWindow::on_aboutQt);
+    connect(ui->proxyCheckBox, &QCheckBox::clicked, this, &MainWindow::setProxy);
+    connect(ui->applyBtn, &QPushButton::clicked, this, &MainWindow::on_apply);
+    connect(ui->exitBtn, &QPushButton::clicked, this, &MainWindow::exit);
+
+    // Don't allow system proxy with strict mode
+    connect(ui->strictCheckBox, &QCheckBox::checkStateChanged, this, &MainWindow::on_strictChanged);
 
     // setup theme menu
     for (const QString &style : QStyleFactory::keys())
     {
         // reference: https://stackoverflow.com/a/45265455
         QAction *action = ui->menuTheme->addAction(style);
-        connect(action, &QAction::triggered,
-                this, [this, style]
+        connect(action, &QAction::triggered, this, [this, style]
                 { setTheme(style); });
     }
 
@@ -270,6 +264,16 @@ void MainWindow::on_apply()
     if (wasProxy)
     {
         setProxy(true);
+    }
+}
+
+void MainWindow::on_strictChanged(Qt::CheckState state)
+{
+    ui->proxyCheckBox->setEnabled(state != Qt::Checked);
+    if (state == Qt::Checked)
+    {
+        ui->proxyCheckBox->setChecked(false);
+        setProxy(false);
     }
 }
 

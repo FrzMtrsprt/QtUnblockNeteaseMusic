@@ -51,4 +51,5 @@ private slots:
     void on_about();
     void on_aboutQt();
     void on_apply();
+    void on_strictChanged(Qt::CheckState state);
 };
