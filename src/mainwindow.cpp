@@ -270,7 +270,7 @@ void MainWindow::on_apply()
 void MainWindow::on_strictChanged(Qt::CheckState state)
 {
     ui->proxyCheckBox->setEnabled(state != Qt::Checked);
-    if (state == Qt::Checked)
+    if (isProxy() && state == Qt::Checked)
     {
         ui->proxyCheckBox->setChecked(false);
         setProxy(false);
