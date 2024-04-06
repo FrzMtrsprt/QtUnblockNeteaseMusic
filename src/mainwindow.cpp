@@ -91,7 +91,7 @@ bool MainWindow::setProxy(const bool &enable)
     const QString port = config->params[Param::Port].value<QString>().split(u':')[0];
     bool ok = false;
 #ifdef Q_OS_WIN
-    ok = WinUtils::setSystemProxy(enable, address, port);
+    ok = WinUtils::setSystemProxy(enable, address + u':' + port);
 #endif
     if (!ok)
     {

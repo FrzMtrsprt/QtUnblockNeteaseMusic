@@ -109,7 +109,7 @@ bool WinUtils::setVisualStyleToWindow(const HWND &hWnd, const bool &enable)
     return ok;
 }
 
-bool WinUtils::setSystemProxy(const bool &enable, const QString &address, const QString &port)
+bool WinUtils::setSystemProxy(const bool &enable, const QString &address)
 {
     INTERNET_PER_CONN_OPTION_LISTW optionList;
     INTERNET_PER_CONN_OPTIONW options[3];
@@ -123,13 +123,15 @@ bool WinUtils::setSystemProxy(const bool &enable, const QString &address, const 
     options[0].Value.dwValue = enable ? PROXY_TYPE_PROXY
                                       : PROXY_TYPE_DIRECT;
 
-    WCHAR proxy_server[32];
-    (address + ":" + port).toWCharArray(proxy_server);
+    WCHAR proxy_server[MAX_PATH];
+    const int length = address.toWCharArray(proxy_server);
+    proxy_server[length] = L'\0';
     options[1].dwOption = INTERNET_PER_CONN_PROXY_SERVER;
     options[1].Value.pszValue = proxy_server;
 
+    WCHAR proxy_bypass[8] = L"<local>";
     options[2].dwOption = INTERNET_PER_CONN_PROXY_BYPASS;
-    options[2].Value.pszValue = NULL;
+    options[2].Value.pszValue = proxy_bypass;
 
     if (InternetSetOptionW(NULL, INTERNET_OPTION_PER_CONNECTION_OPTION,
                            &optionList, optionList.dwSize))
@@ -158,8 +160,9 @@ bool WinUtils::isSystemProxy(const QString &address)
     if (InternetQueryOptionW(NULL, INTERNET_OPTION_PER_CONNECTION_OPTION,
                              &optionList, &optionList.dwSize))
     {
-        WCHAR proxy_server[0x100];
-        address.toWCharArray(proxy_server);
+        WCHAR proxy_server[MAX_PATH];
+        const int length = address.toWCharArray(proxy_server);
+        proxy_server[length] = L'\0';
 
         if (options[0].Value.dwValue & PROXY_TYPE_PROXY &&
             lstrcmpW(options[1].Value.pszValue, proxy_server) == 0)
