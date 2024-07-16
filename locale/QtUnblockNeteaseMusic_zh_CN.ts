@@ -59,6 +59,26 @@ VARIABLE_NAME_2=variable_value_2</source>
         <source>Start minimized</source>
         <translation>最小化启动</translation>
     </message>
+    <message>
+        <source>Check for Update</source>
+        <translation>检查更新</translation>
+    </message>
+    <message>
+        <source>Check now</source>
+        <translation>立刻检查</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>更新</translation>
+    </message>
+    <message>
+        <source>New version %1 is available.</source>
+        <translation>发现新版本 %1。</translation>
+    </message>
+    <message>
+        <source>You are using the latest version.</source>
+        <translation>当前已是最新版。</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -212,6 +232,20 @@ Please check the server port and address, and try again.</source>
         <source>Access denied</source>
         <translation>拒绝访问</translation>
     </message>
+    <message>
+        <source>[New version %2 is available.](%1)</source>
+        <translation>[发现新版本 %2。](%1)</translation>
+    </message>
+    <message>
+        <source>Server error</source>
+        <translation>服务器错误</translation>
+    </message>
+    <message>
+        <source>The UnblockNeteaseMusic server ran into an error.
+Please change the arguments or check port usage and try again.</source>
+        <translation>UnblockNeteaseMusic 服务器出现错误。
+请修改服务器参数或检查端口占用，然后重试。</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -257,14 +291,10 @@ Please run QtUnblockNeteaseMusic as Administrator from context menu.</source>
         <translation>未找到服务器。</translation>
     </message>
     <message>
-        <source>Server error</source>
-        <translation>服务器错误</translation>
-    </message>
-    <message>
-        <source>The UnblockNeteaseMusic server ran into an error.
+        <source>Process exited with code %1.
 Please change the arguments or check port usage and try again.</source>
-        <translation>UnblockNeteaseMusic 服务器出现错误。
-请修改服务器参数或检查端口占用，然后重试。</translation>
+        <translation>进程已退出，代码 %1。
+请更改参数或检查端口占用，并重试。</translation>
     </message>
 </context>
 <context>
