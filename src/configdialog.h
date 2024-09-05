@@ -22,7 +22,7 @@ private:
     Ui::ConfigDialog *ui;
     Config *config;
     UpdateChecker *updateChecker;
-    void showUpdateMessage(const bool &isNewVersion, const QString &version);
+    void showUpdateMessage(const bool &isNewVersion, const QString &version, const QString &openUrl);
 
 private slots:
     void accept();

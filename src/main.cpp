@@ -3,6 +3,7 @@
 #include <QLibraryInfo>
 #include <QMessageBox>
 #include <QThread>
+#include <QTimer>
 #include <QTranslator>
 #include <SingleApplication>
 
@@ -88,15 +89,7 @@ int main(int argc, char *argv[])
 
     UpdateChecker updateChecker;
     QObject::connect(&updateChecker, &UpdateChecker::ready, &w, &MainWindow::gotUpdateStatus);
-
-    // Check update in another thread
-    QThread updateCheckerThread;
-    updateChecker.moveToThread(&updateCheckerThread);
-    QObject::connect(&updateCheckerThread, &QThread::started, &updateChecker, &UpdateChecker::checkUpdate);
-    QObject::connect(&a, &QApplication::aboutToQuit, [&updateCheckerThread]
-                     { updateCheckerThread.quit(); 
-                       updateCheckerThread.wait(); });
-    updateCheckerThread.start();
+    QTimer::singleShot(1000, &updateChecker, &UpdateChecker::checkUpdate);
 
     // Open when second instance started
     QObject::connect(&a, &SingleApplication::receivedMessage, &w, [&w]

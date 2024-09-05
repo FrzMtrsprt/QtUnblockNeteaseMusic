@@ -4,3 +4,6 @@
 [submodule "third-party/SingleApplication"]
 	path = third-party/SingleApplication
 	url = git@github.com:itay-grudev/SingleApplication.git
+[submodule "third-party/QSimpleUpdater"]
+	path = third-party/QSimpleUpdater
+	url = git@github.com:alex-spataru/QSimpleUpdater.git

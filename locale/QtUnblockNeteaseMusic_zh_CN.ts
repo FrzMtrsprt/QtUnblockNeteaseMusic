@@ -233,8 +233,8 @@ Please check the server port and address, and try again.</source>
         <translation>拒绝访问</translation>
     </message>
     <message>
-        <source>[New version %2 is available.](%1)</source>
-        <translation>[发现新版本 %2。](%1)</translation>
+        <source>[New version %1 is available.](%2)</source>
+        <translation>[发现新版本 %1。](%2)</translation>
     </message>
     <message>
         <source>Server error</source>

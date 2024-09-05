@@ -2,6 +2,5 @@
 #define PROJECT_VERSION "@PROJECT_VERSION@"
 #define PROJECT_DESCRIPTION "@PROJECT_DESCRIPTION@"
 #define PROJECT_HOMEPAGE_URL "@PROJECT_HOMEPAGE_URL@"
-#define PROJECT_RELEASE_URL "https://github.com/FrzMtrsprt/QtUnblockNeteaseMusic/releases/latest"
-#define PROJECT_API_URL "https://api.github.com/repos/FrzMtrsprt/QtUnblockNeteaseMusic/releases/latest"
+#define PROJECT_DEFS_URL "https://raw.githubusercontent.com/FrzMtrsprt/QtUnblockNeteaseMusic/main/update.json"
 #define PROJECT_AUTHOR "@PROJECT_AUTHOR@"

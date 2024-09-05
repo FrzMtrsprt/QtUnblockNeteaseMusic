@@ -118,13 +118,13 @@ bool MainWindow::isProxy()
     return isProxy;
 }
 
-void MainWindow::gotUpdateStatus(const bool &isNewVersion, const QString &version)
+void MainWindow::gotUpdateStatus(const bool &isNewVersion, const QString &version, const QString &openUrl)
 {
     if (isNewVersion)
     {
-        statusLabel->setText(tr("[New version %2 is available.](%1)")
-                                 .arg(PROJECT_RELEASE_URL)
-                                 .arg(version));
+        statusLabel->setText(tr("[New version %1 is available.](%2)")
+                                 .arg(version)
+                                 .arg(openUrl));
         statusLabel->setTextFormat(Qt::MarkdownText);
         statusLabel->setOpenExternalLinks(true);
         ui->statusBar->addWidget(statusLabel);

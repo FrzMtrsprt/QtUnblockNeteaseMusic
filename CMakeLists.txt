@@ -24,6 +24,8 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools Network)
 set(QAPPLICATION_CLASS QApplication)
 add_subdirectory("third-party/SingleApplication")
 
+add_subdirectory("third-party/QSimpleUpdater")
+
 file(GLOB TS_FILES
     "locale/*.ts"
 )
@@ -73,6 +75,7 @@ target_link_libraries(QtUnblockNeteaseMusic PRIVATE
     Qt6::Widgets
     Qt6::Network
     SingleApplication::SingleApplication
+    QSimpleUpdater
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")

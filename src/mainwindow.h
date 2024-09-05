@@ -22,7 +22,7 @@ public:
     ~MainWindow();
     bool setProxy(const bool &enable);
     bool isProxy();
-    void gotUpdateStatus(const bool &isNewVersion, const QString &version);
+    void gotUpdateStatus(const bool &isNewVersion, const QString &version, const QString &openUrl);
 
 public slots:
     void exit();

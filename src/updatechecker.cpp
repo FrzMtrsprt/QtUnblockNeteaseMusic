@@ -2,47 +2,33 @@
 
 #include "version.h"
 
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QNetworkReply>
+#include <QDebug>
 #include <QTimer>
-#include <QVersionNumber>
 
 UpdateChecker::UpdateChecker()
 {
-    manager = new QNetworkAccessManager();
-    connect(manager, &QNetworkAccessManager::finished, this, &UpdateChecker::parseReply);
+    m_updater = QSimpleUpdater::getInstance();
+    m_updater->setModuleVersion(PROJECT_DEFS_URL, PROJECT_VERSION);
+    m_updater->setNotifyOnFinish(PROJECT_DEFS_URL, false);
+    m_updater->setNotifyOnUpdate(PROJECT_DEFS_URL, false);
+
+    connect(m_updater, &QSimpleUpdater::checkingFinished, this, [this](const QString &url)
+            {
+        const bool isNewVersion = m_updater->getUpdateAvailable(url);
+        const QString version = m_updater->getLatestVersion(url);
+        const QString openUrl = m_updater->getOpenUrl(url);
+        emit ready(isNewVersion, version, openUrl); 
+        qDebug() << "isNewVersion:" << isNewVersion << version; });
 }
 
 UpdateChecker::~UpdateChecker()
 {
-    delete manager;
 }
 
 void UpdateChecker::checkUpdate()
 {
-    const QNetworkRequest request(QUrl(PROJECT_API_URL));
-    manager->get(request);
+    m_updater->checkForUpdates(PROJECT_DEFS_URL);
 
     // Check again in 24 hours
     QTimer::singleShot(24 * 60 * 60 * 1000, this, &UpdateChecker::checkUpdate);
-}
-
-void UpdateChecker::parseReply(QNetworkReply *reply)
-{
-    if (reply->error() != QNetworkReply::NoError)
-    {
-        qDebug() << reply->errorString();
-        return;
-    }
-
-    const QByteArray data = reply->readAll();
-    reply->deleteLater();
-    const QJsonDocument doc = QJsonDocument::fromJson(data);
-    const QJsonObject obj = doc.object();
-    const QString tagName = obj["tag_name"].toString();
-    const QString version = tagName.sliced(1);
-    qDebug() << "Latest version:" << version;
-    const bool isNewVersion = QVersionNumber::fromString(version) > QVersionNumber::fromString(PROJECT_VERSION);
-    emit ready(isNewVersion, version);
 }

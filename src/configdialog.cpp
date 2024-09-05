@@ -40,7 +40,7 @@ ConfigDialog::~ConfigDialog()
     delete ui;
 }
 
-void ConfigDialog::showUpdateMessage(const bool &isNewVersion, const QString &version)
+void ConfigDialog::showUpdateMessage(const bool &isNewVersion, const QString &version, const QString &openUrl)
 {
     QMessageBox msgBox;
     msgBox.setWindowTitle(tr("Update"));
@@ -59,7 +59,7 @@ void ConfigDialog::showUpdateMessage(const bool &isNewVersion, const QString &ve
 
     if (msgBox.exec() == QMessageBox::Help)
     {
-        QDesktopServices::openUrl(QUrl(PROJECT_RELEASE_URL));
+        QDesktopServices::openUrl(QUrl(openUrl));
     }
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QNetworkAccessManager>
+#include <QSimpleUpdater.h>
 
 class UpdateChecker : public QObject
 {
@@ -10,9 +10,8 @@ public:
     ~UpdateChecker();
     void checkUpdate();
 signals:
-    void ready(const bool &isNewVersion, const QString &version);
+    void ready(const bool &isNewVersion, const QString &version, const QString &url);
 
 private:
-    QNetworkAccessManager *manager;
-    void parseReply(QNetworkReply *reply);
+    QSimpleUpdater *m_updater;
 };
